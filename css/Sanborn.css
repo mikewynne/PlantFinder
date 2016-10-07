@@ -1,0 +1,20 @@
+
+/*************************************************************************************
+ * Show and Hide during printing
+ *************************************************************************************/
+@media print
+{
+	.PrintOnly
+	{
+		display: inline;
+	}
+	.NoPrint
+	{
+		display: none;
+	}
+	.NoPrintTable
+	{
+		display: none;
+		width: 10px;
+	}
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<title>SF PlantFinder</title>
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<!-- Header Content -->
+<div id="headerShell">
+	<div id="headerContent">
+		<a href="index.html"><div class="logo"></div>
+		</a>
+		<span class="site-description">A plant database for creating habitat in San Francisco.</span>
+        <a class="links" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
+        <a class="links" href="glossary.html">Glossary</a>
+		<a class="links current" href="about.html"><span style="padding-left:15px;">About</span></a>
+	</div>
+</div>
+<!-- End Header Content -->
+
+<!-- Body Content -->
+<div id="mainContentShell">
+  <div id="mainContent">   
+    <!-- Quicklinks -->
+	<div id="subPageNav">
+      <ul>
+        <li class="current">About SF Plant Finder</li>
+        <li><a href="glossary.html">Glossary of Terms </a></li>
+        <li><a href="resources.html">Useful Resources</a></li>
+		<li><a href="https://data.sfgov.org/Energy-and-Environment/San-Francisco-Plant-Database/vb65-x7mv" target="_blank">Download Data Set</a></li>
+      </ul>
+    </div>
+
+    <!-- End Quicklinks -->
+    
+    <!-- Right Column Content -->
+	<div id="subPageContent">
+    <div class="page-title">What is SF Plant Finder?</div>
+    <div class="rightCol-300">
+      <img class="rounded-corners" src="images/neighborhood-planting-3.jpg" width="260" height="195" alt="" style="margin-bottom:25px;" /><br />
+      <img class="rounded-corners" src="images/neighborhood-planting-2.jpg" width="260" height="195" alt="" style="margin-bottom:25px;" /><br />
+      <img class="rounded-corners" src="images/neighborhood-planting-1.jpg" width="260" height="195" alt="" style="margin-bottom:25px;" /><br />
+      <img class="rounded-corners" src="images/neighborhood-planting-5.jpg" width="260" height="195" alt="" style="margin-bottom:25px;" /><br />
+      <img class="rounded-corners" src="images/neighborhood-planting-4.jpg" width="260" height="195" alt="" style="margin-bottom:25px;" /><br />
+    </div>
+    <p><a name="aboutThisSite" id="aboutThisSite"></a>The <strong>San Francisco Plant Finder</strong> is a resource for gardeners, designers, ecologists and anyone who is interested in greening neighborhoods, enhancing our urban ecology and surviving the drought. The Plant Finder recommends appropriate habitat-building plants for sidewalks, backyards and roofs that are adapted to San Francisco's unique environment and climate.</p>
+    <p>&nbsp;</p>
+    <p>This tool was developed as part of the <a href="http://www.sf-planning.org/index.aspx?page=3002">Green Connections</a> project and provides a centralized location to learn about plants and trees recommended by City agencies and local ecology experts.  The tool includes links to the <a href='http://www.sf-planning.org/ftp/files/Citywide/green_connections/GC_RouteEcologyGuides_Final.pdf'>Green Connections Ecology Guides</a> – route-specific recommendations to support target species and habitat along the <a href="http://www.sf-planning.org/ftp/files/Citywide/green_connections/GC_Final_Network_Map_03-2014.pdf">24 Green Connection routes</a>.</p>
+<p>&nbsp;</p>
+    <p>The plants in the database include Mediterranean climate exotic plants, California natives and mostly local San Francisco natives that evolved right here, and thus are particularly adapted to the local climate. They are the best plants for wildlife and biodiversity since, they provide nectar sources for insects and birds, and act as breeding hosts to our indigenous insects, upon which our native birds and other critters depend. </p>
+    <p>&nbsp;</p>
+    <p>The plants have been selected in consultation with San Francisco Public Works (SFDPW), San Francisco Public Utilities Commission (SFPUC), San Francisco Department of the Environment (SFE), Urban Forestry Council, Nature in the City, and experts on local ecology and horticulture. Additional resources that were incorporated into the database include:</p>
+    <ul>
+      <li><em><a href="http://researcharchive.calacademy.org/research/library/biodiv/biblio/sfnative-update.htm">A Flora of San Francisco California</a>, 1958</em> by John Thomas Howell </li>
+      <li><em><a href="http://www.bcdc.ca.gov/pdf/planning/SPLG.pdf">Shoreline Plants Guide</a>, Bay Conservation and Development Commission (BCDC) </em></li>
+      <li><a href="http://www.calflora.org">Calflora</a></li>
+      <li><a href="http://cnps-yerbabuena.org/index.html">California Native Plant Society</a>: Conservation Committee Botanists, Jake Sigg and Gail Weschler </li>
+      <li><a href="http://sfenvironment.org">San Francisco Department of the Environment</a>: Peter Brastow, Senior Biodiversity Coordinator</li>
+      <li><em> <a href="http://sfdpw.org/index.aspx?page=1422">Recommended Street Trees</a></em>, San Francisco Public Works and Urban Forestry Council</li>
+      <li><em><a href="http://sfdpw.org/index.aspx?page=1420">Recommended Drought Tolerant Plants for Sidewalk Landscaping</a></em>, San Francisco Public Works </li>
+      <li><em> <a href="http://www.sfwater.org/Modules/ShowDocument.aspx?documentID=2775">Stormwater Design Guidelines, Appendix D: Vegetation Palette</a></em>, San Francisco Public Utilities Commission</li>
+  </ul>
+<p>We have tried to provide as specific information as possible. The data and information presented on this site were obtained from many different sources, and some of the fields are based on general estimates (e.g., watering needs). Due to the high variation of species, <strong>specific site selection and conditions are important to consider when  planting your habitat garden.</strong></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="get-data" id="get-data"></a></p>
+    <h3>Download the Data Set</h3>
+    <p>&nbsp;</p>
+    <div class="rightCol-300">
+    <img src="http://www.sf-planning.org/ftp/files/publications_reports/library_of_cartography/PlantFinder.jpg" alt="" width="48" height="48" align="absmiddle" style="margin-right: 15px;" />  <span class="searchButton"><a href="https://data.sfgov.org/Energy-and-Environment/San-Francisco-Plant-Database/vb65-x7mv" target="_blank">Download Data Set</a></span>
+    </div>
+    <p>The entire <strong>SF Plant Finder data set</strong> can be downloaded for free from <a href="https://data.sfgov.org/Energy-and-Environment/San-Francisco-Plant-Database/vb65-x7mv" target="_blank">DataSF</a> under a Creative Commons license. The download is a zip file which contains an Excel spreadsheet listing appropriate plants recommended on this web site, and also a GIS shapefile of plant community areas.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+    <p><a name="feedback" id="feedback"></a></p>
+    <h3>Questions or Feedback</h3>
+    <p>&nbsp;</p>
+    <p>For questions related to content on <strong>SF Plant Finder</strong> please contact <a href="mailto:biodiversity@sfenvironment.org?subject=SF Plant Finder web site">biodiversity@sfenvironment.org</a> at the Department of the Environment.</p>
+    <p>&nbsp;</p>
+    <p>For questions about using this website, technical feedback or suggestions to improve <strong>this site</strong> please contact Mike Wynne (<a href="mailto:mike.wynne@sfgov.org?subject=SF Plant Finder web site feedback">mike.wynne@sfgov.org</a>), <em>GIS Analyst </em>and developer of this website at the San Francisco Planning Department.</p>
+<p>&nbsp;</p>
+	</div>
+
+ 
+
+  </div>
+<!-- End mainContent -->
+
+</div>
+<!-- End mainContentShell -->
+
+<!-- Footer Content -->
+<div id="footerShell">
+	<div id="footerContent">
+		<div class="left">&copy; 2014 City and County of San Francisco.<br />
+			This site is brought to you by the following city agencies and <br />
+		  a grant from the California Strategic Growth Council.</div>
+		<div class="right"><img src="images/dept-logos.png" width="690" height="64" border="0" usemap="#agencies" />
+          <map name="agencies" id="agencies">
+            <area shape="rect" coords="105,8,227,62" href="http://www.sfplanning.org" target="_blank" alt="San Francisco Planning Department" />
+            <area shape="rect" coords="630,2,694,61" href="http://www.sfdpw.org" target="_blank" alt="San Francisco Department of Public Works" />
+            <area shape="rect" coords="273,0,369,64" href="http://www.sfenvironment.org" target="_blank" alt="SF Environment" />
+            <area shape="rect" coords="409,8,591,60" href="http://www.sfwater.org" target="_blank" alt="SF Public Utilities Commission" />
+          </map>
+		</div>
+	</div>
+</div>
+<!-- End Footer Content -->
+</body>
+</html>

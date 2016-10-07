@@ -1,0 +1,750 @@
+	@charset "UTF-8";
+/* CSS Document */
+/*
+Name: SFPlantFinder
+Date: December 2013
+Author: Gary Chen
+Organization: San Francisco Planning Department
+Description: Theme for SF PlantFinder Database web site.
+
+
+
+/* THE BASICS */
+
+* {margin:0; padding:0;}
+
+body {background-color:#E3E3E3; height:100%; width:100%;}
+
+img {border: 0;}
+
+
+h1 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 32px;
+	font-weight: normal;
+	line-height: 1.15em;
+	letter-spacing: -.015em;
+	color: #333;
+	padding-bottom: .5em;
+}
+
+h2, h3 {font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; color:#422410;}
+
+h3 {padding-bottom: 3px; border-bottom: 1px dashed #AAA;}
+
+p, ul, li {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: 1.5em;
+	color: #373737;
+}
+
+.smalltext {
+	color: #373737;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	font-weight:normal;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 1.15em;
+}
+
+strong {font-weight: 700;}
+
+li {
+	display: list-item;
+	list-style: inside circle;
+	margin: 1em 0em;
+}
+
+a {color: #393; text-decoration: none;}
+a:hover {
+	text-decoration: none;
+	color: #000;
+	text-decoration: underline
+}
+
+.toolbar-search {
+	display: block;
+	position: absolute;
+	float: right;
+	clear: none;
+	top: 25px;
+	right: 210px;
+}
+
+.toolbar-info {
+	display: block;
+	position: absolute;
+	float: right;
+	clear: none;
+	top: 20px;
+	right: 20px;
+	z-index: 1001;
+}
+
+a.print {
+	background-image: url(../images/icon_print.gif);
+	background-repeat: no-repeat;
+    background-position: 4px center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #999;
+	padding: 3px 6px 3px 21px;
+	border: 1px solid #CCC;
+	text-decoration: none;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+a.print:hover {
+	color: #333;
+	border: 1px solid #AAA;
+	text-decoration: none;
+}
+
+a.button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #393;
+	padding: 4px 6px;
+	border: 1px solid #CCC;
+	text-decoration: none;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+a.button:hover {
+	color: #333;
+	border: 1px solid #AAA;
+	text-decoration: none;
+}
+
+
+/* TABLES */
+table {
+border-collapse:  collapse;
+border-spacing: 0px;
+}
+
+th {
+font-weight: bold;
+}
+
+td, th {
+display: table-cell;
+vertical-align: inherit;
+}
+
+
+.glossary-term {
+	font-weight:bold; 
+	color:#000;
+}
+
+.page-title {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 36px;
+	font-weight: normal;
+	line-height: 1.15em;
+	letter-spacing: -.02em;
+	color: #422410;
+	padding: 5px 0px;
+	border-bottom: 3px solid #422410;
+	margin-bottom: 25px;
+}
+
+
+
+/* HEADER CONTENT */
+
+#headerShell {
+	width:100%;
+	background: url(../images/bkg-header.png) repeat-x;
+	background-color:#A0B467;
+	height:80px;
+	text-align:center;
+	position:relative;
+	z-index: 1000;
+	-moz-box-shadow: inset 0px -15px 15px -15px rgba(0,0,0,0.65);
+	-webkit-box-shadow: inset 0px -15px 15px -15px rgba(0,0,0,0.65);
+	box-shadow: inset 0px -15px 15px -15px rgba(0,0,0,0.35);
+}
+
+#headerContent {
+	position: relative;
+	width: 1020px;
+	height: 80px;
+	display: inline-block;
+	margin: 0;
+}
+
+#headerContent .logo {
+	background: no-repeat center url(../images/header-logo.png);
+	left: 20px;
+	height: 125px;
+	width: 150px;
+	display: block;
+	float: left;
+	position: relative;
+}
+
+#headerContent .links {
+	float: right;
+	padding: 8px 16px;
+	background-color: #E3E3E3;
+	border-top: 4px solid #FFF;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	position: relative;
+	right: 0;
+	top: 45px;
+}
+
+#headerContent .links a {color:#393;}
+#headerContent a.links:hover {text-decoration:none; color:#512F25; background-color:#FFF;}
+#headerContent .current {background-color: #FFF;}
+
+
+
+#headerContent .site-description {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	color: #FFF;
+	font-style: italic;
+	position: absolute;
+	left: 215px;
+	top: 40px;
+	line-height: 1.25em;
+}
+
+
+/* MAIN PAGE CONTENT */
+
+#mainContentShell {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	text-align: center;
+	position: relative;
+	background-color:#E3E3E3;
+}
+
+#mainContent {
+	width: 1020px;
+	height: 100%;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	text-align:left;
+	position: relative;
+	display: inline-block;
+}
+
+
+/* HOMEPAGE TOP ROW SEARCH AREA */
+
+#mainContent-Search {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	background-color: #FFF;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	line-height: 1.15em;
+	text-align: left;
+	margin-bottom: 25px;
+	clear: both;
+	webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+	-moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+}
+
+
+/* Map Search Form and Plant Communities */
+
+#mainContent-Search-LeftCol {
+	width: 420px;
+	float: left;
+	color: #AAA;
+	padding: 10px 20px 0px 20px;
+}
+
+#mainContent-Search-LeftCol .links td {
+	font-size: 12px;
+	font-style: italic;
+	font-weight: 600;
+	line-height: 1.2em;
+	color: #666;
+	vertical-align: top;
+}
+
+#mainContent-Search-LeftCol .links img {
+	padding-bottom: 8px;
+	cursor: pointer;
+}
+
+#mainContent-Search-LeftCol .links a:hover { opacity: .9; -webkit-filter: saturate(2.5); }
+
+
+#addressForm {
+	margin: 0;
+	font-size: 14px;
+	width: inherit;
+	padding: 15px 0 20px 0;
+	margin-bottom: 20px;
+	border-bottom: 1px dashed #CCC;
+}
+
+#addressInput {
+	display: inline;
+	font-size: 15px;
+	margin: 0;
+	padding: 5px;
+	border: 2px solid #CCC;
+	vertical-align: middle;
+	width: 300px;
+	height: 20px;
+	clear: none;
+}
+
+.searchButton a {
+	background-color: #75B43E;
+	color: #FFF;
+	cursor: pointer;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size:14px;
+	font-weight: bold;
+	padding: 7px 18px 8px 18px;
+	text-decoration: none;
+	border: 2px solid #CCC;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	clear:none;
+}
+
+.searchButton a:hover {
+	background-color: #512F25;
+	border: 2px solid #CCC;
+	color: #D1E48F;
+	text-decoration: none;
+}
+
+/* Map */
+
+#mapContainer {
+	width: 560px;
+	height: 430px;
+	float: right;
+	clear: none;
+	moz-box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
+	-webkit-box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
+	box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
+}
+
+
+
+/* HOMEPAGE BOTTOM ROW SHELL */
+
+#mainContent-SearchResults {
+	position: relative;
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	background-color: #FFF;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	line-height: 1.25em;
+	text-align: left;
+	webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+	-moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.09);
+}
+
+#mainContent-SearchResults h2 {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+	line-height: 1.15em;
+	color: #85BF3F;
+}
+
+
+/* Search Results and Hidden Frame for Search Filter */
+
+#searchResults {
+	position: relative;
+	height: 100%;
+	background-color: #FFF;
+	padding: 25px 20px 20px 20px;
+}
+
+
+
+#searchResults .toggleFilter {
+	position: relative;
+	float: right;
+	text-align: right;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
+	color: #6C3;
+	cursor: pointer;
+	clear: none;
+	padding: 0 5px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	
+}
+
+#searchResults table {
+	width: 100%;
+	padding: 0;
+	border: 0;
+	margin-top: 20px;
+}
+
+#searchResults td {
+	vertical-align: top;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+#searchResults p {
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2em;
+}
+
+#searchResults h2 {
+	padding-top: 5px;
+	color: #999;
+}
+
+#floatingDivForFilter {
+	width: 150px;
+	position: relative;
+	float: right;
+	top: 0;
+	right: 0;
+	padding: 0px 0px 20px 20px;
+	/* background-color: #E9E9E9; */
+	border-left: 1px dashed #EEE;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	font-style: normal;
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 1.45em;
+	color: #555;
+}
+
+#floatingDivForFilter h1 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	font-style: normal;
+	color: #BBB;
+}
+
+#floatingDivForFilter h2 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: italic;
+	color: #696;
+	margin-top: 15px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 5px;
+}
+
+/* HOMEPAGE RIGHT COLUMN: Green Connections */
+
+#greenConnectionsList {
+	width: 790px;
+	position: relative;
+	margin-top:20px;
+	border-top: 1px dashed #EEE;
+	padding-top: 10px;
+}
+
+.gclogo {
+	width: 75px;
+	display: block;
+	float: right;
+	position: relative;
+	text-align: center;
+}
+
+
+/* HOMEPAGE RIGHT COLUMN: Hidden Frame for Plant Info */
+
+#info {
+	display: inline-block;
+	position: relative;
+	width: 980px;
+	margin: 20px;
+	top: 0;
+	right: 0;
+	clear: none;
+	z-index: 1000;
+}
+
+#info .images {
+	position: relative;
+	float:right;
+	width: 375px;
+	padding: 0px;
+	margin-left: 15px;
+}
+
+#info .plantDetails td {
+	border-top: 1px solid #DEDEDE;
+	padding-top: 4px;
+	padding-bottom: 10px;
+	vertical-align: top;
+}
+
+#info .toggleSearch {
+	position: relative;
+	float: right;
+	text-align: right;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
+	color: #6C3;
+	cursor: pointer;
+	clear: none;
+}
+
+
+
+/* SUBPAGES */
+
+#subPageNav {
+	position: relative;
+	display: block;
+	float: left;
+	width: 180px;
+	margin: 80px 0px 0px 20px;
+	
+}
+
+#subPageNav li {
+	display: block;
+	margin: 0em 0em;
+	padding: 0.6em 0.4em;
+	border-bottom: 1px solid #CCC;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+}
+#subPageNav .sub {border-bottom: 1px dashed #AAA;}
+#subPageNav .current {background-color: #FFF;}
+
+
+#subPageContent {
+	position: relative;
+	display: block;
+	float: right;
+	width: 770px;
+	margin: 10px 0 10px 0;
+	background-color: #FFF;
+	padding: 25px;
+}
+
+
+/* FOOTER */
+#footerShell {
+	width: 100%;
+	position: inherit;
+	text-align:center;
+	bottom: 0;
+	clear: both;
+}
+
+#footerContent {
+	position: relative;
+	bottom: 0;
+	width: 1020px;
+	display: inline-block;
+	margin: 0 0 20px 0;
+}
+
+#footerContent .left {
+	width: 320px;
+	margin-top: 40px;
+
+	float: left;
+	text-align: left;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 10px;
+	color: #454545;
+	clear: none;
+}
+
+#footerContent .right {
+	float: right;
+	text-align: right;
+	margin-top: 20px;
+	padding: 0px;
+}
+
+
+/* MISC */
+
+.contentPointer {
+	background: no-repeat center url(../images/bkg-column-pointer.png);
+	height: 20px;
+	width: 38px;
+	display: inline-block;
+	left: 200px;
+	top: -20px;
+	position: absolute;
+	clear: none;
+}
+
+#FloatingTextHint {
+	display: inline-block;
+	background-color: #FFF;
+	height: 14px;
+	padding: 3px;
+	top: 385px;
+	left: 460px;
+	position: absolute;
+	clear: none;
+	z-index: 100;
+}
+
+
+
+#plantInfo {
+	background-color: #FEFEF3;
+	height: auto;
+	display: none;
+	-moz-box-shadow: inset 0px -25px 25px -25px rgba(0,0,0,0.15);
+	-webkit-box-shadow: inset 0px -25px 25px -25px rgba(0,0,0,0.15);
+	box-shadow: inset 0px -25px 25px -25px rgba(0,0,0,0.15);
+}
+.slide {
+	margin: 0;
+	padding: 0;
+	border-top: solid 3px #422410;
+}
+.btn-slide {
+	background-color: #422410;
+	text-align: center;
+	width: 60px;
+	padding: 5px 5px;
+	margin: 0 auto;
+	display: block;
+	font: bold 70%/100% Arial, Helvetica, sans-serif;
+	color: #EEE;
+	text-decoration: none;
+}
+a.btn-slide:hover {
+	color: #FFF;
+	text-decoration: none;
+}
+
+.active {
+	background-position: right 12px;
+}
+
+
+
+/* POPUP TEXT FOR HINTS & DEFINITIONS */
+
+a.tooltip {outline:none; }
+a.tooltip strong {line-height:30px;}
+a.tooltip:hover {text-decoration:none;} 
+
+a.tooltip span {
+    z-index: 200;
+	display: none; 
+	padding: 15px 20px;
+    margin-top: -70px; 
+	margin-left: 15px;
+    width: 325px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	line-height: 14px;
+	font-style: normal;
+	text-align: left;
+	border-radius:4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+a.tooltip:hover span{
+    display: inline;
+	position: absolute;
+	color: #FFF;
+	background-color: #422410;
+}
+
+.callout {
+	z-index: 200;
+	position: absolute;
+	top: 30px;
+	border: 0;
+	left: -12px;
+}
+
+/* HOMEPAGE INTRO */
+
+#Intro {
+    width: 920px;
+	margin: 50px 25px 50px 25px;
+	float: left;
+	clear: none;
+}
+
+#Intro p {
+    font-size: 1.25em;
+	line-height: 1.75em;
+	font-weight: normal;
+	color: #666;
+}
+
+.rightCol-300 {
+	float: right;
+	width: 260px;
+	padding: 0;
+	margin: 0 0 25px 30px;
+}
+
+.rounded-corners {
+	border-radius: 1em;
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+}
+
+/* HIDE WHEN PRINTING */
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+	.no-print-borders
+	{
+		border: none !important;
+		box-shadow: none !important;
+		webkit-box-shadow: none !important;
+		-webkit-box-shadow:none;
+	}
+	#mainContent-SearchResults
+	{
+		border: none !important;
+		box-shadow: none !important;
+		webkit-box-shadow: none !important;
+		-webkit-box-shadow:none;
+	}
+	
+			
+}

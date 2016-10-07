@@ -1,0 +1,452 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<LINK REL="SHORTCUT ICON" HREF="images/favicon.ico">
+<title>SF Plant Finder</title>
+<meta name="description" content="Search for any address in San Francisco and display a list of plants recommended by the City & County of San Francisco for planting at that location.  Takes into account microclimates and plant communities (phtocenosis).">
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
+
+
+
+<script type="text/javascript" src="jQuery/jquery-latest.js"></script>
+<link rel="stylesheet" href="jQuery/Messi-master/messi.min.css" />
+<script src="jQuery/Messi-master/messi.min.js"></script>
+<style>
+	.esriPopup.myTheme .titlePane,      
+	.dj_ie7 .esriPopup.myTheme .titlePane .title {        
+		background-color: #9ba8da;        
+		color: #333333;        
+		font-weight: bold;      
+	}      
+	.esriPopup.myTheme .titlePane {        
+		border-bottom: 1px solid #121310;      
+	}      
+	.esriPopup.myTheme a {        
+		color: #d6e68a;      
+	}      
+	.esriPopup.myTheme .titleButton,      
+	.esriPopup.myTheme .pointer,      
+	.esriPopup.myTheme .outerPointer,      
+	.esriPopup.myTheme .esriViewPopup 
+	.gallery .mediaHandle,      
+	.esriPopup.myTheme 
+	.esriViewPopup .gallery .mediaIcon {          
+		background-image: url(./images/popup.png);      
+	}      
+	.esriPopup.myTheme .contentPane,      
+	.esriPopup.myTheme .actionsPane {        
+		border-color: 1px solid #121310;        
+		background-color: #424242;        
+		color:#ffffff;     
+	}
+</style>
+
+<script>var dojoConfig = {parseOnLoad: true};</script>
+	<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+	<script type="text/javascript" src="js/PlantSF2.js"></script>
+	<script type="text/javascript" src="js/proj4js/lib/proj4js-combined.js"></script>
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/lightbox.min.js"></script>
+	<link rel="stylesheet" href="css/lightbox.css" media="screen"/>
+	 <script>
+dojo.require("dijit.layout.BorderContainer");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.require("esri.map");
+      dojo.require("esri.tasks.find");
+      dojo.require("esri.tasks.identify");
+      dojo.require("esri.tasks.query");
+      dojo.require("esri.layers.FeatureLayer");
+      dojo.require("esri.geometry");
+      dojo.require("esri.graphic");
+      dojo.require("dijit.form.Button");
+      dojo.require("dijit.Menu");
+      dojo.require("esri.dijit.BasemapGallery");
+      dojo.require("esri.dijit.Geocoder");
+
+      dojo.require("esri.dijit.Popup");
+      //dojo.require("esri.dijit.Measurement");
+
+      var map, locator;
+      var saltMarsh=false;
+      var wetland=false
+      var coastalScrub=false;
+      var riparian=false;
+      var woodland=false;
+      var dunes=false;
+      var grasslandPrairie=false;
+      var chaparral=false;
+
+      function init() {
+		var popup = new esri.dijit.Popup({          fillSymbol: new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255,0,0]), 2), new dojo.Color([255,255,0,0.25]))        }, dojo.create("div"));
+		map = new esri.Map("map_canvas", 
+			    {
+				basemap: "topo",
+				center: [-122.4425, 37.754],
+				zoom: 11,
+				showAttribution: false,
+				infoWindow: popup
+			    }
+			);
+		basemapGallery = new esri.dijit.BasemapGallery({          
+			showArcGISBasemaps: true,          
+			map: map
+		});
+
+		
+		dojo.connect(basemapGallery, "onLoad", function(){          
+			dojo.forEach(basemapGallery.basemaps, function(basemap) {
+				//prompt("", basemap.title)// + ": " + basemap.getMinZoom())
+				if ((basemap.title!="Terrain with Labels") && (basemap.title!="Oceans")) {
+					//Add a menu item for each basemap, when the menu items are selected            
+					dijit.byId("basemapMenu").addChild(              
+						new dijit.MenuItem({                
+							label: basemap.title,                
+							onClick: dojo.hitch(this, function() {                  
+								this.basemapGallery.select(basemap.id);   
+								document.getElementById('noMaps').style.display = "none" 
+								if (basemap.id=='basemap_5'|| basemap.id=='basemap_6'||basemap.id=='basemap_7'||basemap.id=='basemap_8') {
+									//hide the maps unavailable message
+									document.getElementById('noMaps').style.display = "none" 
+								} else {
+									//display the maps unavailable message (will be placed behind the map image, will only be visible if there are no maps avalaible at that zoom level))
+									document.getElementById('noMaps').style.display = "inline" 
+								}
+								
+							})              
+						})            
+					); 
+				};
+			}); 
+			dijit.byId("basemapMenu").addChild(              
+				new dijit.MenuItem({  
+					label: 'Green Connections',                
+					onClick: dojo.hitch(this, function() {  
+						if (isLayerVisible("Green Connections")) {
+							ToggleOnOff("Green Connections",false);
+						} else {
+							ToggleOnOff("Green Connections",true);
+						}
+					})
+				})
+			);
+			dijit.byId("basemapMenu").addChild(              
+				new dijit.MenuItem({  
+					label: 'Plant Communities',                
+					onClick: dojo.hitch(this, function() {  
+						if (isLayerVisible("Habitats Merged")) {
+							ToggleOnOff("Habitats Merged",false);
+							ToggleOnOff("Habitat_Labels",false);
+						} else {
+							ToggleOnOff("Habitats Merged",true);
+							ToggleOnOff("Habitat_Labels",true);
+						}
+					})
+				})
+			);
+
+		});
+		
+		
+		
+		
+		
+		
+		
+		//add class for popup
+		dojo.addClass(map.infoWindow.domNode, "myTheme");
+		initialize();
+      }
+      function setupMeasure() {
+      var pms = new esri.symbol.PictureMarkerSymbol("images/blue.png",24,24);
+		pms.setOffset(9,11);
+		var sls = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_DOT, new dojo.Color([255,0,0,.55]), 4);        
+		var measurement = new esri.dijit.Measurement({          
+			map: map,
+			lineSymbol:sls,
+			pointSymbol:pms
+			}, dojo.byId('measurementDiv'));
+		measurement.startup();        
+		measurement.setTool("area",true);
+	}
+      function unGraySearchStart() {
+		document.getElementById('addressInput').value=""
+	}
+	 dojo.ready(init);
+     </script>
+     
+<!-- Toggles Plant Info Window -->
+<script type="text/javascript">
+	 $(document).ready(function(){
+
+	$(".btn-slide").click(function(){
+	  $("#plantInfo").slideToggle("slow");
+	  $(this).toggleClass("active");
+	});
+	
+});
+</script>
+
+</head>
+
+<body class="claro">
+<!-- Header Content -->
+<div id="headerShell">
+	<div id="headerContent">
+		<a href="index.html"><div class="logo"></div>
+		</a>
+		<span class="site-description">A plant database for creating habitat in San Francisco.</span>
+        <a class="links" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
+        <a class="links" href="glossary.html">Glossary</a>
+		<a class="links" href="about.html"><span style="padding-left:15px;">About</span></a>
+	</div>
+</div>
+<!-- End Header Content -->
+
+<!-- Body Content -->
+<div id="mainContentShell">
+	<div id="mainContent">
+		
+        <!-- TOP SEARCH -->
+		<div id="mainContent-Search">
+        
+        	<!-- RIGHT COL: Map -->  
+			<div id="mapCell">
+            	<div id="FloatingTextHint" class="smalltext">Click on the map to find suitable plants for that location.</div>
+				<div id="mapContainer"   data-dojo-type="dijit.layout.BorderContainer" >
+					<div id="map_canvas"  style=" height:430px; width:560px; z-Index:10"> 
+						<div style=" font-size:12px; position:absolute; right:10px; top:10px; z-Index:99;">          
+							<button id="dropdownButton" label="Maps"  data-dojo-type="dijit.form.DropDownButton">            
+								<div data-dojo-type="dijit.Menu" id="basemapMenu">              
+									<!--The menu items are dynamically created from basemaps-->            
+								</div>          
+							</button>
+						</div> 
+						<div id="scalebar" style="position:absolute; left:5px; bottom:21px; z-Index:99;"></div>
+					</div>
+				</div>
+				<!--<div id="noMaps" style="color:white; position:absolute; left:140px; Top:100px; z-Index:-10; display:none"><p align='center'>Mapping Unavailable at this Scale<br><br>Zoom Out or Select a Different Map</p></div>-->
+				<div id="ImBusy" style="z-index:20; position: relative; left: -50; top: -600; visibility:hidden; height: 0">
+					<img src="images/busyicon.gif" />
+				</div> 
+			</div>
+			<!-- End Map -->
+	    
+			<!-- LEFT COL: Map Search Form and Plant Communities -->  
+			<div id="mainContent-Search-LeftCol">         
+            <!-- Search Input -->  
+			<div id='searchformcell'>
+				<form id="addressForm" action=""; onsubmit="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(this.address.value); return false"> 
+					<input alt="Enter a place address or plant name then click the Search button"  title = "Enter a place address or plant name then click the Search button" onClick='javascript:unGraySearchStart();' type="text"  id="addressInput" name="address" id="addressInput" value="To find plants, enter address or click on map." />&nbsp;&nbsp;
+					<span class="searchButton" ><a title="Search button" id="findButton" name='searchbox' href="javascript:void(0);" onclick="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(document.getElementById('addressInput').value);">Search</a></span>
+				</form>
+			</div>
+			<!-- End Search Input -->       
+			<!-- Plant Communities -->	
+		  <span style="font-size:18px;">Or search by <strong>plant community.</strong></span> <a href="glossary.html#plantCommunities"><img src="images/question-mark.png" alt="What are plant communities? Read more..." width="12" height="12" border="0" /></a><br />
+				<table border='0' cellspacing="0" class="links" style="text-align: center; margin-top: 25px;">
+					<tr>
+					  <td width="105" height="120" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-chaparral.png' alt='Chaparral' width="80" height='80' title ='Chaparral' onclick="clearCheckboxes(); queryPlant('chaparral');" /><span>A woody shrubland plant community that features sun-loving plants with hard, sclerophyllous evergreen leaves.</span></a><br />
+					    Chaparral </td>
+					  <td width="105" height="120" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-coastal-scrub.png' alt='Coastal Scrub' width="80" height='80' title ='Coastal Scrub' onclick="clearCheckboxes(); queryPlant('coastalScrub');" /><span>This plant community is characterized by low-growing, aromatic shrubs, such as coyote bush sticky monkey flower and California sagebrush. Coastal scrub thrives in the fog belt.</span></a><br />
+					    Coastal Scrub </td>
+					  <td width="105" height="120" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-dunes.png' alt='Dunes' width="80" height='80' title ='Dunes' onclick="clearCheckboxes(); queryPlant('dunes');" /><span>As much as a quarter to a third of San Francisco was once covered in sand dunes, and is still underlain by sandy soils. Wildflower meadows, dense dune scrub and oak woodlands are still found in the dunes.</span></a><br />
+					    Dunes </td>
+					  <td width="105" height="120" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-coastal-prairie.png' alt='Grassland Prairie' width="80" height='80' title ='Grassland Prairie' onclick="clearCheckboxes(); queryPlant('grasslandPrairie');" /><span>Formerly the most common habitat in San Francisco, remnants of grasslands support a wide array of wildlife.</span></a><br />
+					    Grassland /<br />
+					    Prairie </td>
+				  </tr>
+					<tr>
+					  <td width="105" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-riparian.png' alt='Riparian' width="80" height='80' align="baseline" title ='Riparian' onclick="clearCheckboxes(); queryPlant('riparian');" /><span>This plant community is associated with the linear course of creeks and streams and composed of various species of trees, shrubs, and herbs that thrive in a nearly wetland environment.</span></a><br />
+			        Riparian </td>
+						<td width="105" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-freshwater-wetland.png' alt='Wetland' width="80" height='80' align="top" title ='Wetland' onclick="clearCheckboxes(); queryPlant('wetland');" /><span>Wetlands are among the most important ecosystems worldwide. They produce high levels of oxygen, filter chemicals, reduce flooding and erosion, recharge groundwater, and provide critical habitat.</span></a><br />
+						  Wetland </td>
+						<td width="105" align="center"><a class="tooltip" href="javascript:void(0);"><img src='images/btn-oak-woodland.png' alt='Woodland' width="80" height='80' align="top" title ='Woodland' onclick="clearCheckboxes(); queryPlant('woodland');" /><span> Dominated by coast live oaks, these complex and diverse habitats harbor more wildlife than any other terrestrial plant community in the Bay Area.</span></a><br />
+							Woodland
+					  </td>
+						<td width="105" align="center">
+						  </td>
+				  </tr>
+				  <tr>
+                  	<td colspan=4>
+                  	
+                    </td>
+                    </tr>
+				</table>
+                <!-- End Plant Communities -->
+                
+                <!-- Other Search Options -->
+            <div style="display: inline-block; padding: 20px 0px; width: 380px;">
+            <a class="button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS</a>
+			&nbsp;&nbsp;            
+            <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SUPER60');"><i class="fa fa-leaf"></i>&nbsp; SHOW SUPER 60 <span>The "Super 60" is a list of some of the highest performing plants found on the SF Plant Finder. The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success. All plants found on the website have the ability to create and support quality habitat in San Francisco.</span></a>
+            </div>
+             <!-- End Other Search Options -->
+                
+			</div>
+			<!-- End Search Input -->      
+		</div>
+		<!-- End TOP SEARCH -->
+    
+    
+    
+		<!-- BOTTOM RESULTS / DETAILS -->
+		<div id="mainContent-SearchResults">
+                                           <a name='theTop'></a>
+			<div id="contentPointer" class="contentPointer"></div>
+            <!-- background Arrow between top and bottom content areas -->
+            
+            
+            <!-- Plant Info -->
+            <div id="plantInfo">
+            <div class="toolbar-info"  id='printInfoLink'><a class="print" href="javascript:void(0);" onclick="printInfo();">Print</a></div>
+			<div id="info">
+            <h2>Plant Info</h2>
+            <br />
+            
+           
+            
+            
+        </div>
+        <!-- End Plant Info -->
+			</div>
+            <p class="slide"><a href="javascript:void(0);" class="btn-slide">Plant Info</a></p>      
+    
+			<!-- Search Results -->
+            <div id="searchResults" ><div style="width: 720px"><span id="searchResultsSummary" ></span></div>
+            <div class="toolbar-search" id='printResultsLink' style='visibility:hidden;'><a class="print" href="javascript:void(0);" onclick="printResults();" >Print</a></div>
+           
+            
+            <!-- HOMEPAGE INTRO -->
+            <div id="Intro">
+            <img src="images/intro-graphic.png" alt="" width="300" height="300" align="right" style="margin-left:35px;" />
+			<h1>What is SF Plant Finder?</h1>
+			<p>SF Plant Finder is a resource for gardeners, designers, ecologists and others interested in greening neighborhoods, enhancing our urban ecology and surviving the drought. The Plant Finder recommends appropriate plants for sidewalks, private backyards and roofs that are adapted to San Francisco's unique environment, climate and habitats. <a href="about.html">Learn More...</a></p>
+            </div>
+            <!-- /HOMEPAGE INTRO -->
+            
+            
+            
+<!-- Filter Results Popup Window -->
+					<div id="floatingDivForFilter" style='display:none'>
+						<h1>Filter results by:</h1>
+							<h2>Plant Type</h2>
+								<input type="checkbox" id='type1' name="plantType1" value="Annual"> Annual<br>
+								<input type="checkbox" id='type2' name="plantType2" value="Grass"> Grass<br>
+								<input type="checkbox" id='type3' name="plantType3" value="Perennial"> Perennial<br> 
+								<input type="checkbox" id='type4' name="plantType4" value="Shrub (Evergreen)"> Shrub (Evergreen)<br> 
+								<input type="checkbox" id='type5' name="plantType5" value="Shrub (Deciduous)"> Shrub (Deciduous)<br> 
+								<input type="checkbox" id='type6' name="plantType6" value="Tree (Evergreen)"> Tree (Evergreen)<br> 
+								<input type="checkbox" id='type7' name="plantType7" value="Tree (Deciduous)"> Tree (Deciduous)<br>
+								<input type="checkbox" id='type8' name="plantType8" value="Vine"> Vine<br> 
+							<h2>Bloom Time</h2>
+								<input type="checkbox" id='bloom1' name="bloomTime1" value="Winter"> Winter<br>
+								<input type="checkbox" id='bloom2' name="bloomTime2" value="Spring"> Spring<br> 
+								<input type="checkbox" id='bloom3' name="bloomTime3" value="Summer"> Summer<br> 
+								<input type="checkbox" id='bloom4' name="bloomTime4" value="Fall"> Fall<br> 
+								<input type="checkbox" id='bloom5' name="bloomTime5" value="Year Round"> Year Round<br>
+							<h2>Size at Maturity</h2>
+								<input type="checkbox" id='size1' name="sizeAtMaturity1" value=""> 1 ft.<br>
+								<input type="checkbox" id='size2' name="sizeAtMaturity2" value=""> 1-3 ft.<br> 
+								<input type="checkbox" id='size3' name="sizeAtMaturity3" value=""> 4-6 ft.<br> 
+								<input type="checkbox" id='size4' name="sizeAtMaturity4" value=""> 7-12 ft.<br>
+								<input type="checkbox" id='size5' name="sizeAtMaturity5" value=""> 13-24 ft.<br>
+								<input type="checkbox" id='size6' name="sizeAtMaturity6" value=""> Above 24 ft.<br>
+							<h2>Watering Needs</h2>
+								<input type="checkbox" id='watering1' name="wateringNeeds1" value="None"> None<br>
+								<input type="checkbox" id='watering2' name="wateringNeeds2" value="Low"> Low<br> 
+								<input type="checkbox" id='watering3' name="wateringNeeds3" value="Moderate"> Moderate<br> 
+							<h2>Appropriate Location</h2>
+								<input type="checkbox" id='approp1' name="appropriateLocation1" value="Backyard"> Backyard<br>
+								<input type="checkbox" id='approp2' name="appropriateLocation2" value="Streetscape"> Sidewalk<br> 
+								<input type="checkbox" id='approp4' name="appropriateLocation4" value="Roof"> Roof<br>
+							<h2>Habitat Value</h2>
+								<input type="checkbox" id='habitat1' name="habitatValue1" value="Buds/Greens"> Buds/Greens<br> 
+								<input type="checkbox" id='habitat2' name="habitatValue2" value="Cover"> Cover<br>
+								<input type="checkbox" id='habitat3' name="habitatValue3" value="Fruit"> Fruit<br>
+								<input type="checkbox" id='habitat4' name="habitatValue4" value="Nectar"> Nectar<br>								
+								<input type="checkbox" id='habitat5' name="habitatValue5" value="Nesting"> Nesting<br>
+								<input type="checkbox" id='habitat6' name="habitatValue6" value="Multiple"> Multiple<br>
+							<h2>Native</h2>
+								<input type="checkbox" id='native1' name="native1" value="San Francisco"> San Francisco<br>
+								<input type="checkbox" id='native2' name="native2" value="California"> California<br> 
+							<h2>Soil Type</h2>
+								<input type="checkbox" id='soil1' name="soilValue1" value="Clay"> Clay<br> 
+								<input type="checkbox" id='soil2' name="soilValue2" value="Loam"> Loam<br>
+								<input type="checkbox" id='soil3' name="soilValue3" value="Sand"> Sand<br>
+								<input type="checkbox" id='soil4' name="soilValue4" value="Rock"> Rock<br>
+								
+							<h2>Site Conditions</h2>
+								<input type="checkbox" id='sitecond1' name="sitecondValue1" value="Sun"> Sun<br> 
+								<input type="checkbox" id='sitecond2' name="sitecondValue2" value="PartShade"> Part Shade<br>
+								<input type="checkbox" id='sitecond3' name="sitecondValue3" value="Shade"> Shade<br>
+								
+							<br />
+							<br />
+						<span class="searchButton"><a href="javascript:void(0);" onclick='filterResults();'>Filter</a></span> <span style="padding-left:10px;"><small><a onClick="clearFilters()" href="javascript:void(0);">Clear Filters</a></small></span></div>
+					<!-- End Filter Results Popup Window -->
+                    
+                    
+                    
+                    <!-- Search Results -->
+        <div id='plantlist'>                                                                                                                                                  
+                    
+      </div>
+                    <!-- /Search Results -->
+                    
+                    <!-- Green Connections -->  
+                <div id="greenConnectionsList">
+                 </div>
+			<!-- End Green Connections -->
+                                                                                              
+        <div id='plantinfo2'></div>
+		
+	    </div><!-- End Search Return Info and Filter -->
+
+        
+			<!--</div>-->
+		</div>
+		<!-- End Right Column -->
+    
+
+	</div>
+	<!-- End mainContent -->
+
+</div>
+<!-- End mainContentShell -->
+
+<!-- Footer Content -->
+<div id="footerShell">
+		<div id="footerContent">
+		<div class="left">&copy; 2014 City and County of San Francisco.<br />
+			This site is brought to you by the following city agencies and <br />
+		  a grant from the California Strategic Growth Council.</div>
+		<div class="right"><img src="images/dept-logos.png" width="690" height="64" border="0" usemap="#agencies" />
+          <map name="agencies" id="agencies">
+            <area shape="rect" coords="105,8,227,62" href="http://www.sfplanning.org" target="_blank" alt="San Francisco Planning Department" />
+            <area shape="rect" coords="630,2,694,61" href="http://www.sfdpw.org" target="_blank" alt="San Francisco Department of Public Works" />
+            <area shape="rect" coords="273,0,369,64" href="http://www.sfenvironment.org" target="_blank" alt="SF Environment" />
+            <area shape="rect" coords="409,8,591,60" href="http://www.sfwater.org" target="_blank" alt="SF Public Utilities Commission" />
+          </map>
+	  
+		</div>
+	</div>
+</div>
+<br>
+<!-- End Footer Content -->
+<script type="text/javascript">stLight.options({publisher: "e7c430c3-d9e1-480a-9070-717ba145d20e", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+<script>
+var options={ "publisher": "e7c430c3-d9e1-480a-9070-717ba145d20e", "ad": { "visible": false, "openDelay": "5", "closeDelay": "0"}, "livestream": { "domain": "", "type": "sharethis"}, "ticker": { "visible": false, "domain": "", "title": "", "type": "sharethis"}, "facebook": { "visible": false, "profile": "sharethis"}, "fblike": { "visible": false, "url": ""}, "twitter": { "visible": false, "user": "sharethis"}, "twfollow": { "visible": false}, "custom": [{ "visible": false, "title": "Custom 1", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}, { "visible": false, "title": "Custom 2", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}, { "visible": false, "title": "Custom 3", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}], "chicklets": { "items": ["facebook", "twitter", "pinterest", "googleplus"]}};
+var st_bar_widget = new sharethis.widgets.sharebar(options);
+</script>
+</body>
+
+</html>

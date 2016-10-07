@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PlantSF</title>
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+<style>
+		.esriPopup.myTheme .titlePane,      
+		.dj_ie7 .esriPopup.myTheme .titlePane .title {        
+			background-color: #9ba8da;        
+			color: #333333;        
+			font-weight: bold;      
+		}      
+		.esriPopup.myTheme .titlePane {        
+			border-bottom: 1px solid #121310;      
+		}      
+		.esriPopup.myTheme a {        
+			color: #d6e68a;      
+		}      
+		.esriPopup.myTheme .titleButton,      
+		.esriPopup.myTheme .pointer,      
+		.esriPopup.myTheme .outerPointer,      
+		.esriPopup.myTheme .esriViewPopup 
+		.gallery .mediaHandle,      
+		.esriPopup.myTheme 
+		.esriViewPopup .gallery .mediaIcon {          
+			background-image: url(./images/popup.png);      
+		}      
+		.esriPopup.myTheme .contentPane,      
+		.esriPopup.myTheme .actionsPane {        
+			border-color: 1px solid #121310;        
+			background-color: #424242;        
+			color:#ffffff;     
+		}
+		.esriScalebarRulerBlock {
+			background-color: grey;
+		}
+		
+	</style>
+
+<script>var dojoConfig = {parseOnLoad: true};</script>
+	<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+	<script type="text/javascript" src="js/PlantSF2.js"></script>
+	<script type="text/javascript" src="js/proj4js/lib/proj4js-combined.js"></script>
+	 <script>
+	 
+      dojo.require("dijit.layout.BorderContainer");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.require("esri.map");
+      dojo.require("esri.tasks.find");
+      dojo.require("esri.tasks.identify");
+      dojo.require("esri.tasks.query");
+      dojo.require("esri.layers.FeatureLayer");
+      dojo.require("esri.geometry");
+      dojo.require("esri.graphic");
+      dojo.require("dijit.form.Button");
+      dojo.require("dijit.Menu");
+      dojo.require("esri.dijit.BasemapGallery");
+      dojo.require("esri.dijit.Geocoder");
+      dojo.require("esri.dijit.Scalebar");
+      dojo.require("esri.dijit.Popup");
+      //dojo.require("esri.dijit.Measurement");
+
+      var map, locator;
+      var saltMarsh=false;
+      var freshwaterWetland=false
+      var coastalScrub=false;
+      var riparian=false;
+      var oakWoodland=false;
+      var dunes=false;
+
+      function init() {
+		var popup = new esri.dijit.Popup({          fillSymbol: new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255,0,0]), 2), new dojo.Color([255,255,0,0.25]))        }, dojo.create("div"));
+		map = new esri.Map("map_canvas", 
+			    {
+				basemap: "topo",
+				center: [-122.4425, 37.754],
+				zoom: 11,
+				infoWindow: popup
+			    }
+			);
+		basemapGallery = new esri.dijit.BasemapGallery({          
+			showArcGISBasemaps: true,          
+			map: map
+		});
+
+		
+		dojo.connect(basemapGallery, "onLoad", function(){          
+			dojo.forEach(basemapGallery.basemaps, function(basemap) {
+				//prompt("", basemap.title)// + ": " + basemap.getMinZoom())
+				if ((basemap.title!="Terrain with Labels") && (basemap.title!="Oceans")) {
+					//Add a scalebar
+					var scalebar = new esri.dijit.Scalebar({            
+						map: map,      
+						scalebarUnit: "english"
+						}, dojo.byId("scalebar"));
+					//Add a menu item for each basemap, when the menu items are selected            
+					dijit.byId("basemapMenu").addChild(              
+						new dijit.MenuItem({                
+							label: basemap.title,                
+							onClick: dojo.hitch(this, function() {                  
+								this.basemapGallery.select(basemap.id);   
+								document.getElementById('noMaps').style.display = "none" 
+								if (basemap.id=='basemap_5'|| basemap.id=='basemap_6'||basemap.id=='basemap_7'||basemap.id=='basemap_8') {
+									//hide the maps unavailable message
+									document.getElementById('noMaps').style.display = "none" 
+								} else {
+									//display the maps unavailable message (will be placed behind the map image, will only be visible if there are no maps avalaible at that zoom level))
+									document.getElementById('noMaps').style.display = "inline" 
+								}
+								
+							})              
+						})            
+					); 
+				};
+			}); 
+			dijit.byId("basemapMenu").addChild(              
+				new dijit.MenuItem({  
+					label: 'Green Connections',                
+					onClick: dojo.hitch(this, function() {  
+						if (isLayerVisible("Green Connections")) {
+							ToggleOnOff("Green Connections",false);
+						} else {
+							ToggleOnOff("Green Connections",true);
+						}
+					})
+				})
+			);
+			dijit.byId("basemapMenu").addChild(              
+				new dijit.MenuItem({  
+					label: 'Habitats',                
+					onClick: dojo.hitch(this, function() {  
+						if (isLayerVisible("Habitats Merged")) {
+							ToggleOnOff("Habitats Merged",false);
+						} else {
+							ToggleOnOff("Habitats Merged",true);
+						}
+					})
+				})
+			);
+
+		});
+		
+		
+		
+		
+		
+		
+		
+		//add class for popup
+		dojo.addClass(map.infoWindow.domNode, "myTheme");
+		initialize();
+      }
+      function setupMeasure() {
+      var pms = new esri.symbol.PictureMarkerSymbol("images/blue.png",24,24);
+		pms.setOffset(9,11);
+		var sls = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_DOT, new dojo.Color([255,0,0,.55]), 4);        
+		var measurement = new esri.dijit.Measurement({          
+			map: map,
+			lineSymbol:sls,
+			pointSymbol:pms
+			}, dojo.byId('measurementDiv'));
+		measurement.startup();        
+		measurement.setTool("area",true);
+	}
+      function unGraySearchStart() {
+		document.getElementById('addressInput').value=""
+	}
+	 dojo.ready(init);
+	</script>
+</head>
+
+<body>
+<table width="1024" height="743" border="1">
+	<tr>
+		<td height="81" colspan="2">
+			<table width="100%" border="1">
+				<tr>
+					<td width="8">&nbsp;</td>
+					<td width="82">Logo Here</td>
+					<td height="71">A complete database of plants for San Francisco</td>
+					<td width="96">About </td>
+					<td width="84">Submit Feedback</td>
+			      </tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="400" height="654">
+			<table height="607" border="1" align="center" cellspacing=20>
+				<tr>
+					<td height="45" id='searchformcell'>
+						<form id="addressForm" style="display: inline; margin: 0; vertical-align:bottom; padding: 0px;" action=""; onsubmit="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(this.address.value); return false"> 
+							<input alt="Enter an address, parcel, intersection, Planning Department case number or place name then click the Search button."  title = "Enter an address, parcel, intersection, Planning Department case number or place name then click the Search button." onClick='javascript:unGraySearchStart();' style= "display: inline; margin: 0; border-style:inset; border-color: #ffffff; vertical-align: middle; font-size: 15px; height: 30px; width: 225px" type="text"  id="addressInput" name="address" id="addressInput" value="400 Van Ness Ave" />&nbsp; &nbsp;
+							<a name='searchbox'></a><input title = "Search button" alt="Search button" style= "display: inline; margin: 0; vertical-align: middle;" id="findButton" type="image" src = "images/searchtrans.png" onMouseDown="this.src='images/search2trans.png'" onMouseUp="this.src='images/searchtrans.png'" onMouseOut="this.src='images/searchtrans.png'"/>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td   id="mapCell" >
+						<div id="mapContainer"   data-dojo-type="dijit.layout.BorderContainer" >
+							<div id="map_canvas"  style=" height:360px; width:360px; z-Index:10"> 
+								<!--<div onClick="maximizeMap()" id="maximizeMap" style="position:absolute; right:2px; top:2px; z-Index:99;">
+									<img src='images/UpArrow.png' title ='Enlarge the Map' alt='Enlarge the Map'>										    
+								</div>--> 
+								<div style="position:absolute; right:17px; top:0px; z-Index:99;">          
+									<button id="dropdownButton" label="Maps"  data-dojo-type="dijit.form.DropDownButton">            
+										<div data-dojo-type="dijit.Menu" id="basemapMenu">              
+											<!--The menu items are dynamically created from basemaps-->            
+										</div>          
+									</button>
+								</div> 
+								<div id="scalebar" style="position:absolute; left:5px; bottom:21px; z-Index:99;"/>
+									
+							</div>
+						</div>
+						<div id="noMaps" style="color:white; position:absolute; left:140px; Top:100px; z-Index:-10; display:none"><p align='center'>Mapping Unavailable at this Scale<br><br>Zoom Out or Select a Different Map</p>
+						</div>
+																
+						<div id="ImBusy" style="z-index:20; position: relative; left: -50; top: -600; visibility:hidden; height: 0">
+							<img src="images/busyicon.gif" />
+						</div> 
+				
+					</td>
+				</tr>
+				<tr>
+					<td  height="214" ><p>Or search by plant communities.</p>
+						<table align="center" border='0'>
+							<tr>
+								<td width='120px' align='center'>
+									<img height='80px' src='images/Salt Marsh.png' title ='Salt Marsh' alt='Salt Marsh'  onClick="queryPlant('saltMarsh');"><br> Salt Marsh	
+								</td>
+								<td align='center'>
+									<img height='80px' src='images/Freshwater Wetland.png' title ='Freshwater Wetland' alt='Freshwater Wetland' onClick="queryPlant('freshwaterWetland');"><br>Freshwater Wetland
+								</td>
+								<td align='center'> 
+									<img height='80px' src='images/Coastal Scrub.png' title ='Coastal Scrub' alt='Coastal Scrub' onClick="queryPlant('coastalScrub');"><br>Coastal Scrub
+								</td>
+							</tr>
+							<tr>
+								<td align='center'>
+									<img height='80px' src='images/Riparian.png' title ='Riparian' alt='Riparian' onClick="queryPlant('riparian');"><br>Riparian
+								</td>
+								<td align='center'>
+									<img height='80px' src='images/Oak Woodland.png' title ='Oak Woodland' alt='Oak Woodland' onClick="queryPlant('oakWoodland');"><br>Oak Woodland
+								</td>
+								<td align='center'>
+									<img height='80px' src='images/Dunes.png' title ='Dunes' alt='Dunes' onClick="queryPlant('dunes');"><br>Dunes
+								</td>
+							</tr>
+						</table>
+					
+					
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td valign='top'>
+			<table width="660" border="1" >
+				<tr>
+					<td >
+						<div  id='floatingDivForDetail' style="width: 660px; height: 772px; position: absolute; visibility: hidden; background:#C0C0C0;overflow:auto;"></div>
+						<div id='floatingDivForFilter' style="position: absolute; visibility: hidden; ">
+							<div style=" position: relative; top: 0px; left: 485px;background:#C0C0C0;">
+								<table border=1>
+									<tr>
+										<td>Plant Type:</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" id='type1' name="plantType" value="Annuals">Annuals<br>
+											<input type="checkbox" id='type2' name="plantType" value="Grasses">Grasses<br> 
+											<input type="checkbox" id='type3' name="plantType" value="Groundcovers">Groundcovers<br> 
+											<input type="checkbox" id='type4' name="plantType" value="Perennials">Perennials<br> 
+											<input type="checkbox" id='type5' name="plantType" value="Shrubs">Shrubs<br> 
+											<input type="checkbox" id='type6' name="plantType" value="Trees  (Evergreen)">Trees (Evergreen)<br> 
+											<input type="checkbox" id='type7' name="plantType" value="Trees (Deciduous)">Trees (Deciduous)<br> 
+										</td>
+									</tr>
+									<tr>
+										<td>Bloom Time:</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" id='bloom1' name="bloomTime" value="Winter">Winter<br>
+											<input type="checkbox" id='bloom2' name="bloomTime" value="Spring">Spring<br> 
+											<input type="checkbox" id='bloom3' name="bloomTime" value="Summer">Summer<br> 
+											<input type="checkbox" id='bloom4' name="bloomTime" value="Fall">Fall<br> 
+											<input type="checkbox" id='bloom5' name="bloomTime" value="Year Round">Year Round<br> 
+										</td>
+									</tr>
+									<tr>
+										<td>Appropiate Location:</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" id='approp1' name="appropriateLocation" value="Backyards / Private">Backyards / Private<br>
+											<input type="checkbox" id='approp2' name="appropriateLocation" value="Streetscape / Public">Streetscape / Public<br> 
+											<input type="checkbox" id='approp3' name="appropriateLocation" value="Anywhere">Anywhere<br> 
+										</td>
+									</tr>
+									<tr>
+										<td>Watering Needs:</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" id='watering1' name="wateringNeeds" value="Regular">Regular<br>
+											<input type="checkbox" id='watering2' name="wateringNeeds" value="Moderate">Moderate<br> 
+											<input type="checkbox" id='watering3' name="wateringNeeds" value="Low">Low<br> 
+											<input type="checkbox" id='watering4' name="wateringNeeds" value="No Additional Water">No Additional Water<br> 
+										</td>
+									</tr>
+									<tr>
+										<td>Pruning Needs:</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" id='pruning1' name="pruningNeeds" value="Structural Pruning">Structural Pruning<br>
+											<input type="checkbox" id='pruning2' name="pruningNeeds" value="Cut to Ground">Cut to Ground<br> 
+											<input type="checkbox" id='pruning3' name="pruningNeeds" value="Minimal Pruning">Minimal Pruning<br> 
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div id='filter'> </div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<a name='searchbox' ></a><input title = "Search button" onclick='filterResults();' alt="Search button" style= "display: inline; margin: 0; vertical-align: middle;" id="findButton" type="image" src = "images/searchtrans.png" onMouseDown="this.src='images/search2trans.png'" onMouseUp="this.src='images/searchtrans.png'" onMouseOut="this.src='images/searchtrans.png'"/>
+										</td>
+									</tr>
+								</table>
+
+							</div>
+						</div>
+						<div id='info' style="height:615px;overflow: auto;"></div>
+					</td>
+				</tr>
+				<tr>
+					<td align='top' height="150" ><div id='greenConnectionsList' >&nbsp;</div></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<div id='detail'> </div>
+</body>
+</html>
