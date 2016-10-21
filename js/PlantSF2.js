@@ -2807,7 +2807,7 @@ function filterResults() {
 		}
 		
 		//Appropriate Location
-		if (document.getElementById('approp1').checked || document.getElementById('approp2').checked || document.getElementById('approp4').checked) {
+		if (document.getElementById('approp1').checked || document.getElementById('approp2').checked || document.getElementById('approp4').checked || document.getElementById('approp5').checked) {
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
@@ -2840,6 +2840,14 @@ function filterResults() {
 				//theSQLtmp+=' "Appropriate_Location" = ' + "'Streetscape / Public'" 
 				theApproptmp+=' ("Appropriate_Location" like ' + "'%Roof%' ) "
 				theEnglishFilter +="Roof, "
+			}
+			if (document.getElementById('approp5').checked) {
+				if (theApproptmp!="") {
+					theApproptmp+=" or "
+				}
+				//theSQLtmp+=' "Appropriate_Location" = ' + "'Streetscape / Public'" 
+				theApproptmp+=' ("Stormwater_Benefit" like ' + "'%Yes%' ) "
+				theEnglishFilter +="Stormwater, "
 			}
 			if (theSQLtmp=="") {
 				theSQLtmp=theApproptmp
