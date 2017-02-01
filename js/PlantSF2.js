@@ -816,6 +816,16 @@ function identify(overlay, latLng) {
 		queryPlant("THRIFTY150");
 		return;
 	}
+
+	if (address.toUpperCase()=="TOP20") {
+		theSearchString="TOP 20"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="TOP 20"
+		queryPlant("TOP20");
+		return;
+	}
 	
 	//alert("here")
 	if ( (address.substr(4,1)!=".") && (parseInt(address.length) > 6) && (parseInt(address.length) < 10) && (IsNumeric(address.substr(0,4) ) )  && (IsNumeric(address.substr(5,2) ) ) )  {
@@ -1546,7 +1556,7 @@ function updatePlantListHtml() {
 		query = new Query();
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Plant_Communities","Bloom_Time","Attractive_Features","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristics"];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int","Top20_int"];
 		//alert("here")
 		
 		
@@ -1726,6 +1736,15 @@ function queryPlant(theQueryType) {
 					theSQL = "1=1"
 					theSearchString2= "THRIFTY 150"
 					theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+
+				case 'TOP20':
+					theSQL2=" (Top20_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "TOP 20"
+					theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
 					clearMap();
 					
 					break;
@@ -1915,6 +1934,12 @@ function queryPlant(theQueryType) {
 			}
 
 			if (theSQL2!=" (Thrifty150_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+				
+				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				
+			}
+
+			if (theSQL2!=" (Top20_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
 				
 				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
 				
@@ -3167,7 +3192,7 @@ function loadOnePlant() {
 		
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","AtoC","GCRoute1","GCRoute2","GCRoute3","GCRoute4","GCRoute5","GCRoute6","GCRoute7","GCRoute8","GCRoute9","GCRoute10","GCRoute11","GCRoute12","GCRoute13","GCRoute14","GCRoute15","GCRoute16","GCRoute17","GCRoute18","GCRoute19","GCRoute20","GCRoute21","GCRoute22","GCRoute23","GCRoute24","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04" ];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int","Top20_int"];
 		theSQL3 = "Upper(Latin_Name) ='" + plantToLoad + "'" ;	
 		//alert(plantToLoad)
 		if (plantToLoad=="ALL") {
