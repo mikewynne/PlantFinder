@@ -284,10 +284,11 @@ dojo.require("dijit.layout.BorderContainer");
                 <!-- End Plant Communities -->
                 
                 <!-- Other Search Options -->
-            <div style="display: inline-block; padding: 20px 0px; width: 380px;">
-            <a class="button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS</a>
-			&nbsp;&nbsp;            
-            <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SUPER60');"><i class="fa fa-leaf"></i>&nbsp; SHOW SUPER 60 <span>The "Super 60" is a list of some of the highest performing plants found on the SF Plant Finder. The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success. All plants found on the website have the ability to create and support quality habitat in San Francisco.</span></a>
+            <div class="buttons-list">
+            <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants is the entire database of 714 plants. We do want to give folks the opportunity to start from here.</span></a>           
+            <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150 <span>The Thrifty 150 plants are durable, low maintenance, water wise plants that are recommended by San Francisco Public Works to do well in the challenging urban environment of the city.</span></a>
+            <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SUPER60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60 <span>The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success.</span></a>
+            <!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('TOP20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20 <span>Like the Super 60, the Top 20 plants make great choices for creating habitat for bees, birds and butterflies in the urban environment. Try starting with these plants if you want to create a colorful and sustainable native habitat garden.</span></a> -->
             </div>
              <!-- End Other Search Options -->
                 
@@ -339,58 +340,58 @@ dojo.require("dijit.layout.BorderContainer");
 					<div id="floatingDivForFilter" style='display:none'>
 						<h1>Filter results by:</h1>
 							<h2>Plant Type</h2>
-								<input type="checkbox" id='type1' name="plantType1" value="Annual"> Annual<br>
-								<input type="checkbox" id='type2' name="plantType2" value="Grass"> Grass<br>
-								<input type="checkbox" id='type3' name="plantType3" value="Perennial"> Perennial<br> 
-								<input type="checkbox" id='type4' name="plantType4" value="Shrub (Evergreen)"> Shrub (Evergreen)<br> 
-								<input type="checkbox" id='type5' name="plantType5" value="Shrub (Deciduous)"> Shrub (Deciduous)<br> 
-								<input type="checkbox" id='type6' name="plantType6" value="Tree (Evergreen)"> Tree (Evergreen)<br> 
-								<input type="checkbox" id='type7' name="plantType7" value="Tree (Deciduous)"> Tree (Deciduous)<br>
-								<input type="checkbox" id='type8' name="plantType8" value="Vine"> Vine<br> 
-								<input type="checkbox" id='type9' name="plantType9" value="Fern"> Fern<br>
-								<input type="checkbox" id='type10' name="plantType10" value="Succulent"> Succulent<br>
+								<label><input type="checkbox" id='type1' name="plantType1" value="Annual"> Annual<br></label>
+								<label><input type="checkbox" id='type2' name="plantType2" value="Grass"> Grass<br></label>
+								<label><input type="checkbox" id='type3' name="plantType3" value="Perennial"> Perennial<br></label> 
+								<label><input type="checkbox" id='type4' name="plantType4" value="Shrub (Evergreen)"> Shrub (Evergreen)<br></label> 
+								<label><input type="checkbox" id='type5' name="plantType5" value="Shrub (Deciduous)"> Shrub (Deciduous)<br></label> 
+								<label><input type="checkbox" id='type6' name="plantType6" value="Tree (Evergreen)"> Tree (Evergreen)<br></label> 
+								<label><input type="checkbox" id='type7' name="plantType7" value="Tree (Deciduous)"> Tree (Deciduous)<br></label>
+								<label><input type="checkbox" id='type8' name="plantType8" value="Vine"> Vine<br></label> 
+								<label><input type="checkbox" id='type9' name="plantType9" value="Fern"> Fern<br></label>
+								<label><input type="checkbox" id='type10' name="plantType10" value="Succulent"> Succulent<br></label>
 							<h2>Bloom Time</h2>
-								<input type="checkbox" id='bloom1' name="bloomTime1" value="Winter"> Winter<br>
-								<input type="checkbox" id='bloom2' name="bloomTime2" value="Spring"> Spring<br> 
-								<input type="checkbox" id='bloom3' name="bloomTime3" value="Summer"> Summer<br> 
-								<input type="checkbox" id='bloom4' name="bloomTime4" value="Fall"> Fall<br> 
-								<input type="checkbox" id='bloom5' name="bloomTime5" value="Year Round"> Year Round<br>
+								<label><input type="checkbox" id='bloom1' name="bloomTime1" value="Winter"> Winter<br></label>
+								<label><input type="checkbox" id='bloom2' name="bloomTime2" value="Spring"> Spring<br></label> 
+								<label><input type="checkbox" id='bloom3' name="bloomTime3" value="Summer"> Summer<br></label> 
+								<label><input type="checkbox" id='bloom4' name="bloomTime4" value="Fall"> Fall<br></label> 
+								<label><input type="checkbox" id='bloom5' name="bloomTime5" value="Year Round"> Year Round<br></label>
 							<h2>Size at Maturity</h2>
-								<input type="checkbox" id='size1' name="sizeAtMaturity1" value=""> 1 ft.<br>
-								<input type="checkbox" id='size2' name="sizeAtMaturity2" value=""> 1-3 ft.<br> 
-								<input type="checkbox" id='size3' name="sizeAtMaturity3" value=""> 4-6 ft.<br> 
-								<input type="checkbox" id='size4' name="sizeAtMaturity4" value=""> 7-12 ft.<br>
-								<input type="checkbox" id='size5' name="sizeAtMaturity5" value=""> 13-24 ft.<br>
-								<input type="checkbox" id='size6' name="sizeAtMaturity6" value=""> Above 24 ft.<br>
+								<label><input type="checkbox" id='size1' name="sizeAtMaturity1" value=""> < 1 ft.<br></label>
+								<label><input type="checkbox" id='size2' name="sizeAtMaturity2" value=""> 1-3 ft.<br></label> 
+								<label><input type="checkbox" id='size3' name="sizeAtMaturity3" value=""> 4-6 ft.<br></label> 
+								<label><input type="checkbox" id='size4' name="sizeAtMaturity4" value=""> 7-12 ft.<br></label>
+								<label><input type="checkbox" id='size5' name="sizeAtMaturity5" value=""> 13-24 ft.<br></label>
+								<label><input type="checkbox" id='size6' name="sizeAtMaturity6" value=""> > 24 ft.<br></label>
 							<h2>Watering Needs</h2>
-								<input type="checkbox" id='watering1' name="wateringNeeds1" value="None"> None<br>
-								<input type="checkbox" id='watering2' name="wateringNeeds2" value="Low"> Low<br> 
-								<input type="checkbox" id='watering3' name="wateringNeeds3" value="Moderate"> Moderate<br> 
+								<label><input type="checkbox" id='watering1' name="wateringNeeds1" value="None"> None<br></label>
+								<label><input type="checkbox" id='watering2' name="wateringNeeds2" value="Low"> Low<br></label> 
+								<label><input type="checkbox" id='watering3' name="wateringNeeds3" value="Moderate"> Moderate<br></label> 
 							<h2>Appropriate Location</h2>
-								<input type="checkbox" id='approp1' name="appropriateLocation1" value="Garden"> Garden<br>
-								<input type="checkbox" id='approp2' name="appropriateLocation2" value="Streetscape"> Sidewalk<br> 
-								<input type="checkbox" id='approp4' name="appropriateLocation4" value="Roof"> Roof<br>
-								<input type="checkbox" id='approp5' name="appropriateLocation5" value="Stormwater"> Stormwater<br>
-								<input type="checkbox" id='approp6' name="appropriateLocation6" value="Potted Plants"> Potted Plants<br>
+								<label><input type="checkbox" id='approp1' name="appropriateLocation1" value="Garden"> Garden<br></label>
+								<label><input type="checkbox" id='approp2' name="appropriateLocation2" value="Streetscape"> Sidewalk<br></label> 
+								<label><input type="checkbox" id='approp4' name="appropriateLocation4" value="Roof"> Roof<br></label>
+								<label><input type="checkbox" id='approp5' name="appropriateLocation5" value="Stormwater"> Stormwater<br></label>
+								<label><input type="checkbox" id='approp6' name="appropriateLocation6" value="Potted Plants"> Potted Plants<br></label>
 							<h2>Habitat Value</h2>
-								<input type="checkbox" id='habitat1' name="habitatValue1" value="Buds/Greens"> Buds/Greens<br> 
-								<input type="checkbox" id='habitat2' name="habitatValue2" value="Cover"> Cover<br>
-								<input type="checkbox" id='habitat3' name="habitatValue3" value="Fruit"> Fruit<br>
-								<input type="checkbox" id='habitat4' name="habitatValue4" value="Pollinator"> Pollinator<br>
-								<input type="checkbox" id='habitat5' name="habitatValue5" value="Nesting"> Nesting<br>
-								<input type="checkbox" id='habitat6' name="habitatValue6" value="Multiple"> Multiple<br>
+								<label><input type="checkbox" id='habitat1' name="habitatValue1" value="Buds/Greens"> Buds/Greens<br></label> 
+								<label><input type="checkbox" id='habitat2' name="habitatValue2" value="Cover"> Cover<br></label>
+								<label><input type="checkbox" id='habitat3' name="habitatValue3" value="Fruit"> Fruit<br></label>
+								<label><input type="checkbox" id='habitat4' name="habitatValue4" value="Pollinator"> Pollinator<br></label>
+								<label><input type="checkbox" id='habitat5' name="habitatValue5" value="Nesting"> Nesting<br></label>
+								<label><input type="checkbox" id='habitat6' name="habitatValue6" value="Multiple"> Multiple<br></label>
 							<h2>Native</h2>
-								<input type="checkbox" id='native1' name="native1" value="San Francisco"> San Francisco<br>
-								<input type="checkbox" id='native2' name="native2" value="California"> California<br> 
+								<label><input type="checkbox" id='native1' name="native1" value="San Francisco"> San Francisco<br></label>
+								<label><input type="checkbox" id='native2' name="native2" value="California"> California<br></label> 
 							<h2>Soil Type</h2>
-								<input type="checkbox" id='soil1' name="soilValue1" value="Clay"> Clay<br> 
-								<input type="checkbox" id='soil2' name="soilValue2" value="Loam"> Loam<br>
-								<input type="checkbox" id='soil3' name="soilValue3" value="Sand"> Sand<br>
-								<input type="checkbox" id='soil4' name="soilValue4" value="Rock"> Rock<br>
+								<label><input type="checkbox" id='soil1' name="soilValue1" value="Clay"> Clay<br></label> 
+								<label><input type="checkbox" id='soil2' name="soilValue2" value="Loam"> Loam<br></label>
+								<label><input type="checkbox" id='soil3' name="soilValue3" value="Sand"> Sand<br></label>
+								<label><input type="checkbox" id='soil4' name="soilValue4" value="Rock"> Rock<br></label>
 							<h2>Site Conditions</h2>
-								<input type="checkbox" id='sitecond1' name="sitecondValue1" value="Sun"> Sun<br> 
-								<input type="checkbox" id='sitecond2' name="sitecondValue2" value="PartShade"> Part Shade<br>
-								<input type="checkbox" id='sitecond3' name="sitecondValue3" value="Shade"> Shade<br>
+								<label><input type="checkbox" id='sitecond1' name="sitecondValue1" value="Sun"> Sun<br></label> 
+								<label><input type="checkbox" id='sitecond2' name="sitecondValue2" value="PartShade"> Part Shade<br></label>
+								<label><input type="checkbox" id='sitecond3' name="sitecondValue3" value="Shade"> Shade<br></label>
 								
 							<br />
 							<br />

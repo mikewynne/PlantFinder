@@ -806,6 +806,16 @@ function identify(overlay, latLng) {
 		queryPlant("SUPER60");
 		return;
 	}
+
+	if (address.toUpperCase()=="THRIFTY150") {
+		theSearchString="THRIFTY 150"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="THRIFTY 150"
+		queryPlant("THRIFTY150");
+		return;
+	}
 	
 	//alert("here")
 	if ( (address.substr(4,1)!=".") && (parseInt(address.length) > 6) && (parseInt(address.length) < 10) && (IsNumeric(address.substr(0,4) ) )  && (IsNumeric(address.substr(5,2) ) ) )  {
@@ -1536,7 +1546,7 @@ function updatePlantListHtml() {
 		query = new Query();
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Plant_Communities","Bloom_Time","Attractive_Features","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristics"];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int"];
 		//alert("here")
 		
 		
@@ -1571,7 +1581,7 @@ function updatePlantListHtml() {
 			//theLastSummarytmp=""
 			//alert(theLastSummary)
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + "."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
@@ -1702,11 +1712,20 @@ function queryPlant(theQueryType) {
 			switch(theQueryType)
 			{
 				case 'SUPER60':
-					//theSQL2=" (Nurseries is not null) "
-					theSQL2=" (Super60 = 'Y') "
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Super60_int = 1) "
 					theSQL = "1=1"
 					theSearchString2= "SUPER 60"
 					theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+
+				case 'THRIFTY150':
+					theSQL2=" (Thrifty150_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "THRIFTY 150"
+					theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
 					clearMap();
 					
 					break;
@@ -1888,7 +1907,14 @@ function queryPlant(theQueryType) {
 			}
 			
 			//if (theSQL2!=" (Nurseries is not null) " && theSQL2!="" && theQueryType!="plantname") {
-			if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
+			// if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
+			if (theSQL2!=" (Super60_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+				
+				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				
+			}
+
+			if (theSQL2!=" (Thrifty150_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
 				
 				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
 				
@@ -1961,7 +1987,7 @@ function queryPlant(theQueryType) {
 				theSearchString = " plants found (entire database)"
 			}
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> results with the following filters: " + theEnglishFilter + ". <br> Take this list to your local nursery or your landscaper."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> results with the following filters: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
@@ -2584,16 +2610,7 @@ function filterResults() {
 	
 	if (theSQL!="") {
 		//Plant Types
-		if (document.getElementById('type1').checked || 
-			document.getElementById('type2').checked || 
-			document.getElementById('type3').checked || 
-			document.getElementById('type4').checked || 
-			document.getElementById('type5').checked || 
-			document.getElementById('type6').checked || 
-			document.getElementById('type7').checked || 
-			document.getElementById('type8').checked || 
-			document.getElementById('type9').checked || 
-			document.getElementById('type10').checked) {
+		if (document.getElementById('type1').checked || document.getElementById('type2').checked || document.getElementById('type3').checked || document.getElementById('type4').checked || document.getElementById('type5').checked || document.getElementById('type6').checked || document.getElementById('type7').checked || document.getElementById('type8').checked || document.getElementById('type9').checked || document.getElementById('type10').checked) {
 			
 			theEnglishFilter= "Plant Type - "
 
@@ -3150,8 +3167,8 @@ function loadOnePlant() {
 		
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","AtoC","GCRoute1","GCRoute2","GCRoute3","GCRoute4","GCRoute5","GCRoute6","GCRoute7","GCRoute8","GCRoute9","GCRoute10","GCRoute11","GCRoute12","GCRoute13","GCRoute14","GCRoute15","GCRoute16","GCRoute17","GCRoute18","GCRoute19","GCRoute20","GCRoute21","GCRoute22","GCRoute23","GCRoute24","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04" ];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60"];
-		theSQL3 = "Upper(Latin_Name) ='" + plantToLoad + "'" ;
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int"];
+		theSQL3 = "Upper(Latin_Name) ='" + plantToLoad + "'" ;	
 		//alert(plantToLoad)
 		if (plantToLoad=="ALL") {
 			theSQL3="1=1"
@@ -3170,7 +3187,7 @@ function loadOnePlant() {
 			theSearchString = " plants found for " + plantToLoad 
 			
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + "."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
