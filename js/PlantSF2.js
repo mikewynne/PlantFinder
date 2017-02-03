@@ -2878,7 +2878,6 @@ function filterResults() {
 		
 		//Appropriate Location
 		if (document.getElementById('approp1').checked || document.getElementById('approp2').checked || document.getElementById('approp4').checked || document.getElementById('approp5').checked || document.getElementById('approp6').checked) {
-			// alert("approp location")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
