@@ -80,8 +80,11 @@ var myheight = null;
 var init = true;
 var theYearBuilt = "";
 var theMapSize = "small";
-var theServerName = window.location.host;
-var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv3/MapServer";
+// var theServerName = window.location.host;
+var theServerName = "cp-gis-svr3";
+var theArcGISServerName = "http://" + theServerName + ":6080/arcgis/rest/services/PlantSFv3/MapServer";
+// var theArcGISServerName = "http://cp-gis-svr3:6080/arcgis/rest/services/PlantSFv3/MapServer"
+// var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv3/MapServer";
 var thefindResults = null;
 var theNum;
 var theAddressLot = "";
@@ -178,7 +181,8 @@ function initialize() {
 	//esri.config.defaults.io.proxyUrl = "../proxy/proxy.ashx";	
 	
 	esri.config.defaults.io.alwaysUseProxy = false;
-	gsvc = new esri.tasks.GeometryService("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+	// gsvc = new esri.tasks.GeometryService("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+	gsvc = new esri.tasks.GeometryService("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
 	
 	//Set up the buffer parameters for later use
 	buffParams = new esri.tasks.BufferParameters();
@@ -740,7 +744,7 @@ function identify(overlay, latLng) {
 	var re3 = /, California/gi;
 	var re4 = /, CA/gi;
 	
-        address = address.replace(re1, '')
+    address = address.replace(re1, '')
 	address = address.replace(re2, '')
 	address = address.replace(re3, '')
 	address = address.replace(re4, '')
@@ -800,6 +804,26 @@ function identify(overlay, latLng) {
 		theBaseSQL="(1=1)"
 		theQueryType="SUPER 60"
 		queryPlant("SUPER60");
+		return;
+	}
+
+	if (address.toUpperCase()=="THRIFTY150") {
+		theSearchString="THRIFTY 150"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="THRIFTY 150"
+		queryPlant("THRIFTY150");
+		return;
+	}
+
+	if (address.toUpperCase()=="TOP20") {
+		theSearchString="TOP 20"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="TOP 20"
+		queryPlant("TOP20");
 		return;
 	}
 	
@@ -1190,12 +1214,6 @@ function IsNumeric(sText)
 	  return rv;
 }
 
-
-
-
-     
-	
-
 	function addToMap(theLayer) {
 		for (var i=0; i< theLayer.options.length; i++) {
 			if (theLayer.options[i].selected) {
@@ -1267,7 +1285,8 @@ function IsNumeric(sText)
 	
       
 	function calculateAreasAndLengths() {
-		var geometryService = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+		// var geometryService = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+		var geometryService = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
 		
 		geometryService.getAreasAndLengths([ [ polygon ] ], displayAreasAndLengths);
 		amIMeasuring=false;
@@ -1291,7 +1310,8 @@ function IsNumeric(sText)
 	}
 
 	function calculateLengths() {
-		var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+		// var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+		var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
 		geometryServiceLength.getLengths([ [ polyline ] ], displayLengths);
 		amIMeasuring=false;
 	}
@@ -1528,14 +1548,15 @@ function updatePlantListHtml() {
 	//alert(theArcGISServerName)
 	require(["esri/tasks/query", "esri/tasks/QueryTask","dojo/dom", "dojo/on", "dojo/domReady!"], function(Query, QueryTask,dom, on){
 	
-		var theTable=theArcGISServerName + "/12"
+		// var theTable=theArcGISServerName + "/12"
+		var theTable=theArcGISServerName + "/13"
 		//prompt("",theTable)
 		queryTask = new QueryTask(theTable) //new QueryTask("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/5");
 
 		query = new Query();
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Plant_Communities","Bloom_Time","Attractive_Features","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristics"];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","Street_Tree_List","Suggested_for_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int","Top20_int"];
 		//alert("here")
 		
 		
@@ -1570,7 +1591,7 @@ function updatePlantListHtml() {
 			//theLastSummarytmp=""
 			//alert(theLastSummary)
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + "."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
@@ -1656,20 +1677,23 @@ function updatePlantListHtml() {
 	});
 	
 }
+
 function searchAll() {
 	//alert("searching all")
 	theSQL="";
 	//plantListArray = []
 	queryPlant("");
 }
+
 function queryPlant(theQueryType) {
 	//theEnglishFilter=""
-//alert(theQueryType)
+	//alert(theQueryType)
 	//$("#plantInfo").slideUp("slow");
 	plantListArray = []
 	$("#plantInfo").slideUp(1000);
-	require(["esri/tasks/query", "esri/tasks/QueryTask","dojo/dom", "dojo/on", "dojo/domReady!"], function(Query, QueryTask,dom, on){
-		var theTable=theArcGISServerName + "/12"
+	require(["esri/tasks/query", "esri/tasks/QueryTask","dojo/dom", "dojo/on", "dojo/domReady!"], function(Query, QueryTask,dom, on) {
+		// var theTable=theArcGISServerName + "/12"
+		var theTable = theArcGISServerName + "/13"
 		queryTask = new QueryTask(theTable)
 		query = new Query();
 		var theSQL2=""
@@ -1678,7 +1702,7 @@ function queryPlant(theQueryType) {
 		
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Plant_Communities"];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","Street_Tree_List","Suggested_for_Green_Connection_Routes","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04","Stormwater_Benefit","Nurseries"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04","Stormwater_Benefit","Nurseries"];
 		//alert("here")
 		//alert(theQueryType)
 		if (!theQueryType) {
@@ -1698,11 +1722,29 @@ function queryPlant(theQueryType) {
 			switch(theQueryType)
 			{
 				case 'SUPER60':
-					//theSQL2=" (Nurseries is not null) "
-					theSQL2=" (Super60 = 'Y') "
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Super60_int = 1) "
 					theSQL = "1=1"
 					theSearchString2= "SUPER 60"
 					theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+
+				case 'THRIFTY150':
+					theSQL2=" (Thrifty150_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "THRIFTY 150"
+					theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+
+				case 'TOP20':
+					theSQL2=" (Top20_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "TOP 20"
+					theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
 					clearMap();
 					
 					break;
@@ -1817,8 +1859,6 @@ function queryPlant(theQueryType) {
 					break;
 			}
 			
-			
-			
 			if (grasslandPrairie) { 
 				theSQL += ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
 				theSearchString+= "Grassland/Prairie"
@@ -1886,7 +1926,20 @@ function queryPlant(theQueryType) {
 			}
 			
 			//if (theSQL2!=" (Nurseries is not null) " && theSQL2!="" && theQueryType!="plantname") {
-			if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
+			// if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
+			if (theSQL2!=" (Super60_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+				
+				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				
+			}
+
+			if (theSQL2!=" (Thrifty150_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+				
+				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				
+			}
+
+			if (theSQL2!=" (Top20_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
 				
 				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
 				
@@ -1959,7 +2012,7 @@ function queryPlant(theQueryType) {
 				theSearchString = " plants found (entire database)"
 			}
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + "."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> results with the following filters: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
@@ -2015,7 +2068,6 @@ function queryPlant(theQueryType) {
 					
 				}	
 				s+='<td align="middle" valign="top" ><img height="90px" width="90px" onClick="plantDetail(' + "'" + i + "'" +');" src="' + imgURL + '" alt="' + theLatinName+ '"></td><td valign="top" width="162"><a href="javascript:void(0);" onClick="plantDetail(' + "'" + i + "'" +');">'  +  theCommonName +'</a><br><h2>' + theLatinName +'</h2>' + theicon +'</td>';
-				
 				
                 //if(isThree(i)) {
 				if (counter==3) {
@@ -2119,7 +2171,7 @@ function plantDetail(thePlantID) {
 	if (FLN=="") {
 		FLN="N/A"
 	}
-	var additionalCharacteristics = thePlantResults.features[thePlantID].attributes["Additional_Characteristices___Notes"] 
+	var additionalCharacteristics = thePlantResults.features[thePlantID].attributes["Additional_Characteristices_Notes"] 
 	var plantType = thePlantResults.features[thePlantID].attributes["Plant_Type"] 
 	var bloomTime = thePlantResults.features[thePlantID].attributes["Bloom_Time"]
 	var familyName = thePlantResults.features[thePlantID].attributes["Family_Name"] 
@@ -2150,7 +2202,7 @@ function plantDetail(thePlantID) {
 	var photoCredit2 = thePlantResults.features[thePlantID].attributes["PhotoCredit02"]
 	var photoCredit3 = thePlantResults.features[thePlantID].attributes["PhotoCredit03"]
 	var photoCredit4 = thePlantResults.features[thePlantID].attributes["PhotoCredit04"]
-	var GC = thePlantResults.features[thePlantID].attributes["Suggested_for_Green_Connection_Routes"]
+	var GC = thePlantResults.features[thePlantID].attributes["Suggested_Green_Connection_Routes"]
 	//alert(photoCredit1)
 	//alert(streetTreeList)
 	
@@ -2539,17 +2591,20 @@ function reloadSearchResults() {
 	myDiv.scrollTop = theDIVLoc;
 	
 }
+
 function setFilterLink () {
 	MM_showHideLayers('floatingDivForFilter','','show');
 }
 
 function isOdd(num) { return num % 2;}	
+
 function isThree(num) { return num % 3;}	
 
 function expand(id,id2,pixHeight) {
 	document.getElementById(id2).innerHTML = "<table class='NoPrint'><tr><td style='width:15px'></td><td><a href='javascript:void(0);' onclick='contract(\"" + id + "\",\"" +id2+"\",\"" + pixHeight +"\");'>less...</a></td></tr></table>"
 	document.getElementById(id).style.height=""
 }
+
 function contract(id,id2,pixHeight) {
 	document.getElementById(id2).innerHTML = "<table class='NoPrint'><tr><td style='width:15px'></td><td><a href='javascript:void(0);' onclick='expand(\"" + id + "\",\"" + id2+"\",\"" + pixHeight+"\");'>more...</a></td></tr></table>"
 	document.getElementById(id).style.height=pixHeight
@@ -2559,7 +2614,6 @@ function jumpToBookmark(bookMark) {
 	//alert(bookMark)
 	window.location.hash=bookMark
 }
-
 
 function filterResults() {
 	//alert(document.getElementById('type1').checked)
@@ -2577,12 +2631,14 @@ function filterResults() {
 	theEnglishFilter=""
 	//MM_showHideLayers("hide")
 	//document.getElementById('floatingDivForFilter').style.visibility='hidden';
-	//alert("1")
+	// alert("1")
 	
 	if (theSQL!="") {
 		//Plant Types
-		if (document.getElementById('type1').checked || document.getElementById('type2').checked || document.getElementById('type3').checked || document.getElementById('type4').checked || document.getElementById('type5').checked || document.getElementById('type6').checked || document.getElementById('type7').checked || document.getElementById('type8').checked ) {
+		if (document.getElementById('type1').checked || document.getElementById('type2').checked || document.getElementById('type3').checked || document.getElementById('type4').checked || document.getElementById('type5').checked || document.getElementById('type6').checked || document.getElementById('type7').checked || document.getElementById('type8').checked || document.getElementById('type9').checked || document.getElementById('type10').checked) {
+			
 			theEnglishFilter= "Plant Type - "
+
 			if (document.getElementById('type1').checked) {
 				theTypetmp+= "'Annual' "
 				theEnglishFilter +="Annual, "
@@ -2627,6 +2683,7 @@ function filterResults() {
 					theTypetmp+=" , "
 				}
 				theTypetmp+= "'Tree (deciduous)' "
+				theEnglishFilter +="Tree (deciduous), "
 			}
 			if (document.getElementById('type8').checked) {
 				if (theTypetmp!="") {
@@ -2635,21 +2692,34 @@ function filterResults() {
 				theTypetmp+= "'Vine' "
 				theEnglishFilter +="Vine, "
 			}
+			if (document.getElementById('type9').checked) {
+				if (theTypetmp!="") {
+					theTypetmp+=" , "
+				}
+				theTypetmp+= "'Fern' "
+				theEnglishFilter +="Fern, "
+			}
+			if (document.getElementById('type10').checked) {
+				if (theTypetmp!="") {
+					theTypetmp+=" , "
+				}
+				theTypetmp+= "'Succulent' "
+				theEnglishFilter +="Succulent, "
+			}
+
 			theSQLtmp=' "Plant_Type" in (' + theTypetmp + ') '
-			
 			
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
-			
 			//prompt('',theSQLtmp)
+			// alert(theSQLtmp)
+			// alert(theEnglishFilter)
 		}
-		
-			
 			
 		//Bloom Times
 		if (document.getElementById('bloom1').checked || document.getElementById('bloom2').checked || document.getElementById('bloom3').checked || document.getElementById('bloom4').checked || document.getElementById('bloom5').checked) {
+			// alert("bloom")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
@@ -2702,8 +2772,9 @@ function filterResults() {
 			
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
+			//alert(theSQLtmp)
+			// alert(theEnglishFilter)
 		}
 		
 		//Size At Maturity
@@ -2765,13 +2836,12 @@ function filterResults() {
 			//prompt('',theSQLtmp)
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
 		}
 		
 		//Watering Needs
 		if (document.getElementById('watering1').checked || document.getElementById('watering2').checked || document.getElementById('watering3').checked) {
-			//alert("ff")
+			// alert("ff")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
@@ -2807,22 +2877,19 @@ function filterResults() {
 		}
 		
 		//Appropriate Location
-		if (document.getElementById('approp1').checked || document.getElementById('approp2').checked || document.getElementById('approp4').checked || document.getElementById('approp5').checked) {
+		if (document.getElementById('approp1').checked || document.getElementById('approp2').checked || document.getElementById('approp4').checked || document.getElementById('approp5').checked || document.getElementById('approp6').checked) {
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
 			theEnglishFilter+= " Appropriate Location - "
 			if (document.getElementById('approp1').checked) {
-				
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
-				theApproptmp+=' ("Appropriate_Location" like ' + "'%Backyard%' ) "
-				theEnglishFilter +="Backyard, "
+				theApproptmp+=' ("Appropriate_Location" like ' + "'%Garden%' ) "
+				theEnglishFilter +="Garden, "
 			}
 			if (document.getElementById('approp2').checked) {
 				if (theApproptmp!="") {
 					theApproptmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Streetscape / Public'" 
 				theApproptmp+=' ("Appropriate_Location" like ' + "'%Sidewalk%' ) "
 				theEnglishFilter +="Sidewalk, "
 			}
@@ -2837,7 +2904,6 @@ function filterResults() {
 				if (theApproptmp!="") {
 					theApproptmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Streetscape / Public'" 
 				theApproptmp+=' ("Appropriate_Location" like ' + "'%Roof%' ) "
 				theEnglishFilter +="Roof, "
 			}
@@ -2845,9 +2911,16 @@ function filterResults() {
 				if (theApproptmp!="") {
 					theApproptmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Streetscape / Public'" 
 				theApproptmp+=' ("Stormwater_Benefit" like ' + "'%Yes%' ) "
 				theEnglishFilter +="Stormwater, "
+			}
+			if (document.getElementById('approp6').checked) {
+				if (theApproptmp!="") {
+					theApproptmp+=" or "
+				}
+				//theApproptmp+=' ("Appropriate_Location" like ' + "'%;%' ) "
+				theApproptmp+=' ("Appropriate_Location" is not null ) '
+				theEnglishFilter +="Potted Plants, "
 			}
 			if (theSQLtmp=="") {
 				theSQLtmp=theApproptmp
@@ -2869,7 +2942,6 @@ function filterResults() {
 			theEnglishFilter+= " Habitat Value - "
 			if (document.getElementById('habitat1').checked) {
 				
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theHabitattmp+=' ("Habitat_Value" like ' + "'%Buds/Greens%' ) "
 				theEnglishFilter +="Buds/Greens, "
 			}
@@ -2877,7 +2949,6 @@ function filterResults() {
 				if (theHabitattmp!="") {
 					theHabitattmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theHabitattmp+=' ("Habitat_Value" like ' + "'%Cover%' ) "
 				theEnglishFilter +="Cover, "
 			}
@@ -2885,7 +2956,6 @@ function filterResults() {
 				if (theHabitattmp!="") {
 					theHabitattmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theHabitattmp+=' ("Habitat_Value" like ' + "'%Fruit%' ) "
 				theEnglishFilter +="Fruit, "
 			}
@@ -2893,15 +2963,13 @@ function filterResults() {
 				if (theHabitattmp!="") {
 					theHabitattmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
-				theHabitattmp+=' ("Habitat_Value" like ' + "'%Nectar%' ) "
-				theEnglishFilter +="Nectar, "
+				theHabitattmp+=' ("Habitat_Value" like ' + "'%Pollinator%' ) "
+				theEnglishFilter +="Pollinator, "
 			}
 			if (document.getElementById('habitat5').checked) {
 				if (theHabitattmp!="") {
 					theHabitattmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theHabitattmp+=' ("Habitat_Value" like ' + "'%Nesting%' ) "
 				theEnglishFilter +="Nesting, "
 			}
@@ -2909,7 +2977,6 @@ function filterResults() {
 				if (theHabitattmp!="") {
 					theHabitattmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theHabitattmp+=' ("Habitat_Value" like ' + "'%;%' ) "
 				theEnglishFilter +="Multiple, "
 			}
@@ -2952,7 +3019,8 @@ function filterResults() {
 			}
 			//prompt('',theSQLtmp)
 		}
-		if (document.getElementById('soil1').checked || document.getElementById('soil2').checked  || document.getElementById('soil3').checked  || document.getElementById('soil4').checked ) {
+
+		if (document.getElementById('soil1').checked || document.getElementById('soil2').checked || document.getElementById('soil3').checked || document.getElementById('soil4').checked ) {
 			//alert("Soil checked")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
@@ -2966,7 +3034,6 @@ function filterResults() {
 				if (theSoiltmp!="") {
 					theSoiltmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theSoiltmp+=' ("Soil_type" like ' + "'%Loam%'  or " + '"Soil_Type" like ' + "'%All%')"
 				theEnglishFilter +="Loam, "
 			}
@@ -2974,7 +3041,6 @@ function filterResults() {
 				if (theSoiltmp!="") {
 					theSoiltmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theSoiltmp+=' ("Soil_Type" like ' + "'%Sand%'  or " + '"Soil_Type" like ' + "'%All%')"
 				theEnglishFilter +="Sand, "
 			}
@@ -2982,11 +3048,9 @@ function filterResults() {
 				if (theSoiltmp!="") {
 					theSoiltmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theSoiltmp+=' ("Soil_Type" like ' + "'%Rock%'  or " + '"Soil_Type" like ' + "'%All%')"
 				theEnglishFilter +="Rock, "
 			}
-			
 			
 			if (theSQLtmp=="") {
 				theSQLtmp=theSoiltmp
@@ -3000,8 +3064,8 @@ function filterResults() {
 			//prompt('',theSQLtmp)
 		}
 		
-		if (document.getElementById('sitecond1').checked || document.getElementById('sitecond2').checked  || document.getElementById('sitecond3').checked  ) {
-			//alert("Site condistions checked")
+		if (document.getElementById('sitecond1').checked || document.getElementById('sitecond2').checked || document.getElementById('sitecond3').checked  ) {
+			// alert("Site condistions checked")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
@@ -3014,7 +3078,6 @@ function filterResults() {
 				if (theSiteCondtmp!="") {
 					theSiteCondtmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theSiteCondtmp+=' ("Suitable_Site_Conditions" like ' + "'%Part Shade%'  )"
 				theEnglishFilter +="Part Shade, "
 			}
@@ -3022,7 +3085,6 @@ function filterResults() {
 				if (theSiteCondtmp!="") {
 					theSiteCondtmp+=" or "
 				}
-				//theSQLtmp+=' "Appropriate_Location" = ' + "'Backyards / Private'" 
 				theSiteCondtmp+=' ("Suitable_Site_Conditions" like ' + "'%Shade%'  )"
 				theEnglishFilter +="Shade, "
 			}
@@ -3037,11 +3099,8 @@ function filterResults() {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
 				
 			}
-			//prompt('',theSQLtmp)
-		}
-		
-		
-		
+			//alert(theSQLtmp) 
+		}	
 		
 	}
 	theEnglishFilter=theEnglishFilter.trim();
@@ -3054,10 +3113,12 @@ function filterResults() {
 	//theSQL+=' order by "Common_Name"';
 	//prompt("",theSQL)
 	//prompt("",theEnglishFilter)
-	//alert(theSearchString)// = " plants found for "
-	queryPlant();
+	// alert(theSearchString)// = " plants found for "
 
+	queryPlant();
+	// }
 }
+
 function clearFilters(thename) {
 	//alert("clear the filter radio boxes, reset the SQL and resend base SQL")
 	
@@ -3072,9 +3133,7 @@ function clearFilters(thename) {
     //clearRadios('habitatValue');
     theSQL = theBaseSQL;
 	theEnglishFilter=""
-    queryPlant();
-
-    
+    queryPlant(); 
 }
 
 function clearCheckboxes() {
@@ -3087,9 +3146,9 @@ function clearRadios(thename) {
     var ele = document.getElementsByName(thename);
     for(var i=0;i<ele.length;i++) {
         ele[i].checked = false;
-    }
-    
+    }    
 }
+
 function showFilter() {
 	document.getElementById('floatingDivForFilter').style.visibility='visible';
 }
@@ -3103,6 +3162,7 @@ function executeAll() {
 function hideDetail() {
 	document.getElementById('floatingDivForDetail').style.visibility='hidden';
 }
+
 function gup( thename ){  
 	//Returns paramters from the URL
 	thename = thename.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
@@ -3111,11 +3171,11 @@ function gup( thename ){
 	var results = regex.exec( unescape(window.location.href) );  
 	if( results == null )    return "";  else    return results[1];
 }
+
 function loadOnePlant() {
 	if (plantToLoad=="") {
 		return;
 	}
-	
 	if (plantToLoad.toUpperCase()=="ALL" || plantToLoad.toUpperCase()=="EVERYTHING" || plantToLoad.toUpperCase()=="ENTIRE DATABASE" ||  plantToLoad.toUpperCase()=="THE LOT" ) {
 		showAddress(plantToLoad);
 		return
@@ -3123,15 +3183,16 @@ function loadOnePlant() {
 	thegreenConnectionsHtml=""
 	
 	require(["esri/tasks/query", "esri/tasks/QueryTask","dojo/dom", "dojo/on", "dojo/domReady!"], function(Query, QueryTask,dom, on){
-		var theTable=theArcGISServerName + "/12"
+		// var theTable=theArcGISServerName + "/12"
+		var theTable=theArcGISServerName + "/13"
 		queryTask = new QueryTask(theTable)
 		query = new Query();
 		var theSQL3=""
 		
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","AtoC","GCRoute1","GCRoute2","GCRoute3","GCRoute4","GCRoute5","GCRoute6","GCRoute7","GCRoute8","GCRoute9","GCRoute10","GCRoute11","GCRoute12","GCRoute13","GCRoute14","GCRoute15","GCRoute16","GCRoute17","GCRoute18","GCRoute19","GCRoute20","GCRoute21","GCRoute22","GCRoute23","GCRoute24","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04" ];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices___Notes","Street_Tree_List","Suggested_for_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60"];
-		theSQL3 = "Upper(Latin_Name) ='" + plantToLoad + "'" ;
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","Stormwater_Benefit","Nurseries","Super60","Super60_int","Thrifty150_int","Top20_int"];
+		theSQL3 = "Upper(Latin_Name) ='" + plantToLoad + "'" ;	
 		//alert(plantToLoad)
 		if (plantToLoad=="ALL") {
 			theSQL3="1=1"
@@ -3150,7 +3211,7 @@ function loadOnePlant() {
 			theSearchString = " plants found for " + plantToLoad 
 			
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + "."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
@@ -3242,7 +3303,8 @@ function printResults() {
 	printHTML +="\n<head>"
 	printHTML +="\n<meta charset='UTF-8' />"
 	printHTML +='<meta http-equiv="X-UA-Compatible" content="IE=7">'
-	printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://50.17.237.182/PIM/images/bannericonTransSmall.ico'>"
+	// printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://50.17.237.182/PIM/images/bannericonTransSmall.ico'>"
+	printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://" + theServerName + ":6080/PIM/images/bannericonTransSmall.ico'>"
 	printHTML +="\n<title>SF Plant Finder - Printable Page</title>"
 
 	printHTML +="\n<link rel='stylesheet' href='css/style.css'>"
@@ -3296,10 +3358,12 @@ function printInfo() {
 	printHTML +="\n<head>"
 	printHTML +="\n<meta charset='UTF-8' />"
 	printHTML +='<meta http-equiv="X-UA-Compatible" content="IE=7">'
-	printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://50.17.237.182/PIM/images/bannericonTransSmall.ico'>"
+	// printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://50.17.237.182/PIM/images/bannericonTransSmall.ico'>"
+	printHTML +="\n<LINK REL='SHORTCUT ICON' HREF='http://" + theServerName + ":6080/PIM/images/bannericonTransSmall.ico'>"
 	printHTML +="\n<title>SF Plant Finder - Printable Page</title>"
 
-	printHTML +="\n<link rel='stylesheet' href='http://50.17.237.182/plantsf/css/style.css'>"
+	// printHTML +="\n<link rel='stylesheet' href='http://50.17.237.182/plantsf/css/style.css'>"
+	printHTML +="\n<link rel='stylesheet' href='http://" + theServerName + ":6080/plantsf/css/style.css'>"
 	//printHTML +="\n<link rel='stylesheet' href='http://" + theServerName + "/plantsf/css/print.css'>"
 	printHTML += "\n<style type='text/css'>"
 	printHTML += "\n@media print {"

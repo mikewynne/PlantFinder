@@ -333,6 +333,12 @@ vertical-align: inherit;
 	text-decoration: none;
 }
 
+.buttons-list .button {
+	display: inline-block;
+	margin-top: 20px;
+	margin-right: 5px;
+}
+
 /* Map */
 
 #mapContainer {
