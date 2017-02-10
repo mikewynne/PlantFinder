@@ -286,7 +286,7 @@ vertical-align: inherit;
 	cursor: pointer;
 }
 
-#mainContent-Search-LeftCol .links a:hover { opacity: .9; -webkit-filter: saturate(2.5); }
+#mainContent-Search-LeftCol .links a:hover { opacity: 0.9; -webkit-filter: saturate(2.5); }
 
 
 #addressForm {
@@ -337,6 +337,10 @@ vertical-align: inherit;
 	display: inline-block;
 	margin-top: 20px;
 	margin-right: 5px;
+}
+.buttons-list :hover {
+	opacity: 0.9;	
+	
 }
 
 /* Map */
@@ -619,8 +623,8 @@ vertical-align: inherit;
 	background-color: #FFF;
 	height: 14px;
 	padding: 3px;
-	top: 385px;
-	left: 460px;
+	top: 405px;
+	left: 465px;
 	position: absolute;
 	clear: none;
 	z-index: 100;
@@ -670,11 +674,11 @@ a.tooltip strong {line-height:30px;}
 a.tooltip:hover {text-decoration:none;} 
 
 a.tooltip span {
-    z-index: 200;
+    z-index: 20;
 	display: none; 
 	padding: 15px 20px;
-    margin-top: -70px; 
-	margin-left: 15px;
+    margin-top: -90px; 
+	margin-left: 95px;
     width: 325px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 11px;
@@ -687,10 +691,12 @@ a.tooltip span {
 }
 
 a.tooltip:hover span{
+	z-index: 20;
     display: inline;
 	position: absolute;
 	color: #FFF;
 	background-color: #422410;
+	
 }
 
 .callout {

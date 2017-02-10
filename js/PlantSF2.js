@@ -80,11 +80,13 @@ var myheight = null;
 var init = true;
 var theYearBuilt = "";
 var theMapSize = "small";
-// var theServerName = window.location.host;
-var theServerName = "cp-gis-svr3";
-var theArcGISServerName = "http://" + theServerName + ":6080/arcgis/rest/services/PlantSFv3/MapServer";
+var theServerName = window.location.host;
+//var theServerName = "cp-gis-svr3";
+//var theArcGISServerName = "http://" + theServerName + ":6080/arcgis/rest/services/PlantSFv3/MapServer";
+//var theArcGISServerName = "http://" + theServerName + "/arcgis/rest/services/PlantSFv4/MapServer";
+//prompt("",theArcGISServerName)
 // var theArcGISServerName = "http://cp-gis-svr3:6080/arcgis/rest/services/PlantSFv3/MapServer"
-// var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv3/MapServer";
+ var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv4/MapServer";
 var thefindResults = null;
 var theNum;
 var theAddressLot = "";
@@ -135,6 +137,7 @@ var placeToLoad=""
 var thePlantListHtmlToPrint = "";
 var thePlantDetailHtmlToPrint = "";
 var theEnglishFilter=""
+var communityToLoad=""
 
 var plantListArray = new Array()
 
@@ -154,6 +157,9 @@ function initialize() {
 	plantToLoad = plantToLoad.replace(/\+/g, " ");
 	placeToLoad = gup("place").toUpperCase();
 	placeToLoad = placeToLoad.replace(/\+/g, " ");
+	
+	communityToLoad = gup("community").toLowerCase();
+	communityToLoad = communityToLoad.replace(/\+/g, " ");
 	
 	
 	//alert(plantToLoad)
@@ -181,9 +187,10 @@ function initialize() {
 	//esri.config.defaults.io.proxyUrl = "../proxy/proxy.ashx";	
 	
 	esri.config.defaults.io.alwaysUseProxy = false;
-	// gsvc = new esri.tasks.GeometryService("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
-	gsvc = new esri.tasks.GeometryService("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
-	
+	gsvc = new esri.tasks.GeometryService("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
+	//gsvc = new esri.tasks.GeometryService("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
+	//gsvc = new esri.tasks.GeometryService("http://" + theServerName + "/arcgis/rest/services/Geometry/GeometryServer");
+	//prompt("",gsvc)
 	//Set up the buffer parameters for later use
 	buffParams = new esri.tasks.BufferParameters();
 	buffParams.unit = esri.tasks.GeometryService.UNIT_FOOT
@@ -203,6 +210,12 @@ function initialize() {
 	if (placeToLoad != "")  {
 		dojo.connect(dynamicMap, "onLoad", function(){ 
 			whenMapReadyRunPlaceSearch();
+		});
+	}
+	
+	if (communityToLoad != "")  {
+		dojo.connect(dynamicMap, "onLoad", function(){ 
+			whenMapReadyRunCommunitySearch();
 		});
 	}
 	
@@ -233,6 +246,75 @@ function whenMapReadyRunPlaceSearch(){
 		setTimeout('whenMapReadyRunPlaceSearch();',100)
 	}
 }
+function whenMapReadyRunCommunitySearch(){
+	
+	if (map.loaded && dynamicMap.loaded) {
+		switch (communityToLoad.toUpperCase()) {
+			case "HABITAT":
+				showAddress('HABITAT')
+				break;
+			case "SHADYCLAY":
+				showAddress('SHADYCLAY')
+				break;
+			case "SANDYSOIL":
+				showAddress('SANDYSOIL')
+				break;
+			case "POLLINATOR":
+				showAddress('POLLINATOR')
+				break;
+			case "URBANFORESTCOUNCILSTREETTREELIST":
+				showAddress('URBANFORESTCOUNCILSTREETTREELIST')
+				break;
+			case "SIDEWALKLANDSCAPING":
+				showAddress('SIDEWALKLANDSCAPING')
+				break;
+			case "STORMWATER":
+				showAddress('STORMWATER')
+				break;
+			case "SUPER60":
+				showAddress('SUPER60')
+				break;
+			case "THRIFTY150":
+				showAddress('THRIFTY150')
+					break;
+			case "TOP20":
+				showAddress('TOP20')
+					break;
+			case "CHAPARRAL":
+				queryPlant('chaparral');
+					break;
+			case "COASTALSCRUB":
+				queryPlant('coastalScrub');
+					break;
+			case "DUNES":
+				queryPlant('dunes');
+					break;
+			case "GRASSLANDPRAIRIE":
+				queryPlant('grasslandPrairie');
+					break;
+			case "RIPARIAN":
+				queryPlant('riparian');
+					break;
+			case "WETLAND":
+				queryPlant('wetland');
+					break;
+			case "WOODLAND":
+				queryPlant('woodland');
+					break;
+			case "ALL":
+				showAddress('ALL')
+					break;
+			case "":
+				showAddress("ALL")
+				break;
+			default:
+				queryPlant(communityToLoad)
+		}
+	} else {
+		setTimeout('whenMapReadyRunCommunitySearch();',100)
+	}
+}
+
 var lastResult=""
 function outputDistance(result) {  
 	//sometimes calls function twice, if sending the result second time don't open the alert 
@@ -350,6 +432,14 @@ function identify(overlay, latLng) {
 			new Messi(theMessage, {title: theTitle, modal: true, titleClass: 'info', buttons: [{id: 0, label: 'OK'}]});
 			return;
 		}
+		
+		//if (clicked &&(latLng.x < -13638091 || latLng.x > -13620761 || latLng.y > 4556181 || latLng.y < 4538163)){
+			
+			
+		//	return;
+		//}
+		
+		
 		clicked=false;
 
 	} else {
@@ -744,7 +834,7 @@ function identify(overlay, latLng) {
 	var re3 = /, California/gi;
 	var re4 = /, CA/gi;
 	
-    address = address.replace(re1, '')
+	address = address.replace(re1, '')
 	address = address.replace(re2, '')
 	address = address.replace(re3, '')
 	address = address.replace(re4, '')
@@ -796,6 +886,42 @@ function identify(overlay, latLng) {
 		theBaseSQL="(1=1)"
 		return;
 	}
+	if (address.toUpperCase()=="STORMWATER") {
+		theSearchString="SF PUC STORMWATER"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SF PUC STORMWATER"
+		queryPlant("STORMWATER");
+		return;
+	}
+	if (address.toUpperCase()=="SIDEWALKLANDSCAPING") {
+		theSearchString="SF DPW SIDEWALK LANDSCAPING"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SF DPW SIDEWALK LANDSCAPING"
+		queryPlant("SIDEWALKLANDSCAPING");
+		return;
+	}
+	if (address.toUpperCase()=="URBANFORESTCOUNCILSTREETTREELIST") {
+		theSearchString="SF URBAN FOREST COUNCIL STREET TREE LIST"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SF URBAN FOREST COUNCIL STREET TREE LIST"
+		queryPlant("URBANFORESTCOUNCILSTREETTREELIST");
+		return;
+	}
+	if (address.toUpperCase()=="POLLINATOR") {
+		theSearchString="POLLINATOR"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="POLLINATOR"
+		queryPlant("POLLINATOR");
+		return;
+	}
 	
 	if (address.toUpperCase()=="SUPER60") {
 		theSearchString="SUPER 60"
@@ -804,6 +930,33 @@ function identify(overlay, latLng) {
 		theBaseSQL="(1=1)"
 		theQueryType="SUPER 60"
 		queryPlant("SUPER60");
+		return;
+	}
+	if (address.toUpperCase()=="SANDYSOIL") {
+		theSearchString="SANDY SOIL"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SANDY SOIL"
+		queryPlant("SANDYSOIL");
+		return;
+	}
+	if (address.toUpperCase()=="SHADYCLAY") {
+		theSearchString="SHADY CLAY"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SHADY CLAY"
+		queryPlant("SHADYCLAY");
+		return;
+	}
+	if (address.toUpperCase()=="HABITAT") {
+		theSearchString="HABITAT"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="HABITAT"
+		queryPlant("HABITAT");
 		return;
 	}
 
@@ -1286,7 +1439,8 @@ function IsNumeric(sText)
       
 	function calculateAreasAndLengths() {
 		// var geometryService = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
-		var geometryService = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
+		//var geometryService = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
+		var geometryService = new esri.arcgis.gmaps.Geometry("http://" + theServerName + "/arcgis/rest/services/Geometry/GeometryServer");
 		
 		geometryService.getAreasAndLengths([ [ polygon ] ], displayAreasAndLengths);
 		amIMeasuring=false;
@@ -1311,7 +1465,8 @@ function IsNumeric(sText)
 
 	function calculateLengths() {
 		// var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
-		var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
+		//var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
+		var geometryServiceLength = new esri.arcgis.gmaps.Geometry("http://" + theServerName + "/arcgis/rest/services/Geometry/GeometryServer");
 		geometryServiceLength.getLengths([ [ polyline ] ], displayLengths);
 		amIMeasuring=false;
 	}
@@ -1485,6 +1640,7 @@ function in_array(needle, haystack){
 	
 function updatePlantListHtml() {
 	
+	
 //alert("in updatePlantListHtml")
 	//Green Connections
 	thegreenConnectionsHtml=""
@@ -1500,6 +1656,38 @@ function updatePlantListHtml() {
 	//	return
 	//}
 
+	for (var i = 0; i < idResults.length; i++) {
+		//check for TI click or address
+		var result = idResults[i];		
+		if (result.layerName == "Master Address Database") {
+			if (result.feature.attributes["MAPBLKLOT"] =="1939001" || result.feature.attributes["MAPBLKLOT"] =="1939002") {
+				clearCheckboxes(); 
+				//if (result.feature.attributes["MAPBLKLOT"] =="1939001" ) {
+				//	theSearchString = "TREASURE ISLAND"
+				//	theSearchString2 = "TREASURE ISLAND"
+				//} else {
+				//	theSearchString = "YERBA BUENA ISLAND"
+				//}
+				showAddress('SUPER60');
+				
+				return;
+			}
+			else {
+				//console.log(theSearchString)
+				
+				if (theSearchString.substring(0,8)=="Latitude" && result.feature.attributes["ADDRESSSIMPLE"] != null) {
+					console.log(theSearchString)
+					//theSearchString += " ("+result.feature.attributes["ADDRESSSIMPLE"]+")"
+					theSearchString = result.feature.attributes["ADDRESSSIMPLE"]
+					break;
+				//alert("theSearchString: " +theSearchString + "\ntheSearchString2: " + theSearchString2)
+				}
+				
+			}
+			
+		}
+	}
+	//alert("here")
 	for (var i = 0; i < idResults.length; i++) {
 		var result = idResults[i];		
 		if (result.layerName == "Green Connections") {
@@ -1694,6 +1882,7 @@ function queryPlant(theQueryType) {
 	require(["esri/tasks/query", "esri/tasks/QueryTask","dojo/dom", "dojo/on", "dojo/domReady!"], function(Query, QueryTask,dom, on) {
 		// var theTable=theArcGISServerName + "/12"
 		var theTable = theArcGISServerName + "/13"
+		//prompt("",theTable)
 		queryTask = new QueryTask(theTable)
 		query = new Query();
 		var theSQL2=""
@@ -1727,6 +1916,74 @@ function queryPlant(theQueryType) {
 					theSQL = "1=1"
 					theSearchString2= "SUPER 60"
 					theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+				
+				case 'STORMWATER':
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Stormwater_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "SF PUC STORMWATER"
+					theSearchString2 = "SF PUC STORMWATER (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+				
+				case 'SANDYSOIL':
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Sandy_Soil_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "SANDY SOIL"
+					theSearchString2 = "SANDY SOIL (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+					
+				case 'SHADYCLAY':
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Shady_Clay_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "SHADY CLAY"
+					theSearchString2 = "SHADY CLAY (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+				
+				case 'SIDEWALKLANDSCAPING':
+					// theSQL2=" (Super60 = 'Y') "
+					theSQL2=" (Sidewalk_Landscaping_Plants_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "SF DPW SIDEWALK LANDSCAPING"
+					theSearchString2 = "SF DPW SIDEWALK LANDSCAPING (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+					
+				case 'POLLINATOR':
+					//theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  ) "
+					theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  or  (\"Habitat_Value\" like \'%;%\' )  ) "
+					theSQL = "1=1"
+					theSearchString2= "POLLINATOR"
+					theSearchString2 = "POLLINATOR (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+					
+				case 'URBANFORESTCOUNCILSTREETTREELIST':
+					theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
+					theSQL = "1=1"
+					theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
+					theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST (check for nursery availability by clicking on a plant)"
+					clearMap();
+					
+					break;
+					
+				case 'HABITAT':
+					theSQL2=" (Habitat_int = 1) "
+					theSQL = "1=1"
+					theSearchString2= "HABITAT PLANTS"
+					theSearchString2 = "HABITAT PLANTS (check for nursery availability by clicking on a plant)"
 					clearMap();
 					
 					break;
@@ -1983,8 +2240,11 @@ function queryPlant(theQueryType) {
 		//query.where = theSQL
 		query.where = theSQL2
 		//alert("about to send")
-		//alert(theSQL2)
-		queryTask.execute(query, showCustomResultsQuery);
+		//prompt("",theSQL2)
+		queryTask.execute(query, showCustomResultsQuery,theErr);
+		function theErr(myErr) {
+			//alert(myErr)
+		}
 
 		function showCustomResultsQuery(results) {
 			//alert("here")
