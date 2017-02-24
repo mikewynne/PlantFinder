@@ -203,7 +203,7 @@ dojo.require("dijit.layout.BorderContainer");
 	<div id="headerContent">
 		<a href="index.html"><div class="logo"></div>
 		</a>
-		<span class="site-description">A plant database for creating habitat in San Francisco.</span>
+		<span class="site-description">A toolkit for creating habitat and greening San Francisco.</span>
         <a class="links" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
         <a class="links" href="glossary.html">Glossary</a>
 		<a class="links" href="about.html"><span style="padding-left:15px;">About</span></a>
@@ -245,12 +245,14 @@ dojo.require("dijit.layout.BorderContainer");
             <!-- Search Input -->  
 			<div id='searchformcell'>
 				<form id="addressForm" action=""; onsubmit="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(this.address.value); return false"> 
-					<input alt="Enter a place address or plant name then click the Search button"  title = "Enter a place address or plant name then click the Search button" onClick='javascript:unGraySearchStart();' type="text"  id="addressInput" name="address" id="addressInput" value="To find plants, enter address or click on map." />&nbsp;&nbsp;
+					<input alt="Enter a place address or plant name then click the Search button"  title = "Enter an address then click the Search button to be shown plants recommended for that location" onClick='javascript:unGraySearchStart();' type="text"  id="addressInput" name="address" id="addressInput" value="To find plants, enter address or click on map." />&nbsp;&nbsp;
 					<span class="searchButton" ><a title="Search button" id="findButton" name='searchbox' href="javascript:void(0);" onclick="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(document.getElementById('addressInput').value);">Search</a></span>
 				</form>
 			</div>
 			<!-- End Search Input -->       
 			<!-- Plant Communities -->	
+			
+		<!--
 		  <span style="font-size:18px;">Or search by <strong>plant community.</strong></span> <a href="glossary.html#plantCommunities"><img src="images/question-mark.png" alt="What are plant communities? Read more..." width="12" height="12" border="0" /></a><br />
 				<table border='0' cellspacing="0" class="links" style="text-align: center; margin-top: 25px;">
 					<tr>
@@ -281,14 +283,29 @@ dojo.require("dijit.layout.BorderContainer");
                     </td>
                     </tr>
 				</table>
+				
+		-->
                 <!-- End Plant Communities -->
                 
                 <!-- Other Search Options -->
+		<span style="font-size:18px;">Or search by <strong>plant lists.</strong></span> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a><br />
             <div class="buttons-list">
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants displays the entire database of 714 plants. </span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150 <span>The Thrifty 150 plants are durable, low maintenance, water wise plants that are recommended by San Francisco Public Works to do well in the challenging urban environment of the city.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SUPER60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60 <span>The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('TOP20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20 <span>Like the Super 60, the Top 20 plants make great choices for creating habitat for bees, birds and butterflies in the urban environment. Try starting with these plants if you want to create a colorful and sustainable native habitat garden.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Habitat');"><i class="fa fa-leaf"></i>&nbsp; ALL HABITAT PLANTS <span>To create rich local wildlife habitat, start here to create your own plant palette from 500 habitat-friendly plant species.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants displays the entire database of 714 plants. </span></a><br>
+		<h4 class="tooltip">Special Lists:<span>Shorter, pre-selected palettes to give you good ideas for appropriate species for landscaping in San Francisco.</span></h4>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SandySoil');"><i class="fa fa-leaf"></i>&nbsp;SANDY SOIL <span>These local native species are the best for San Francisco's sandy soils. They thrive in the good drainage and will be very drought-tolerant once established.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ShadyClay');"><i class="fa fa-leaf"></i>&nbsp;SHADY CLAY <span>The moisture-holding capacity of a north-facing clayey slope is much different from a south-facing sandy slope. This palette should survive well in this moister environment once established.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Super60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60 <span>The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Top20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20 <span>Like the Super 60, the Top 20 plants make great choices for creating habitat for bees, birds and butterflies in the urban environment. Try starting with these plants if you want to create a colorful and sustainable native habitat garden.</span></a>
+		<h4 class="tooltip"> City Lists:<span>These include many habitat-friendly plants, but not all of the species are necessarily habitat plants. Click on these lists, and then you can use the filtering system to refine your list for habitat-friendly plants or other characteristics after starting with one of these "City List" categories.</span></h4>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SidewalkLandscaping');"><i class="fa fa-leaf"></i>&nbsp; SIDEWALK LANDSCAPING <span>These plants are recommended by San Francisco Public Works as drought tolerant and adaptable to a variety of microclimates and sidewalk conditions.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Stormwater');"><i class="fa fa-leaf"></i>&nbsp; STORMWATER <span>Recommendations from the San Francisco PUC for complying with the Stormwater Management Ordinance</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('UrbanForestCouncilStreetTreeList');"><i class="fa fa-leaf"></i>&nbsp; STREET TREES <span>Approved street tree list for San Francisco reviewed and adopted annually by the Urban Forestry Council.</span></a>
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150 <span>Durable, low maintenance, water wise plants that are recommended by San Francisco Public Works to do well in the challenging urban environment of the city.</span></a>
+		
+		
+		
+		
             </div>
              <!-- End Other Search Options -->
                 

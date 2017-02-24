@@ -138,6 +138,8 @@ var thePlantListHtmlToPrint = "";
 var thePlantDetailHtmlToPrint = "";
 var theEnglishFilter=""
 var communityToLoad=""
+var nurseryToLoad=""
+var searchingForNursery=false;
 
 var plantListArray = new Array()
 
@@ -160,6 +162,9 @@ function initialize() {
 	
 	communityToLoad = gup("community").toLowerCase();
 	communityToLoad = communityToLoad.replace(/\+/g, " ");
+	
+	nurseryToLoad = gup("nursery")
+	nurseryToLoad = nurseryToLoad.replace(/\+/g, " ");
 	
 	
 	//alert(plantToLoad)
@@ -218,6 +223,11 @@ function initialize() {
 			whenMapReadyRunCommunitySearch();
 		});
 	}
+	if (nurseryToLoad != "")  {
+		dojo.connect(dynamicMap, "onLoad", function(){ 
+			whenMapReadyRunNurserySearch();
+		});
+	}
 	
 	//dojo.connect(gsvc, "onLengthsComplete", outputDistance)
 	//alert("finished init")
@@ -246,6 +256,17 @@ function whenMapReadyRunPlaceSearch(){
 		setTimeout('whenMapReadyRunPlaceSearch();',100)
 	}
 }
+function whenMapReadyRunNurserySearch(){
+	
+	if (map.loaded && dynamicMap.loaded) {
+		searchingForNursery=true
+		queryPlant(nurseryToLoad)
+	} else {
+		setTimeout('whenMapReadyRunNurserySearch();',100)
+	}
+}
+
+
 function whenMapReadyRunCommunitySearch(){
 	
 	if (map.loaded && dynamicMap.loaded) {
@@ -1759,8 +1780,9 @@ function updatePlantListHtml() {
 		if (theSQL=="(  )") {
 			theSQL="1=0"
 		}
-		query.where = theSQL
-		//alert("about to execute queryTask with SQL: " + theSQL)
+		
+		query.where ="( " +  theSQL + " ) or " + " (  \"Plant_Type\" in ('Tree (evergreen)'  , 'Tree (deciduous)' )  and ( \"Appropriate_Location\" like '%Sidewalk%' )  ) "
+		//prompt("in the update","about to execute queryTask with SQL: " + query.where )
 		function execute() {
 			//alert("in execute")
 			queryTask.execute(query, showResultsQuery,taskError);
@@ -1781,7 +1803,7 @@ function updatePlantListHtml() {
 			if (theEnglishFilter.length>2) {
 				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
 			} else {
-				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ".<br> Give this list to your landscaper or take it down to your local nursery."
 			}
 			document.getElementById('searchResultsSummary').innerHTML = theLastSummary
 			//s +='<table border="0" cellpadding="0" cellspacing="0" id="PlantList" style="width:540px">'
@@ -1875,7 +1897,7 @@ function searchAll() {
 
 function queryPlant(theQueryType) {
 	//theEnglishFilter=""
-	//alert(theQueryType)
+	//alert("theQueryType: " + theQueryType)
 	//$("#plantInfo").slideUp("slow");
 	plantListArray = []
 	$("#plantInfo").slideUp(1000);
@@ -1891,7 +1913,7 @@ function queryPlant(theQueryType) {
 		
 		query.returnGeometry = false;
 		//query.outFields = ["Common_Name","Latin_Name","Plant_Communities"];
-		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04","Stormwater_Benefit","Nurseries"];
+		query.outFields = ["Common_Name","Latin_Name","Family_Name","Former_Latin_Name","Plant_Type","Plant_Communities","Bloom_Time","Appropriate_Location","Flower_Color","Size_at_Maturity","Climate_Appropriate_Plants","Suitable_Site_Conditions","Soil_Type","Pruning_Needs","Water_Needs","Habitat_Value","Associated_Wildlife","Additional_Characteristices_Notes","Street_Tree_List","Suggested_Green_Connection_Routes","PhotoCredit01","PhotoCredit02","PhotoCredit03","PhotoCredit04","Stormwater_Benefit","Nurseries","Additional_Species_Cultivars_Varieties"];
 		//alert("here")
 		//alert(theQueryType)
 		if (!theQueryType) {
@@ -1900,7 +1922,7 @@ function queryPlant(theQueryType) {
 			}
 			//alert(theSearchString)
 			if(theSearchString.substring(0,10)!="plants for") {
-				theSearchString = "plants for " + theSearchString
+				theSearchString = "plants for " + theSearchString +" (check for nursery availability by clicking on a plant)"
                 //alert(theSearchString)
 			}
 			//theSearchString2 = "plants found for <i>'" + theLinkAddress + "'</i>"
@@ -1908,326 +1930,343 @@ function queryPlant(theQueryType) {
 		} else {
 			theSQL=""
 			theSearchString=""
-			switch(theQueryType)
-			{
-				case 'SUPER60':
-					// theSQL2=" (Super60 = 'Y') "
-					theSQL2=" (Super60_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "SUPER 60"
-					theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-				
-				case 'STORMWATER':
-					// theSQL2=" (Super60 = 'Y') "
-					theSQL2=" (Stormwater_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "SF PUC STORMWATER"
-					theSearchString2 = "SF PUC STORMWATER (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-				
-				case 'SANDYSOIL':
-					// theSQL2=" (Super60 = 'Y') "
-					theSQL2=" (Sandy_Soil_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "SANDY SOIL"
-					theSearchString2 = "SANDY SOIL (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-					
-				case 'SHADYCLAY':
-					// theSQL2=" (Super60 = 'Y') "
-					theSQL2=" (Shady_Clay_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "SHADY CLAY"
-					theSearchString2 = "SHADY CLAY (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-				
-				case 'SIDEWALKLANDSCAPING':
-					// theSQL2=" (Super60 = 'Y') "
-					theSQL2=" (Sidewalk_Landscaping_Plants_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "SF DPW SIDEWALK LANDSCAPING"
-					theSearchString2 = "SF DPW SIDEWALK LANDSCAPING (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-					
-				case 'POLLINATOR':
-					//theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  ) "
-					theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  or  (\"Habitat_Value\" like \'%;%\' )  ) "
-					theSQL = "1=1"
-					theSearchString2= "POLLINATOR"
-					theSearchString2 = "POLLINATOR (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-					
-				case 'URBANFORESTCOUNCILSTREETTREELIST':
-					theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
-					theSQL = "1=1"
-					theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
-					theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-					
-				case 'HABITAT':
-					theSQL2=" (Habitat_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "HABITAT PLANTS"
-					theSearchString2 = "HABITAT PLANTS (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-
-				case 'THRIFTY150':
-					theSQL2=" (Thrifty150_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "THRIFTY 150"
-					theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-
-				case 'TOP20':
-					theSQL2=" (Top20_int = 1) "
-					theSQL = "1=1"
-					theSearchString2= "TOP 20"
-					theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
-					clearMap();
-					
-					break;
-					
-					
-				case 'grasslandPrairie':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
-					theSearchString2= "plants for Grassland/Prairie"
-					if (grasslandPrairie) {
-						grasslandPrairie=false;
-					}  else {
-						grasslandPrairie=true;
-					}
-					clearMap();
-					ToggleOnOff("Grassland/Prairie",true);
-					break;
-				case 'coastalScrub':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
-					theSearchString2= "plants for Coastal Scrub"
-					if (coastalScrub) {
-						coastalScrub=false;
-					}  else {
-						coastalScrub=true;
-					}
-					clearMap();
-					ToggleOnOff("Coastal Scrub",true);
-					break;
-				case 'chaparral':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
-					theSearchString2= "plants for Chaparral"
-					if (chaparral) {
-						chaparral=false;
-					}  else {
-						chaparral=true;
-					}
-					clearMap();
-					ToggleOnOff("Chaparral",true);
-					break;
-				case 'dunes':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
-					theSearchString2= "plants for Dunes"
-					if (dunes) {
-						dunes=false;
-					}  else {
-						dunes=true;
-					}
-					clearMap();
-					ToggleOnOff("Dunes",true);
-					break;
-				case 'wetland':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
-					theSearchString2= "plants for Wetland"
-					if (wetland) {
-						wetland=false;
-					}  else {
-						wetland=true;
-					}
-					clearMap();
-					ToggleOnOff("Wetland",true);
-					break;
-				case 'riparian':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
-					theSearchString2= "plants for Riparian"
-					if (riparian) {
-						riparian=false;
-					}  else {
-						riparian=true;
-					}
-					clearMap();
-					ToggleOnOff("Riparian",true);
-					break;
-				case 'woodland':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
-					theSearchString2= "plants for Woodland"
-					if (woodland) {
-						woodland=false;
-					}  else {
-						woodland=true;
-					}
-					clearMap();
-					ToggleOnOff("Woodland",true);
-					break;
-				case 'saltMarsh':
-					theSQL2 = ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
-					theSearchString2= "plants for Salt Marsh"
-					if (saltMarsh) {
-						saltMarsh=false;
-					}  else {
-						saltMarsh=true;
-					}
-					clearMap();
-					ToggleOnOff("Salt Marsh",true);
-					break;
-				case 'plantname':
-					var theSQLplant= theLinkAddress.toUpperCase()
-					if (theSQLplant.substr(theSQLplant.length-1)=='S') {
-						theSQLplant = theSQLplant.substr(0,theSQLplant.length-1)
-					}
-					if (theSQLplant=='GRASSES') {
-						theSQLplant='GRASS'	
-					}
-					theSQL2= ' Upper("Latin_Name") like ' + "'%"+theSQLplant+ "%'"
-					theSQL2+= ' OR Upper("Common_Name") like ' + "'%"+theSQLplant + "%'"
-					theSQL2+= ' OR Upper("Plant_Type") like ' + "'%"+theSQLplant + "%'"
-					theSearchString = theLinkAddress
-					theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i>"
-					//alert("theLinkAddress: " + theLinkAddress)
-					//alert(theSQL2)
-				default:
-					theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i>"
-					theSearchString=theSearchString2
-					break;
-			}
 			
-			if (grasslandPrairie) { 
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
-				theSearchString+= "Grassland/Prairie"
-			}
-			if (saltMarsh) { 
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
-				theSearchString+= "Salt Marsh"
-			}
-			//alert(chaparral)
-			if (chaparral) { 
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
-				theSearchString+= "Chaparral"
-			}
-			if (wetland) {
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
-				theSearchString+= "Wetland"
-			}
-			//alert(coastalScrub)
-			if (coastalScrub) {
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
-				theSearchString+= "Coastal Scrub"
-			}
-			if (riparian) {
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
-				theSearchString+= "Riparian"
-			}
-			if (woodland) {
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
-				theSearchString+= "Woodland"
-			}
-			if (dunes) {
-				if (theSQL!="") {
-					theSQL+=" or "
-					theSearchString+=" / "
-				}
-				theSQL += ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
-				theSearchString+= "Dunes"
-			}
-			if (theSQL!="") {
-				theSQL += ' or UPPER("Plant_Communities") = ' + "'ALL' "
-			}
+			//alert(searchingForNursery)
+			if (searchingForNursery) {
+				
+				theSQL2=" (Upper(Nurseries) like '%" + nurseryToLoad.toUpperCase() + "%') "
+				theSQL = "1=1"
+				theSearchString2=  nurseryToLoad + " nursery"
+				theSearchString=theSearchString2
+				//theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
+				//theSearchString2 = nurseryToLoad
+				clearMap();
+				searchingForNursery=false;
+				//alert(theSQL2)
+				
+			} else {
 			
-			//if (theSQL2!=" (Nurseries is not null) " && theSQL2!="" && theQueryType!="plantname") {
-			// if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
-			if (theSQL2!=" (Super60_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
-				
-				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
-				
-			}
+				switch(theQueryType)
+				{
+					case 'SUPER60':
+						// theSQL2=" (Super60 = 'Y') "
+						theSQL2=" (Super60_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "SUPER 60"
+						theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+					
+					case 'STORMWATER':
+						// theSQL2=" (Super60 = 'Y') "
+						theSQL2=" (Stormwater_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "SF PUC STORMWATER"
+						theSearchString2 = "SF PUC STORMWATER (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+					
+					case 'SANDYSOIL':
+						// theSQL2=" (Super60 = 'Y') "
+						theSQL2=" (Sandy_Soil_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "SANDY SOIL"
+						theSearchString2 = "SANDY SOIL (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+						
+					case 'SHADYCLAY':
+						// theSQL2=" (Super60 = 'Y') "
+						theSQL2=" (Shady_Clay_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "SHADY CLAY"
+						theSearchString2 = "SHADY CLAY (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+					
+					case 'SIDEWALKLANDSCAPING':
+						// theSQL2=" (Super60 = 'Y') "
+						theSQL2=" (Sidewalk_Landscaping_Plants_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "SF DPW SIDEWALK LANDSCAPING"
+						theSearchString2 = "SF DPW SIDEWALK LANDSCAPING (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+						
+					case 'POLLINATOR':
+						//theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  ) "
+						theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  or  (\"Habitat_Value\" like \'%;%\' )  ) "
+						theSQL = "1=1"
+						theSearchString2= "POLLINATOR"
+						theSearchString2 = "POLLINATOR (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+						
+					case 'URBANFORESTCOUNCILSTREETTREELIST':
+						theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
+						theSQL = "1=1"
+						theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
+						theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+						
+					case 'HABITAT':
+						theSQL2=" (Habitat_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "HABITAT PLANTS"
+						theSearchString2 = "HABITAT PLANTS (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
 
-			if (theSQL2!=" (Thrifty150_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
-				
-				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
-				
-			}
+					case 'THRIFTY150':
+						theSQL2=" (Thrifty150_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "THRIFTY 150"
+						theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
 
-			if (theSQL2!=" (Top20_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+					case 'TOP20':
+						theSQL2=" (Top20_int = 1) "
+						theSQL = "1=1"
+						theSearchString2= "TOP 20"
+						theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
+						clearMap();
+						
+						break;
+						
+						
+					case 'grasslandPrairie':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
+						theSearchString2= "plants for Grassland/Prairie (check for nursery availability by clicking on a plant)"
+						if (grasslandPrairie) {
+							grasslandPrairie=false;
+						}  else {
+							grasslandPrairie=true;
+						}
+						clearMap();
+						ToggleOnOff("Grassland/Prairie",true);
+						break;
+					case 'coastalScrub':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
+						theSearchString2= "plants for Coastal Scrub (check for nursery availability by clicking on a plant)"
+						if (coastalScrub) {
+							coastalScrub=false;
+						}  else {
+							coastalScrub=true;
+						}
+						clearMap();
+						ToggleOnOff("Coastal Scrub",true);
+						break;
+					case 'chaparral':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
+						theSearchString2= "plants for Chaparral (check for nursery availability by clicking on a plant)"
+						if (chaparral) {
+							chaparral=false;
+						}  else {
+							chaparral=true;
+						}
+						clearMap();
+						ToggleOnOff("Chaparral",true);
+						break;
+					case 'dunes':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
+						theSearchString2= "plants for Dunes (check for nursery availability by clicking on a plant)"
+						if (dunes) {
+							dunes=false;
+						}  else {
+							dunes=true;
+						}
+						clearMap();
+						ToggleOnOff("Dunes",true);
+						break;
+					case 'wetland':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
+						theSearchString2= "plants for Wetland (check for nursery availability by clicking on a plant)"
+						if (wetland) {
+							wetland=false;
+						}  else {
+							wetland=true;
+						}
+						clearMap();
+						ToggleOnOff("Wetland",true);
+						break;
+					case 'riparian':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
+						theSearchString2= "plants for Riparian (check for nursery availability by clicking on a plant)"
+						if (riparian) {
+							riparian=false;
+						}  else {
+							riparian=true;
+						}
+						clearMap();
+						ToggleOnOff("Riparian",true);
+						break;
+					case 'woodland':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
+						theSearchString2= "plants for Woodland (check for nursery availability by clicking on a plant)"
+						if (woodland) {
+							woodland=false;
+						}  else {
+							woodland=true;
+						}
+						clearMap();
+						ToggleOnOff("Woodland",true);
+						break;
+					case 'saltMarsh':
+						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
+						theSearchString2= "plants for Salt Marsh (check for nursery availability by clicking on a plant)"
+						if (saltMarsh) {
+							saltMarsh=false;
+						}  else {
+							saltMarsh=true;
+						}
+						clearMap();
+						ToggleOnOff("Salt Marsh",true);
+						break;
+					case 'plantname':
+						var theSQLplant= theLinkAddress.toUpperCase()
+						if (theSQLplant.substr(theSQLplant.length-1)=='S') {
+							theSQLplant = theSQLplant.substr(0,theSQLplant.length-1)
+						}
+						if (theSQLplant=='GRASSES') {
+							theSQLplant='GRASS'	
+						}
+						theSQL2= ' Upper("Latin_Name") like ' + "'%"+theSQLplant+ "%'"
+						theSQL2+= ' OR Upper("Common_Name") like ' + "'%"+theSQLplant + "%'"
+						theSQL2+= ' OR Upper("Plant_Type") like ' + "'%"+theSQLplant + "%'"
+						theSearchString = theLinkAddress
+						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i>"
+						//alert("theLinkAddress: " + theLinkAddress)
+						//alert(theSQL2)
+					default:
+						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i> (check for nursery availability by clicking on a plant)"
+						theSearchString=theSearchString2
+						break;
+				}
 				
-				theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				if (grasslandPrairie) { 
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
+					theSearchString+= "Grassland/Prairie"
+				}
+				if (saltMarsh) { 
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
+					theSearchString+= "Salt Marsh"
+				}
+				//alert(chaparral)
+				if (chaparral) { 
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
+					theSearchString+= "Chaparral"
+				}
+				if (wetland) {
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
+					theSearchString+= "Wetland"
+				}
+				//alert(coastalScrub)
+				if (coastalScrub) {
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
+					theSearchString+= "Coastal Scrub"
+				}
+				if (riparian) {
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
+					theSearchString+= "Riparian"
+				}
+				if (woodland) {
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
+					theSearchString+= "Woodland"
+				}
+				if (dunes) {
+					if (theSQL!="") {
+						theSQL+=" or "
+						theSearchString+=" / "
+					}
+					theSQL += ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
+					theSearchString+= "Dunes"
+				}
+				if (theSQL!="") {
+					theSQL += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+				}
 				
-			}
+				//if (theSQL2!=" (Nurseries is not null) " && theSQL2!="" && theQueryType!="plantname") {
+				// if (theSQL2!=" (Super60 = 'Y') " && theSQL2!="" && theQueryType!="plantname") {
+				if (theSQL2!=" (Super60_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+					
+					theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+					
+				}
 
-			//alert(theSearchString)
-			//alert(theSearchString2)
-			//theSQL= "( " + theSQL + " ) "
-			//theBaseSQL = theSQL
-			//theSQL += ' order by "Common_Name"'
-			
-			theSQL2= "( " + theSQL2 + " ) "
-			theBaseSQL = theSQL2
-			//theSQL2 += ' order by "Common_Name"'
-			
-			//alert(theSearchString)
-			theSearchString = theSearchString2
-			//alert(theSearchString)
-			
-			//alert(theSQL)
-			//if (theSQL==' order by "Common_Name"') {
-				//none selected, clear the div
-			//	dom.byId("plantinfo").innerHTML = ""
-			//	theSQL=""
-			//	return
-			//}
-			if (theSQL2==' ') {
-				//none selected, clear the div
-				dom.byId("plantlist").innerHTML = ""
-				theSQL2=""
-				return
+				if (theSQL2!=" (Thrifty150_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+					
+					theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+					
+				}
+
+				if (theSQL2!=" (Top20_int = 1) " && theSQL2!="" && theQueryType!="plantname") {
+					
+					theSQL2 += ' or UPPER("Plant_Communities") = ' + "'ALL' "
+					
+				}
+
+				//alert(theSearchString)
+				//alert(theSearchString2)
+				//theSQL= "( " + theSQL + " ) "
+				//theBaseSQL = theSQL
+				//theSQL += ' order by "Common_Name"'
+				
+				theSQL2= "( " + theSQL2 + " ) "
+				theBaseSQL = theSQL2
+				//theSQL2 += ' order by "Common_Name"'
+				
+				//alert(theSearchString)
+				theSearchString = theSearchString2
+				//alert(theSearchString)
+				
+				//alert(theSQL)
+				//if (theSQL==' order by "Common_Name"') {
+					//none selected, clear the div
+				//	dom.byId("plantinfo").innerHTML = ""
+				//	theSQL=""
+				//	return
+				//}
+				if (theSQL2==' ') {
+					//none selected, clear the div
+					dom.byId("plantlist").innerHTML = ""
+					theSQL2=""
+					return
+				}
 			}
 		}
 		//alert("theSQL2: " + theSQL2)
@@ -2432,6 +2471,9 @@ function plantDetail(thePlantID) {
 		FLN="N/A"
 	}
 	var additionalCharacteristics = thePlantResults.features[thePlantID].attributes["Additional_Characteristices_Notes"] 
+	if (additionalCharacteristics==null) {
+		additionalCharacteristics=""		
+	}
 	var plantType = thePlantResults.features[thePlantID].attributes["Plant_Type"] 
 	var bloomTime = thePlantResults.features[thePlantID].attributes["Bloom_Time"]
 	var familyName = thePlantResults.features[thePlantID].attributes["Family_Name"] 
@@ -2463,6 +2505,14 @@ function plantDetail(thePlantID) {
 	var photoCredit3 = thePlantResults.features[thePlantID].attributes["PhotoCredit03"]
 	var photoCredit4 = thePlantResults.features[thePlantID].attributes["PhotoCredit04"]
 	var GC = thePlantResults.features[thePlantID].attributes["Suggested_Green_Connection_Routes"]
+	
+	var additionalSpecies=thePlantResults.features[thePlantID].attributes["Additional_Species_Cultivars_Varieties"]
+	if (additionalSpecies==null) {
+		additionalSpecies=""		
+	}
+	
+	
+	
 	//alert(photoCredit1)
 	//alert(streetTreeList)
 	
@@ -2493,6 +2543,10 @@ function plantDetail(thePlantID) {
 	
 	if (nurseryList==null) {nurseryList=""};
 	
+	
+	
+	//alert(isthere)
+	
 	//alert(photoCredit1)
 	//theDetailHtml+='<div id="searchResultsDetails">'
 	//theDetailHtml+='<div id="info" style="visibility: visible;">'
@@ -2505,10 +2559,11 @@ function plantDetail(thePlantID) {
 	theDetailHtml+='</tr>'
     
 	theDetailHtml+='<tr>'
-	theDetailHtml+='<td width="90" height="95" valign="top"><a title = "Photo credit: ' + photoCredit3 + '" href="images/plants/full/' + latinName+ '03.jpg"' + 'data-lightbox="plantDetail"><img src="images/plants/medium/'+ latinName+ '03.jpg" width="90" height="90" /></a></td>'
+	theDetailHtml+='<td id="photo3" width="90" height="95" valign="top"><a title = "Photo credit: ' + photoCredit3 + '" href="images/plants/full/' + latinName+ '03.jpg"' + 'data-lightbox="plantDetail"><img src="images/plants/medium/'+ latinName+ '03.jpg" width="90" height="90" /></a></td>'
 	theDetailHtml+='</tr>'
+	
 	theDetailHtml+='<tr>'
-	theDetailHtml+='<td width="90" height="95" valign="top"><a title = "Photo credit: ' + photoCredit4 + '" href="images/plants/full/' + latinName+ '04.jpg"' + 'data-lightbox="plantDetail"><img src="images/plants/medium/'+ latinName+ '04.jpg" width="90" height="90" /></a></td>'
+	theDetailHtml+='<td id="photo4" width="90" height="95" valign="top"><a title = "Photo credit: ' + photoCredit4 + '" href="images/plants/full/' + latinName+ '04.jpg"' + 'data-lightbox="plantDetail"><img src="images/plants/medium/'+ latinName+ '04.jpg" width="90" height="90" /></a></td>'
 	theDetailHtml+='</tr>'
 	
 	theDetailHtml+='</table>'
@@ -2540,6 +2595,12 @@ function plantDetail(thePlantID) {
 	//theDetailHtml+='<p>&nbsp;</p>'
 	
 	theDetailHtml+='<table class="plantDetails" border="0" cellspacing="0" cellpadding="0" width="100%">'
+	
+	theDetailHtml+='  <tr>'
+	theDetailHtml+='    <td width="150"><h2>Additional Species, Cultivars and varieties:</h2></td>'
+        theDetailHtml+='    <td><p>' + additionalSpecies + '</p></td>'
+        theDetailHtml+='   </tr>'
+	
 	theDetailHtml+='  <tr>'
 	theDetailHtml+='    <td width="150"><h2>Plant Type:</h2></td>'
         theDetailHtml+='    <td><p>' + plantType + '</p></td>'
@@ -2603,11 +2664,11 @@ function plantDetail(thePlantID) {
         
        
        
-	theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td width="150"><h2>Good for Stormwater Planter:</h2></td>'
-        theDetailHtml+='    <td><p>' + stormwaterInfrastructure + '</p></td>'
-        theDetailHtml+='   </tr>'
-        theDetailHtml+='   <tr>'
+	//theDetailHtml+='   <tr>'
+        //theDetailHtml+='     <td width="150"><h2>Good for Stormwater Planter:</h2></td>'
+        //theDetailHtml+='    <td><p>' + stormwaterInfrastructure + '</p></td>'
+        //theDetailHtml+='   </tr>'
+        //theDetailHtml+='   <tr>'
 	
 	
 	theDetailHtml+='   <tr>'
@@ -2822,6 +2883,12 @@ function plantDetail(thePlantID) {
 	//document.getElementById('toggleFilter').onclick= function () {reloadSearchResults();};
 	//document.getElementById('plantlist').style.visibility='visible';
 
+
+
+	theURLtmp = 'http://' + theServerName +'/php/fileExists.php?filename=C:/inetpub/wwwroot/PlantSF/images/Plants/Medium/' + latinName + "03.jpg"
+	getJPGDoc(theURLtmp,3)
+	theURLtmp = 'http://' + theServerName +'/php/fileExists.php?filename=C:/inetpub/wwwroot/PlantSF/images/Plants/Medium/' + latinName + "04.jpg"
+	getJPGDoc(theURLtmp,4)
 
 	if (theSearchType != "communities") {
 		document.getElementById('greenConnectionsList').innerHTML = thegreenConnectionsHtml
@@ -3107,21 +3174,21 @@ function filterResults() {
 			}
 			theEnglishFilter+= " Watering Needs - "
 			if (document.getElementById('watering1').checked) {
-				theWateringtmp+=' "Water_Needs" = ' + "'None'" 
+				theWateringtmp+=' "Water_Needs" like ' + "'%None%'" 
 				theEnglishFilter +="None, "
 			}
 			if (document.getElementById('watering2').checked) {
 				if (theWateringtmp!="") {
 					theWateringtmp+=" or "
 				}
-				theWateringtmp+=' "Water_Needs" = ' + "'Low'" 
+				theWateringtmp+=' "Water_Needs" like ' + "'%Low%'" 
 				theEnglishFilter +="Low, "
 			}
 			if (document.getElementById('watering3').checked) {
 				if (theWateringtmp!="") {
 					theWateringtmp+=" or "
 				}
-				theWateringtmp+=' "Water_Needs" = ' + "'Moderate'" 
+				theWateringtmp+=' "Water_Needs like " ' + "'%Moderate%'" 
 				theEnglishFilter +="Moderate, "
 			}
 			if (theSQLtmp=="") {
@@ -3179,7 +3246,9 @@ function filterResults() {
 					theApproptmp+=" or "
 				}
 				//theApproptmp+=' ("Appropriate_Location" like ' + "'%;%' ) "
-				theApproptmp+=' ("Appropriate_Location" is not null ) '
+				//theApproptmp+=' ("Appropriate_Location" is not null ) '
+				//theApproptmp+=' (Size_At_Maturity like ' + "'%< 1 ft%') or " + ' (Size_At_Maturity like ' + "'%1-3 ft%') or "  +' "Plant_Type" in (\'Perennial\',\'Grass\',\'Vine\',\'Annual\') and  ' + ' "Water_Needs" = ' + "'None'"
+				theApproptmp+=' ((Size_At_Maturity like ' + "'%< 1 ft%') or " + ' (Size_At_Maturity like ' + "'%1-3 ft%') or " + ' (Size_At_Maturity like ' + "'%4-6 ft%')) and Water_Needs like '%None%'"
 				theEnglishFilter +="Potted Plants, "
 			}
 			if (theSQLtmp=="") {
@@ -3255,7 +3324,6 @@ function filterResults() {
 		
 		//Natives
 		if (document.getElementById('native1').checked || document.getElementById('native2').checked ) {
-			//alert("ff")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
@@ -3587,7 +3655,7 @@ function printResults() {
 	printHTML +="<div class='no-print-borders' id='info' style='min-height: 1000px;'>"
 	printHTML += "<div class='no-print-borders' id='searchResults' >"
 	
-	printHTML +="\n<span id='searchResultsSummary'>" + theLastSummary.replace(" (check for nursery availability by clicking on a plant)","")+"</span><br><br>"
+	printHTML +="\n<span id='searchResultsSummary'>" + theLastSummary.replace(" (check for nursery availability by clicking on a plant):",". Give this list to your landscaper or take it to your local nursery.")+"</span><br><br>"
 	//alert(plantListArray[1])
 	
 	for (var i=0, il=plantListArray.length; i<il; i++) {
@@ -3657,4 +3725,58 @@ function printInfo() {
 	OpenWindow.document.close()
 	OpenWindow.focus(); 
 	
+}
+
+function getJPGDoc(url,thePhotoNum) {
+	//Ajax code to check whether a document exists on the server.  If it does, return the path.
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	  }	else	  {
+		// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	 if ((navigator.userAgent.indexOf('Firefox/3.')>0 )) {  
+		 //alert("this place2")
+		 //deal with Firefox 3 which has a bug affecting non asynchronous ajax calls
+		  xmlhttp.onload=xmlhttp.onerror = xmlhttp.onabort = function() {
+			var value = xmlhttp.responseText
+			//alert(value)
+			  //alert(value);
+			theid="#photo"+thePhotoNum
+			if (value=="true") {
+				//$(theid).show();
+			} else {
+				$(theid).hide();
+				$(theid).closest('tr').remove();
+			}
+		  }
+	  } else {
+		  //deal with all other browsers
+		  //alert("this place")
+		xmlhttp.onreadystatechange= function()
+		  {
+			//alert(xmlhttp.readyState)
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				//alert(xmlhttp.responseText)
+				var value = xmlhttp.responseText
+				//console.log(url + ": " +value)
+				//alert(thePhotoNum + "" + value);
+				
+				theid="#photo"+thePhotoNum
+				if (value=="true") {
+					//$(theid).show();
+				} else {
+					$(theid).hide();
+					$(theid).closest('tr').remove();
+				}
+				
+				
+			}
+		  }
+	  }
+	xmlhttp.open("GET",url,true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlhttp.send(params);
 }

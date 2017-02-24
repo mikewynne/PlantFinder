@@ -26,11 +26,23 @@ h1 {
 	letter-spacing: -.015em;
 	color: #333;
 	padding-bottom: .5em;
+	
 }
 
 h2, h3 {font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; color:#422410;}
 
 h3 {padding-bottom: 3px; border-bottom: 1px dashed #AAA;}
+
+h4 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 17px;
+	font-weight: normal;
+	line-height: 1.15em;
+	
+	color: #333;
+	padding-bottom: -0.5em;
+	padding-top: .7em;
+}
 
 p, ul, li {
 	font-family: Georgia, "Times New Roman", Times, serif;
@@ -335,7 +347,7 @@ vertical-align: inherit;
 
 .buttons-list .button {
 	display: inline-block;
-	margin-top: 20px;
+	margin-top: 12px;
 	margin-right: 5px;
 }
 .buttons-list :hover {
@@ -706,6 +718,40 @@ a.tooltip:hover span{
 	border: 0;
 	left: -12px;
 }
+
+h4.tooltip {outline:none; }
+h4.tooltip strong {line-height:30px;}
+h4.tooltip:hover {text-decoration:none;} 
+
+h4.tooltip span {
+    z-index: 20;
+	display: none; 
+	padding: 15px 20px;
+    margin-top: -60px; 
+	margin-left: 15px;
+    width: 325px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	line-height: 14px;
+	font-weight: bold;
+	text-align: left;
+	border-radius:4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+h4.tooltip:hover span{
+	z-index: 20;
+    display: inline;
+	position: absolute;
+	color: #FFF;
+	background-color: #422410;
+	
+}
+
+
+
+
 
 /* HOMEPAGE INTRO */
 
