@@ -86,7 +86,7 @@ var theServerName = window.location.host;
 //var theArcGISServerName = "http://" + theServerName + "/arcgis/rest/services/PlantSFv4/MapServer";
 //prompt("",theArcGISServerName)
 // var theArcGISServerName = "http://cp-gis-svr3:6080/arcgis/rest/services/PlantSFv3/MapServer"
- var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv4/MapServer";
+var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv4/MapServer";
 var thefindResults = null;
 var theNum;
 var theAddressLot = "";
@@ -2578,14 +2578,12 @@ function plantDetail(thePlantID) {
 	theDetailHtml+='<p><em>' + FLN + '</em></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
 	
-	
 	theDetailHtml+='<h2>Family:</h2>'
 	theDetailHtml+='<p><em>' + familyName + '</em></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
 	
-	
-	
-	theDetailHtml+='<p>' + additionalCharacteristics +'</p>'
+	theDetailHtml+='<h2>Characteristics:</h2>'
+	theDetailHtml+='<p><em>' + additionalCharacteristics +'</em></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
 	theDetailHtml+='<p><a href="' + theWikiLink+'" target="_blank">Link to Wikipedia Entry</a></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
