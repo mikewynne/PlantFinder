@@ -1697,7 +1697,6 @@ function updatePlantListHtml() {
 				//console.log(theSearchString)
 				
 				if (theSearchString.substring(0,8)=="Latitude" && result.feature.attributes["ADDRESSSIMPLE"] != null) {
-					console.log(theSearchString)
 					//theSearchString += " ("+result.feature.attributes["ADDRESSSIMPLE"]+")"
 					theSearchString = result.feature.attributes["ADDRESSSIMPLE"]
 					break;
@@ -1801,7 +1800,7 @@ function updatePlantListHtml() {
 			//theLastSummarytmp=""
 			//alert(theLastSummary)
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery." 
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ".<br> Give this list to your landscaper or take it down to your local nursery."
 			}
@@ -1920,11 +1919,7 @@ function queryPlant(theQueryType) {
 			if (theSQL=="") {
 				theSQL = "1=1"
 			}
-			//alert(theSearchString)
-			if(theSearchString.substring(0,10)!="plants for") {
-				theSearchString = "plants for " + theSearchString +" (check for nursery availability by clicking on a plant)"
-                //alert(theSearchString)
-			}
+
 			//theSearchString2 = "plants found for <i>'" + theLinkAddress + "'</i>"
 			//theSearchString= "plants found for '" + theSearchString + "'"
 		} else {
@@ -1952,8 +1947,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Super60_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SUPER 60"
-						theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SUPER 60"
 						clearMap();
 						
 						break;
@@ -1962,8 +1956,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Stormwater_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SF PUC STORMWATER"
-						theSearchString2 = "SF PUC STORMWATER (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SF PUC STORMWATER"
 						clearMap();
 						
 						break;
@@ -1972,8 +1965,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Sandy_Soil_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SANDY SOIL"
-						theSearchString2 = "SANDY SOIL (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SANDY SOIL"
 						clearMap();
 						
 						break;
@@ -1982,8 +1974,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Shady_Clay_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SHADY CLAY"
-						theSearchString2 = "SHADY CLAY (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SHADY CLAY"
 						clearMap();
 						
 						break;
@@ -1992,8 +1983,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Sidewalk_Landscaping_Plants_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SF DPW SIDEWALK LANDSCAPING"
-						theSearchString2 = "SF DPW SIDEWALK LANDSCAPING (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SF DPW SIDEWALK LANDSCAPING"
 						clearMap();
 						
 						break;
@@ -2002,8 +1992,7 @@ function queryPlant(theQueryType) {
 						//theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  ) "
 						theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  or  (\"Habitat_Value\" like \'%;%\' )  ) "
 						theSQL = "1=1"
-						theSearchString2= "POLLINATOR"
-						theSearchString2 = "POLLINATOR (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "POLLINATOR"
 						clearMap();
 						
 						break;
@@ -2012,7 +2001,7 @@ function queryPlant(theQueryType) {
 						theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
 						theSQL = "1=1"
 						theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
-						theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST"
 						clearMap();
 						
 						break;
@@ -2021,7 +2010,7 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Habitat_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "HABITAT PLANTS"
-						theSearchString2 = "HABITAT PLANTS (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "HABITAT PLANTS"
 						clearMap();
 						
 						break;
@@ -2030,7 +2019,7 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Thrifty150_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "THRIFTY 150"
-						theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "THRIFTY 150"
 						clearMap();
 						
 						break;
@@ -2039,7 +2028,7 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Top20_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "TOP 20"
-						theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "TOP 20"
 						clearMap();
 						
 						break;
@@ -2047,7 +2036,7 @@ function queryPlant(theQueryType) {
 						
 					case 'grasslandPrairie':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
-						theSearchString2= "plants for Grassland/Prairie (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Grassland/Prairie"
 						if (grasslandPrairie) {
 							grasslandPrairie=false;
 						}  else {
@@ -2058,7 +2047,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'coastalScrub':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
-						theSearchString2= "plants for Coastal Scrub (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Coastal Scrub"
 						if (coastalScrub) {
 							coastalScrub=false;
 						}  else {
@@ -2069,7 +2058,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'chaparral':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
-						theSearchString2= "plants for Chaparral (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Chaparral"
 						if (chaparral) {
 							chaparral=false;
 						}  else {
@@ -2080,7 +2069,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'dunes':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
-						theSearchString2= "plants for Dunes (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Dunes"
 						if (dunes) {
 							dunes=false;
 						}  else {
@@ -2091,7 +2080,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'wetland':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
-						theSearchString2= "plants for Wetland (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Wetland"
 						if (wetland) {
 							wetland=false;
 						}  else {
@@ -2102,7 +2091,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'riparian':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
-						theSearchString2= "plants for Riparian (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Riparian"
 						if (riparian) {
 							riparian=false;
 						}  else {
@@ -2113,7 +2102,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'woodland':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
-						theSearchString2= "plants for Woodland (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Woodland"
 						if (woodland) {
 							woodland=false;
 						}  else {
@@ -2124,7 +2113,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'saltMarsh':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
-						theSearchString2= "plants for Salt Marsh (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Salt Marsh"
 						if (saltMarsh) {
 							saltMarsh=false;
 						}  else {
@@ -2149,7 +2138,7 @@ function queryPlant(theQueryType) {
 						//alert("theLinkAddress: " + theLinkAddress)
 						//alert(theSQL2)
 					default:
-						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i> (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i> (check for nursery availability )" //by clicking on a plant
 						theSearchString=theSearchString2
 						break;
 				}
@@ -2305,17 +2294,21 @@ function queryPlant(theQueryType) {
 			//alert("2")
 			//theLastSummarytmp=""
 			
-			//alert(theEnglishFilter)
-			//alert(theSearchString)
+			// alert(theEnglishFilter)
+			// alert("theSearchString2", theSearchString2)
 			if (theSearchString.toUpperCase()=="ALL") {
 				theSearchString = " plants found (entire database)"
 			}
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> results with the following filters: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> results with the following filters: " + theSearchString + " and " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
 			
+			if (theSearchString.includes("SUPER 60")) {
+				theLastSummary += "<br>(Check for nursery availability by clicking on a plant.)";
+			}
+
 			//theLastSummary = "We found <strong> " + results.features.length + "</strong> " + theSearchString + ":"
 			document.getElementById('searchResultsSummary').innerHTML = theLastSummary
 			//alert("3")
@@ -3537,7 +3530,7 @@ function loadOnePlant() {
 			theSearchString = " plants found for " + plantToLoad 
 			
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
 			}
