@@ -2001,7 +2001,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
 						theSQL = "1=1"
 						theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
-						theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST"
 						clearMap();
 						
 						break;
@@ -2010,7 +2009,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Habitat_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "HABITAT PLANTS"
-						theSearchString2 = "HABITAT PLANTS"
 						clearMap();
 						
 						break;
@@ -2019,7 +2017,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Thrifty150_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "THRIFTY 150"
-						theSearchString2 = "THRIFTY 150"
 						clearMap();
 						
 						break;
@@ -2028,7 +2025,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Top20_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "TOP 20"
-						theSearchString2 = "TOP 20"
 						clearMap();
 						
 						break;
@@ -2302,11 +2298,12 @@ function queryPlant(theQueryType) {
 			if (theEnglishFilter.length>2) {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> results with the following filters: " + theSearchString + " and " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
-				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + "."
 			}
 			
+			// The "Check for nursery availability..." statement should only for lists that include plants from the SUPER 60
 			if (theSearchString.includes("SUPER 60")) {
-				theLastSummary += "<br>(Check for nursery availability by clicking on a plant.)";
+				theLastSummary += "<br> Check for nursery availability by clicking on a plant.";
 			}
 
 			//theLastSummary = "We found <strong> " + results.features.length + "</strong> " + theSearchString + ":"
@@ -3532,7 +3529,7 @@ function loadOnePlant() {
 			if (theEnglishFilter.length>2) {
 				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
-				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + "."
 			}
 
 			document.getElementById('searchResultsSummary').innerHTML = theLastSummary
