@@ -681,6 +681,8 @@ a.btn-slide:hover {
 
 /* POPUP TEXT FOR HINTS & DEFINITIONS */
 
+h4.tooltip {display: inline;}
+
 a.tooltip {outline:none; }
 a.tooltip strong {line-height:30px;}
 a.tooltip:hover {text-decoration:none;} 
