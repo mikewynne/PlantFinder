@@ -9,17 +9,20 @@
 <meta name="description" content="Search for any address in San Francisco and display a list of plants recommended by the City & County of San Francisco for planting at that location.  Takes into account microclimates and plant communities (phtocenosis).">
 <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
 <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+<link rel="stylesheet" href="css/bootstrap-tour-standalone.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="jQuery/Messi-master/messi.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <script type="text/javascript">var switchTo5x=true;</script>
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-
-
-
 <script type="text/javascript" src="jQuery/jquery-latest.js"></script>
-<link rel="stylesheet" href="jQuery/Messi-master/messi.min.css" />
 <script src="jQuery/Messi-master/messi.min.js"></script>
+<!-- <script src="js/jquery-1.11.0.min.js"></script> -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap-tour-standalone.min.js"></script>
+<script src="js/tour.js"></script>
+
 <style>
 	.esriPopup.myTheme .titlePane,      
 	.dj_ie7 .esriPopup.myTheme .titlePane .title {        
@@ -56,6 +59,8 @@
 	<script type="text/javascript" src="js/proj4js/lib/proj4js-combined.js"></script>
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/lightbox.min.js"></script>
+	<script src="js/bootstrap-tour-standalone.min.js"></script>
+	<script src="js/tour.js"></script>
 	<link rel="stylesheet" href="css/lightbox.css" media="screen"/>
 	 <script>
 dojo.require("dijit.layout.BorderContainer");
@@ -201,10 +206,10 @@ dojo.require("dijit.layout.BorderContainer");
 <!-- Header Content -->
 <div id="headerShell">
 	<div id="headerContent">
-		<a href="index.html"><div class="logo"></div>
+		<a href="index.html"><div class="logo stepOne"></div>
 		</a>
 		<span class="site-description">A toolkit for creating habitat and greening San Francisco.</span>
-        <a class="links" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
+        <a class="links stepFour" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
         <a class="links" href="glossary.html">Glossary</a>
 		<a class="links" href="about.html"><span style="padding-left:15px;">About</span></a>
 	</div>
@@ -243,10 +248,10 @@ dojo.require("dijit.layout.BorderContainer");
 			<!-- LEFT COL: Map Search Form and Plant Communities -->  
 			<div id="mainContent-Search-LeftCol">         
             <!-- Search Input -->  
-			<div id='searchformcell'>
+			<div id="searchformcell" class="stepTwo">
 				<form id="addressForm" action=""; onsubmit="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(this.address.value); return false"> 
 					<input alt="Enter a place address or plant name then click the Search button"  title = "Enter an address then click the Search button to be shown plants recommended for that location" onClick='javascript:unGraySearchStart();' type="text"  id="addressInput" name="address" id="addressInput" value="To find plants, enter address or click on map." />&nbsp;&nbsp;
-					<span class="searchButton" ><a title="Search button" id="findButton" name='searchbox' href="javascript:void(0);" onclick="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(document.getElementById('addressInput').value);">Search</a></span>
+					<span class="searchButton"><a title="Search button" id="findButton" name='searchbox' href="javascript:void(0);" onclick="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(document.getElementById('addressInput').value);">Search</a></span>
 				</form>
 			</div>
 			<!-- End Search Input -->       
@@ -288,7 +293,9 @@ dojo.require("dijit.layout.BorderContainer");
                 <!-- End Plant Communities -->
                 
                 <!-- Other Search Options -->
+        <div class="stepThree">
 		<span style="font-size:18px;">Or search by <strong>plant lists.</strong></span> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a><br />
+		</div>
             <div class="buttons-list">
 		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Habitat');"><i class="fa fa-leaf"></i>&nbsp; ALL HABITAT PLANTS <span>To create rich local wildlife habitat, start here to create your own plant palette from 500 habitat-friendly plant species.</span></a>
 		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants displays the entire database of 714 plants. </span></a><br>
@@ -468,6 +475,11 @@ dojo.require("dijit.layout.BorderContainer");
 </div>
 <br>
 <!-- End Footer Content -->
+
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap-tour-standalone.min.js"></script>
+<script src="js/tour.js"></script>
+
 <script type="text/javascript">stLight.options({publisher: "e7c430c3-d9e1-480a-9070-717ba145d20e", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <script>
 var options={ "publisher": "e7c430c3-d9e1-480a-9070-717ba145d20e", "ad": { "visible": false, "openDelay": "5", "closeDelay": "0"}, "livestream": { "domain": "", "type": "sharethis"}, "ticker": { "visible": false, "domain": "", "title": "", "type": "sharethis"}, "facebook": { "visible": false, "profile": "sharethis"}, "fblike": { "visible": false, "url": ""}, "twitter": { "visible": false, "user": "sharethis"}, "twfollow": { "visible": false}, "custom": [{ "visible": false, "title": "Custom 1", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}, { "visible": false, "title": "Custom 2", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}, { "visible": false, "title": "Custom 3", "url": "", "img": "", "popup": false, "popupCustom": { "width": 300, "height": 250}}], "chicklets": { "items": ["facebook", "twitter", "pinterest", "googleplus"]}};
