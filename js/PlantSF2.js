@@ -2978,7 +2978,7 @@ function filterResults() {
 		}
 			
 		//Bloom Times
-		if (document.getElementById('bloom1').checked || document.getElementById('bloom2').checked || document.getElementById('bloom3').checked || document.getElementById('bloom4').checked || document.getElementById('bloom5').checked) {
+		if (document.getElementById('bloom1').checked || document.getElementById('bloom2').checked || document.getElementById('bloom3').checked || document.getElementById('bloom4').checked) {
 			// alert("bloom")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
@@ -3012,14 +3012,6 @@ function filterResults() {
 				theBloomtmp+=' (Bloom_Time like ' + "'%Fall%')"
 				//theSQLtmp+=' ("Bloom_Time" like ' + "'%September%' or " + ' "Bloom_Time" like ' + "'%October%' or " + ' "Bloom_Time" like ' + "'%November%' or "+ ' "Bloom_Time" like ' + "%Fall%' )"
 				theEnglishFilter +="Fall, "
-			}
-			if (document.getElementById('bloom5').checked) {
-				if (theBloomtmp!="") {
-					theBloomtmp+=" or "
-				}
-				theBloomtmp+=' (Bloom_Time like ' + "'%Year Round%')"
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
-				theEnglishFilter +="Year Round, "
 			}
 			if (theSQLtmp=="") {
 				theSQLtmp=theBloomtmp
