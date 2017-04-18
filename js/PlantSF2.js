@@ -3677,10 +3677,3 @@ function getJPGDoc(url,thePhotoNum) {
 	xmlhttp.send(params);
 }
 
-
-$('#start-tour').click(function(){
-    // Start the tour
-    if(!tour.start()){
-        tour.restart();
-    }
-});
