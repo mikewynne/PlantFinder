@@ -3676,3 +3676,11 @@ function getJPGDoc(url,thePhotoNum) {
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xmlhttp.send(params);
 }
+
+
+$('#start-tour').click(function(){
+    // Start the tour
+    if(!tour.start()){
+        tour.restart();
+    }
+});

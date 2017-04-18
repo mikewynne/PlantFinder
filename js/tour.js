@@ -1,6 +1,9 @@
 // Instance the tour
 var tour = new Tour({
-  steps: [
+  storage: false, // set storage to false during development
+});
+
+tour.addSteps([
   {
     element: ".stepOne",
     title: "Welcome to the Plant Finder",
@@ -19,16 +22,13 @@ var tour = new Tour({
   {
     element: ".stepFour",
     title: "Learn more",
-    content: "City Lists details are found in Resources."
+    content: "City Lists details are found in Resources ."
   }
-],
-  // backdrop: true,
-  backdrop: false,
-  storage: false
+])
+
+
+// Start the tour with the button
+$('.start-tour').click(function(){
+  tour.init();
+  tour.start();
 });
-
-// Initialize the tour
-tour.init();
-
-// Start the tour
-tour.start();
