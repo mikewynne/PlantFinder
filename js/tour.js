@@ -19,13 +19,12 @@ var tour = new Tour({
   {
     element: ".stepFour",
     title: "Learn more",
-    content: "City Lists details are found in Resources ."
+    content: "City Lists details are found in Resources."
   }
 ],
-  // Set this option as true to show a dark backdrop behind the popover and its element, highlighting the current step.
+  // backdrop: true,
   backdrop: false,
-  // Set this option as false to disable storage persistence, i.e. the tour starts from beginning every time the page is loaded.
-  // storage: false
+  storage: false
 });
 
 // Initialize the tour
