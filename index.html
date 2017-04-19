@@ -206,12 +206,12 @@ dojo.require("dijit.layout.BorderContainer");
 <!-- Header Content -->
 <div id="headerShell">
 	<div id="headerContent">
-		<a href="index.html"><div class="logo stepOne"></div>
+		<a href="index.html"><div class="logo stepWelcome"></div>
 		</a>
 		<span class="site-description">A toolkit for creating habitat and greening San Francisco.</span>
-        <a class="links stepFour" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
-        <a class="links" href="glossary.html">Glossary</a>
-		<a class="links" href="about.html"><span style="padding-left:15px;">About</span></a>
+        <a class="links stepResources" href="resources.html"><span style="padding-right:15px;">Resources</span></a>
+        <a class="links stepGlossary" href="glossary.html">Glossary</a>
+		<a class="links stepAbout" href="about.html"><span style="padding-left:15px;">About</span></a>
 	</div>
 </div>
 <!-- End Header Content -->
@@ -248,7 +248,7 @@ dojo.require("dijit.layout.BorderContainer");
 			<!-- LEFT COL: Map Search Form and Plant Communities -->  
 			<div id="mainContent-Search-LeftCol">         
             <!-- Search Input -->  
-			<div id="searchformcell" class="stepTwo">
+			<div id="searchformcell" class="stepLocation">
 				<form id="addressForm" action=""; onsubmit="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(this.address.value); return false"> 
 					<input alt="Enter a place address or plant name then click the Search button"  title = "Enter an address then click the Search button to be shown plants recommended for that location" onClick='javascript:unGraySearchStart();' type="text"  id="addressInput" name="address" id="addressInput" value="To find plants, enter address or click on map." />&nbsp;&nbsp;
 					<span class="searchButton"><a title="Search button" id="findButton" name='searchbox' href="javascript:void(0);" onclick="clicked=false; theSearchType=null; isNeighborhood=false; isDistrict=false; showAddress(document.getElementById('addressInput').value);">Search</a></span>
@@ -293,7 +293,7 @@ dojo.require("dijit.layout.BorderContainer");
                 <!-- End Plant Communities -->
                 
                 <!-- Other Search Options -->
-        <div class="stepThree">
+        <div class="stepStartSearch">
 		<span style="font-size:18px;">Or search by <strong>plant lists.</strong></span> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a><br />
 		</div>
             <div class="buttons-list">
@@ -319,6 +319,7 @@ dojo.require("dijit.layout.BorderContainer");
              <!-- End Other Search Options -->
         <br>
         <div>
+        <h5>Learn more about the <a href="resources.html#">Plant Palettes</a></h5>
         <h5>Learn more about the <a href="resources.html#city-lists">City Lists</a></h5>	
         </div>        
 			</div>
