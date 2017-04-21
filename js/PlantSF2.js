@@ -278,6 +278,9 @@ function whenMapReadyRunCommunitySearch(){
 			case "SANDYSOIL":
 				showAddress('SANDYSOIL')
 				break;
+			case "SANDYSOILHABITAT":
+				showAddress('SANDYSOILHABITAT')
+				break;
 			case "POLLINATOR":
 				showAddress('POLLINATOR')
 				break;
@@ -944,6 +947,15 @@ function idresultsort(a, b) {
 		theBaseSQL="(1=1)"
 		theQueryType="SANDY SOIL"
 		queryPlant("SANDYSOIL");
+		return;
+	}
+	if (address.toUpperCase()=="SANDYSOILHABITAT") {
+		theSearchString="SANDY SOIL HABITAT APPROPRIATE"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SANDY SOIL HABITAT APPROPRIATE"
+		queryPlant("SANDYSOILHABITAT");
 		return;
 	}
 	if (address.toUpperCase()=="SHADYCLAY") {
@@ -1933,6 +1945,15 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Sandy_Soil_int = 1) "
 						theSQL = "1=1"
 						theSearchString2 = "SANDY SOIL"
+						clearMap();
+						
+						break;
+
+					case 'SANDYSOILHABITAT':
+						// theSQL2 = "( (Habitat_int = 1) and (  (\"Soil_Type\" like \'%Sand%\' )  or  (\"Soil_Type\" like \'%;%\' )  ) "
+						theSQL2 = "( (Habitat_int = 1) and (\"Soil_Type\" like \'%Sand%\' )  )"
+						theSQL = "1=1"
+						theSearchString2 = "SANDY SOIL HABITAT APPROPRIATE"
 						clearMap();
 						
 						break;
