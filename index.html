@@ -294,33 +294,52 @@ dojo.require("dijit.layout.BorderContainer");
                 
                 <!-- Other Search Options -->
         <div class="stepStartSearch">
-		<span style="font-size:18px;">Or search by <strong>plant lists.</strong></span> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a><br />
-		</div>
-            <div class="buttons-list">
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Habitat');"><i class="fa fa-leaf"></i>&nbsp; ALL HABITAT PLANTS <span>To create rich local wildlife habitat, start here to create your own plant palette from 500 habitat-friendly plant species.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants displays the entire database of 714 plants. </span></a><br>
-		<div style="margin-top: 20px">
-			<h4 class="tooltip stepPlantPalettes">Plant Palettes<span>Shorter, pre-selected palettes to give you good ideas for appropriate species for landscaping in San Francisco.</span></h4>
-		</div>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SandySoil');"><i class="fa fa-leaf"></i>&nbsp;SANDY SOIL <span>These local native species are the best for San Francisco's sandy soils. They thrive in the good drainage and will be very drought-tolerant once established.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ShadyClay');"><i class="fa fa-leaf"></i>&nbsp;SHADY CLAY <span>The moisture-holding capacity of a north-facing clayey slope is much different from a south-facing sandy slope. This palette should survive well in this moister environment once established.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Super60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60 <span>The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Top20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20 <span>Like the Super 60, the Top 20 plants make great choices for creating habitat for bees, birds and butterflies in the urban environment. Try starting with these plants if you want to create a colorful and sustainable native habitat garden.</span></a>
-		
-		<div style="margin-top: 20px">
-			<h4 class="tooltip stepCityLists"> City Lists<span>Use the filters to refine your list for habitat-friendly plants after starting with one of these "City List" categories.</span></h4>
+		<span style="font-size:18px;">Or search by <strong>plant lists.</strong></span><br />
 		</div>
 
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SidewalkLandscaping');"><i class="fa fa-leaf"></i>&nbsp; SIDEWALK LANDSCAPING <span>These plants are recommended by San Francisco Public Works as drought tolerant and adaptable to a variety of microclimates and sidewalk conditions.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Stormwater');"><i class="fa fa-leaf"></i>&nbsp; STORMWATER <span>Recommendations from the San Francisco PUC for complying with the Stormwater Management Ordinance</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('UrbanForestCouncilStreetTreeList');"><i class="fa fa-leaf"></i>&nbsp; STREET TREES <span>Approved street tree list for San Francisco reviewed and adopted annually by the Urban Forestry Council.</span></a>
-		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150 <span>Durable, low maintenance, water wise plants that are recommended by San Francisco Public Works to do well in the challenging urban environment of the city.</span></a>
-            </div>
+        <div class="buttons-list">
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Habitat');"><i class="fa fa-leaf"></i>&nbsp; ALL HABITAT PLANTS</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Habitat');"><i class="fa fa-leaf"></i>&nbsp; ALL HABITAT PLANTS <span>To create rich local wildlife habitat, start here to create your own plant palette from 500 habitat-friendly plant species.</span></a> -->
+		<a class="tooltip button-emphasis" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS</a><br>
+		<!-- <a class="tooltip button-emphasis" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ALL');"><i class="fa fa-database"></i>&nbsp; SHOW ALL PLANTS <span>Show all plants displays the entire database of 714 plants. </span></a><br> -->
+
+		<div style="margin-top: 20px">
+		<h4 class="tooltip stepCityLists"> City Lists <span>Learn more about the City List.</span> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a></h4>
+		</div>
+
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SidewalkLandscaping');"><i class="fa fa-leaf"></i>&nbsp; SIDEWALK LANDSCAPING</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SidewalkLandscaping');"><i class="fa fa-leaf"></i>&nbsp; SIDEWALK LANDSCAPING <span>These plants are recommended by San Francisco Public Works as drought tolerant and adaptable to a variety of microclimates and sidewalk conditions.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Stormwater');"><i class="fa fa-leaf"></i>&nbsp; STORMWATER</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Stormwater');"><i class="fa fa-leaf"></i>&nbsp; STORMWATER <span>Recommendations from the San Francisco PUC for complying with the Stormwater Management Ordinance.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('UrbanForestCouncilStreetTreeList');"><i class="fa fa-leaf"></i>&nbsp; STREET TREES</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('UrbanForestCouncilStreetTreeList');"><i class="fa fa-leaf"></i>&nbsp; STREET TREES <span>Approved street tree list for San Francisco reviewed and adopted annually by the Urban Forestry Council.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('THRIFTY150');"><i class="fa fa-leaf"></i>&nbsp; THRIFTY 150 <span>Durable, low maintenance, water wise plants that are recommended by San Francisco Public Works to do well in the challenging urban environment of the city.</span></a> -->
+
+		<div style="margin-top: 20px">
+		<h4 class="tooltip stepPlantPalettes">Plant Palettes<span>Click here to learn more about the Plant Palettes.</span> <a href="resources.html#plant-lists"> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a></a></h4>
+		</div>
+		
+		<!-- <h4 class="tooltip stepPlantPalettes">Plant Palettes<span>Click here to learn more about the Plant Palettes.</span> <a href="resources.html#plant-lists"> <a href="resources.html#plant-lists"><img src="images/question-mark.png" alt="What are the plant lists? Read more..." width="12" height="12" border="0" /></a></a></h4>
+		</div> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SandySoil');"><i class="fa fa-leaf"></i>&nbsp;SANDY SOIL</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('SandySoil');"><i class="fa fa-leaf"></i>&nbsp;SANDY SOIL <span>These local native species are the best for San Francisco's sandy soils. They thrive in the good drainage and will be very drought-tolerant once established.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ShadyClay');"><i class="fa fa-leaf"></i>&nbsp;SHADY CLAY</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('ShadyClay');"><i class="fa fa-leaf"></i>&nbsp;SHADY CLAY <span>The moisture-holding capacity of a north-facing clayey slope is much different from a south-facing sandy slope. This palette should survive well in this moister environment once established.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Super60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Super60');"><i class="fa fa-leaf"></i>&nbsp; SUPER 60 <span>The Super 60 contains common, relatively hardy, local native plants that will create high quality wildlife habitat in San Francisco. Selecting plants among the Super 60 will help lead to project success.</span></a> -->
+		<a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Top20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20</a>
+		<!-- <a class="tooltip button" href="javascript:void(0);" onclick="clearCheckboxes(); showAddress('Top20');"><i class="fa fa-leaf"></i>&nbsp; TOP 20 <span>Like the Super 60, the Top 20 plants make great choices for creating habitat for bees, birds and butterflies in the urban environment. Try starting with these plants if you want to create a colorful and sustainable native habitat garden.</span></a> -->
+		
+        </div>
              <!-- End Other Search Options -->
         <br>
         <div>
-        <h5>Learn more about the <a href="resources.html#">Plant Palettes</a></h5>
+    	<p><a href="#" class="start-tour">Learn how to use the Plant Finder!</a></p>
+    	<!--  
         <h5>Learn more about the <a href="resources.html#city-lists">City Lists</a></h5>	
+        <h5>Learn more about the <a href="resources.html#">Plant Palettes</a></h5>
+        -->
         </div>        
 			</div>
 			<!-- End Search Input -->      
@@ -360,7 +379,7 @@ dojo.require("dijit.layout.BorderContainer");
             <div id="Intro">
             <img src="images/intro-graphic.png" alt="" width="300" height="300" align="right" style="margin-left:35px;" />
 			<h1>What is SF Plant Finder?</h1>
-			<p>SF Plant Finder is a resource for gardeners, designers, ecologists and others interested in greening neighborhoods, enhancing our urban ecology and surviving the drought. The Plant Finder recommends appropriate plants for sidewalks, private backyards and roofs that are adapted to San Francisco's unique environment, climate and habitats. <a class="start-tour">Take a Tour!</a></p></div>
+			<p>SF Plant Finder is a resource for gardeners, designers, ecologists and others interested in greening neighborhoods, enhancing our urban ecology and surviving the drought. The Plant Finder recommends appropriate plants for sidewalks, private backyards and roofs that are adapted to San Francisco's unique environment, climate and habitats. <br> </p></div>
             </div>
             <!-- /HOMEPAGE INTRO -->
             
@@ -460,7 +479,7 @@ dojo.require("dijit.layout.BorderContainer");
 <!-- Footer Content -->
 <div id="footerShell">
 		<div id="footerContent">
-		<div class="left">&copy; 2014 City and County of San Francisco.<br />
+		<div class="left">&copy; 2017 City and County of San Francisco.<br />
 			This site is brought to you by the following city agencies and <br />
 		  a grant from the California Strategic Growth Council.</div>
 		<div class="right"><img src="images/dept-logos.png" width="690" height="64" border="0" usemap="#agencies" />
