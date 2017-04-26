@@ -484,7 +484,7 @@ vertical-align: inherit;
 	float: right;
 	top: 0;
 	right: 0;
-	padding: 0px 0px 20px 20px;
+	padding: 0px 20px 20px 20px;
 	/* background-color: #E9E9E9; */
 	border-left: 1px dashed #EEE;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
@@ -512,6 +512,15 @@ vertical-align: inherit;
 	padding-bottom: 3px;
 	border-bottom: 1px solid #CCC;
 	margin-bottom: 5px;
+}
+
+#plantlist {
+	padding-left: 20px;
+}
+
+#PlantList td {
+	padding-bottom: 10px;
+	padding-right: 10px;
 }
 
 /* HOMEPAGE RIGHT COLUMN: Green Connections */
