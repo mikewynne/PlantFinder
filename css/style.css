@@ -13,7 +13,11 @@ Description: Theme for SF PlantFinder Database web site.
 
 * {margin:0; padding:0;}
 
-body {background-color:#E3E3E3; height:100%; width:100%;}
+body {
+	background-color:#E3E3E3; 
+	height:100%; 
+	width:100%;
+}
 
 img {border: 0;}
 
@@ -29,19 +33,33 @@ h1 {
 	
 }
 
-h2, h3 {font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; color:#422410;}
+h2, h3 {
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; 
+	color:#422410;
+}
 
-h3 {padding-bottom: 3px; border-bottom: 1px dashed #AAA;}
+h3 {
+	padding-bottom: 3px; 
+	border-bottom: 1px dashed #AAA;
+}
 
 h4 {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 17px;
 	font-weight: normal;
 	line-height: 1.15em;
-	
 	color: #333;
 	padding-bottom: -0.5em;
 	padding-top: .7em;
+}
+
+h5 {
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; 
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.15em;
+	color: #333;
+	padding-top: .25em;
 }
 
 p, ul, li {
@@ -123,6 +141,19 @@ a.button {
 	color: #393;
 	padding: 4px 6px;
 	border: 1px solid #CCC;
+	text-decoration: none;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+a.button-emphasis {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #393;
+	padding: 4px 6px;
+	border: 2px solid #393;
 	text-decoration: none;
 	border-radius: 4px;
     -moz-border-radius: 4px;
@@ -453,7 +484,7 @@ vertical-align: inherit;
 	float: right;
 	top: 0;
 	right: 0;
-	padding: 0px 0px 20px 20px;
+	padding: 0px 20px 20px 20px;
 	/* background-color: #E9E9E9; */
 	border-left: 1px dashed #EEE;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
@@ -481,6 +512,15 @@ vertical-align: inherit;
 	padding-bottom: 3px;
 	border-bottom: 1px solid #CCC;
 	margin-bottom: 5px;
+}
+
+#plantlist {
+	padding-left: 20px;
+}
+
+#PlantList td {
+	padding-bottom: 10px;
+	padding-right: 10px;
 }
 
 /* HOMEPAGE RIGHT COLUMN: Green Connections */
@@ -681,6 +721,8 @@ a.btn-slide:hover {
 
 /* POPUP TEXT FOR HINTS & DEFINITIONS */
 
+h4.tooltip {display: inline;}
+
 a.tooltip {outline:none; }
 a.tooltip strong {line-height:30px;}
 a.tooltip:hover {text-decoration:none;} 
@@ -729,7 +771,8 @@ h4.tooltip span {
 	padding: 15px 20px;
     margin-top: -60px; 
 	margin-left: 15px;
-    width: 325px;
+    /*width: 325px;*/
+    width: 275px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 11px;
 	line-height: 14px;

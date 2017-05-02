@@ -84,9 +84,8 @@ var theServerName = window.location.host;
 //var theServerName = "cp-gis-svr3";
 //var theArcGISServerName = "http://" + theServerName + ":6080/arcgis/rest/services/PlantSFv3/MapServer";
 //var theArcGISServerName = "http://" + theServerName + "/arcgis/rest/services/PlantSFv4/MapServer";
-//prompt("",theArcGISServerName)
 // var theArcGISServerName = "http://cp-gis-svr3:6080/arcgis/rest/services/PlantSFv3/MapServer"
- var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv4/MapServer";
+var theArcGISServerName = "http://50.17.237.182/arcgis/rest/services/PlantSFv4/MapServer";
 var thefindResults = null;
 var theNum;
 var theAddressLot = "";
@@ -151,8 +150,6 @@ var plantListArray = new Array()
 //    return {x: lx,y: ly}; 
 //} 
 
-
-
 function initialize() {
 	//Runs when page initially loads (from the html <body> onLoad event)
 	plantToLoad = gup("plant").toUpperCase();
@@ -165,7 +162,6 @@ function initialize() {
 	
 	nurseryToLoad = gup("nursery")
 	nurseryToLoad = nurseryToLoad.replace(/\+/g, " ");
-	
 	
 	//alert(plantToLoad)
 	    
@@ -236,6 +232,7 @@ function initialize() {
 		map.reposition();
 	};
 }
+
 function whenMapReadyRunSearch(){
 	if (map.loaded && dynamicMap.loaded) {
 		loadOnePlant();
@@ -243,6 +240,7 @@ function whenMapReadyRunSearch(){
 		setTimeout('whenMapReadyRunSearch();',100)
 	}
 }
+
 function whenMapReadyRunPlaceSearch(){
 	if (map.loaded && dynamicMap.loaded) {
 		clicked=false; 
@@ -256,6 +254,7 @@ function whenMapReadyRunPlaceSearch(){
 		setTimeout('whenMapReadyRunPlaceSearch();',100)
 	}
 }
+
 function whenMapReadyRunNurserySearch(){
 	
 	if (map.loaded && dynamicMap.loaded) {
@@ -265,7 +264,6 @@ function whenMapReadyRunNurserySearch(){
 		setTimeout('whenMapReadyRunNurserySearch();',100)
 	}
 }
-
 
 function whenMapReadyRunCommunitySearch(){
 	
@@ -279,6 +277,9 @@ function whenMapReadyRunCommunitySearch(){
 				break;
 			case "SANDYSOIL":
 				showAddress('SANDYSOIL')
+				break;
+			case "SANDYSOILHABITAT":
+				showAddress('SANDYSOILHABITAT')
 				break;
 			case "POLLINATOR":
 				showAddress('POLLINATOR')
@@ -348,7 +349,6 @@ function outputDistance(result) {
 	lastResult = result.lengths[0]
 }
 
-
 function onMapClick(evt) { 
 	map.infoWindow.hide();
         //$("#plantInfo").slideUp("slow");
@@ -369,6 +369,7 @@ function searchWithLatLong(tmpLat,tmpLong) {
 	onMapClick(p2)
 		
 }
+
 function identifyClick(evt) { 
 	//Runs when a user clicks on the map.  Checks whether the user is using the measure tool (currently deactivated), if not get the lat/long and send to the identify task
 	
@@ -413,7 +414,6 @@ function identifyClick(evt) {
 	clearCheckboxes(); 
 	identify(null, theGeom);
 }
-
 
 function identify(overlay, latLng) {
 	// One of the key functions.
@@ -543,8 +543,7 @@ function identify(overlay, latLng) {
 	
 }
 
-
- function idresultsort(a, b) {
+function idresultsort(a, b) {
 	//sorts the query task results array so that they appear in the tabs in the correct order
 	var d1 = a.attributes["Latin_Name"];
 	var d2 = b.attributes["Latin_Name"];
@@ -555,7 +554,6 @@ function identify(overlay, latLng) {
 	return 0
 }
 
-
       function addMapServiceLayer(layer, error) {
         // display error message (if any) and return
         if (hasErrorOccurred(error)) return;
@@ -563,8 +561,6 @@ function identify(overlay, latLng) {
         // add layer to the map
         mapExtension.addToMap(layer);
       }
-
-
 
       function hasErrorOccurred(error) {
 	//display ArcGIS Server error
@@ -654,7 +650,6 @@ function identify(overlay, latLng) {
 
 		};
 
-
 	imidentifying = true;
 	
 	//Buffer the find result by 0.95ft.  Without doing this the Identify Task will return results for any neighboring feature that shares a boundary with the result 
@@ -668,7 +663,6 @@ function identify(overlay, latLng) {
 		//identify("",bufferPolys)
 	}
 	
-
 	document.getElementById('ImBusy').style.visibility = 'hidden'; 
 
 	}
@@ -686,7 +680,6 @@ function identify(overlay, latLng) {
 	return x1 + x2;
    }
 
-   
    function isLayerVisible(theLayerName) {
 	//Checks whether a specified layer is turned on (visible on the map) or not - returns true or false.
 	   var LayerVis = new Array();
@@ -706,6 +699,7 @@ function identify(overlay, latLng) {
 		}
 
     }
+
     function ToggleOnOff(theLayerList, OnOff) {
 	    //alert("in toggleOnOff")
 	//Switches layers on/off (adds/removes them from the map)
@@ -794,7 +788,6 @@ function identify(overlay, latLng) {
 			ToggleOnOff("Parcel Labels", false)
 		}
 	}
-
 	if (theLayer=="Zoning - NCDs") {
 		//If turning the NCDs on/ff also switch on/off the NCD buffers
 		if (OnOff) {
@@ -803,7 +796,6 @@ function identify(overlay, latLng) {
 			ToggleOnOff("Within 0.25 miles of", false)
 		}
 	}
-	
 	if (theLayer=="Zoning - Special Sign Districts") {
 		//If turning the SSD's on/ff also switch on/off the Scenic Street SSD's
 		if (OnOff) {
@@ -811,7 +803,6 @@ function identify(overlay, latLng) {
 		} else {
 			ToggleOnOff("Zoning - SSD Scenic Streets", false)
 		}
-		
 	}
 	if (theLayer=="Transit Routes") {
 		//If turning the Parcels on/ff also switch on/off the parcel labels
@@ -832,11 +823,10 @@ function identify(overlay, latLng) {
 	//document.getElementById('ImBusy').style.visibility = 'hidden'; 
     }
     
-
    function is_string(input){    
 	return typeof(input)=='string';  
    }
-    var addressMarker;
+   var addressMarker;
    
    function showAddress(addresstmp) {
 	   //alert(document.getElementById("mapContainer").offsetHeight)
@@ -863,11 +853,9 @@ function identify(overlay, latLng) {
 	//Clear any previous report and add Add "please wait" to each of the reports tabs.   
  	//remove anything that may be on the map (previous searches, etc)
 	
-	
 	clearMap();
 	$("input:checkbox").attr('checked', false);
 	//clearFilters();
-	
 	
 	// Display the 'busy' icon
 	var theX= document.body.clientWidth * 0.2 - 32
@@ -943,7 +931,6 @@ function identify(overlay, latLng) {
 		queryPlant("POLLINATOR");
 		return;
 	}
-	
 	if (address.toUpperCase()=="SUPER60") {
 		theSearchString="SUPER 60"
 		//searchAll();
@@ -960,6 +947,15 @@ function identify(overlay, latLng) {
 		theBaseSQL="(1=1)"
 		theQueryType="SANDY SOIL"
 		queryPlant("SANDYSOIL");
+		return;
+	}
+	if (address.toUpperCase()=="SANDYSOILHABITAT") {
+		theSearchString="SANDY SOIL HABITAT APPROPRIATE"
+		//searchAll();
+		document.getElementById('ImBusy').style.visibility = 'hidden'; 
+		theBaseSQL="(1=1)"
+		theQueryType="SANDY SOIL HABITAT APPROPRIATE"
+		queryPlant("SANDYSOILHABITAT");
 		return;
 	}
 	if (address.toUpperCase()=="SHADYCLAY") {
@@ -980,7 +976,6 @@ function identify(overlay, latLng) {
 		queryPlant("HABITAT");
 		return;
 	}
-
 	if (address.toUpperCase()=="THRIFTY150") {
 		theSearchString="THRIFTY 150"
 		//searchAll();
@@ -990,7 +985,6 @@ function identify(overlay, latLng) {
 		queryPlant("THRIFTY150");
 		return;
 	}
-
 	if (address.toUpperCase()=="TOP20") {
 		theSearchString="TOP 20"
 		//searchAll();
@@ -1000,7 +994,6 @@ function identify(overlay, latLng) {
 		queryPlant("TOP20");
 		return;
 	}
-	
 	//alert("here")
 	if ( (address.substr(4,1)!=".") && (parseInt(address.length) > 6) && (parseInt(address.length) < 10) && (IsNumeric(address.substr(0,4) ) )  && (IsNumeric(address.substr(5,2) ) ) )  {
 		//Searching for a PARCEL
@@ -1019,7 +1012,6 @@ function identify(overlay, latLng) {
 			}
 		}
 		theSearch="parcel="+ address;
-
 	} else {
 				//Searching for an address
 				//alert(theSearchType)
@@ -1254,7 +1246,6 @@ function identify(overlay, latLng) {
 					
 				}
 	}
-
 }
      
 function whatLookingFor(val) {
@@ -1284,10 +1275,12 @@ function whatLookingFor(val) {
 		locator.addressToLocations(options,showGeocodeResults,geocodeError);
 	}
 }
+
 function geocodeError(error) {
 	//alert(error.name + "\n\n" + error.message)
 	alert("You entered a non-official address.  The service that deals with non-official address searching is presently not available, you can continue by either entering an official address or by clicking on the map. This error is most likely to affect Firefox, using another browser may solve the problem." )
 }
+
 function showGeocodeResults(candidates) {   
 //alert("Candidates: " + candidates.length)
     //$("#plantInfo").slideUp("slow");
@@ -1329,9 +1322,6 @@ function showGeocodeResults(candidates) {
 		var theTitle = "Sorry, I can't find a place called '" + theLinkAddress + "'."
 		var theMessage = "Please check the spelling and try again."
 		new Messi(theMessage, {title: theTitle, modal: true, titleClass: 'info', buttons: [{id: 0, label: 'OK'}]});
-		
-						
-		
 	}
 }
       
@@ -1373,6 +1363,7 @@ function IsNumeric(sText)
 
       queryTask.execute(query, null, queryCallback);
     }
+
     function getInternetExplorerVersion()
 	// Returns the version of Internet Explorer or a -1
 	// (indicating the use of another browser).
@@ -1412,6 +1403,7 @@ function IsNumeric(sText)
 		}
 
 	}
+
 	function clearMap() {
 		//remove all 'Other' layers and switch off the TOC layers
 		dynamicMap.setVisibleLayers([9999]);
@@ -1429,14 +1421,11 @@ function IsNumeric(sText)
 		}
 		//alert("end of clearmap")
 	}
+
 	function removeBlue() {
 		map.graphics.clear();
 		theSearch = "";
 	}
-	
-
-	
-	
 	
 	function roundNumber(num, dec) {
 		var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
@@ -1456,8 +1445,6 @@ function IsNumeric(sText)
 		polygon.enableDrawing();
 	}
 	
-	
-      
 	function calculateAreasAndLengths() {
 		// var geometryService = new esri.arcgis.gmaps.Geometry("http://50.17.237.182/arcgis/rest/services/Geometry/GeometryServer");
 		//var geometryService = new esri.arcgis.gmaps.Geometry("http://" + theServerName + ":6080/arcgis/rest/services/Geometry/GeometryServer");
@@ -1507,7 +1494,6 @@ function IsNumeric(sText)
 		alert("Length:\n" + roundNumber(thelength,0)  + " feet\n" + roundNumber(thelengthYards,1) +  " yards\n" + roundNumber(thelengthMiles,3) + " miles" );
 	}
 	
-
 	function ViewLegend() {
 		var LayerVis = new Array();
 		LayerVis = dynamicMap.visibleLayers;
@@ -1534,9 +1520,11 @@ function IsNumeric(sText)
 			LegWin.document.close();
 		}
 	}
+
 	function madeListwider() {
 		document.getElementById('items').style.width = 400;
 	}
+
 	function bufferCurrentOverlays(theRestmp,theDist) {
 		//The results of the Find Task are buffered by 0.95ft before then being sent to the Identify Task (to eliminate neighboring features which share a boundary).  The 
 		//  bufferCallback function then deals with the results of the buffer and sends these to the Identify Task
@@ -1554,8 +1542,6 @@ function IsNumeric(sText)
 		//	params.geometries = geometries;          
 		//	gsvc.buffer(params, showBuffer);        
 		//});
-		
-		
 		
 		//no need to buffer for PlantFinder, go straight to the identify
 		
@@ -1607,13 +1593,16 @@ function IsNumeric(sText)
 		document.getElementById('BBNsReport').innerHTML = instructions 
 		
 	}
+
 	function simplifyCallback(SimplifyResults) {
 		identify("",SimplifyResults.geometries[0]) 
 	}
+
 	function clearBuffer() {
 		map.graphics.clear()
 		map.graphics.add(theSearchGraphic)
 	}
+
 	function showHideMap(theID) {
 		
 	    //Run when a user clicks on a 'map' button which is used to add or remove a layer form the map
@@ -1631,11 +1620,6 @@ function IsNumeric(sText)
 			document.getElementById(theID).title = "Add to map"
 		}
 	}
-
-
-
-
-
 
 var tmpZoomLevel=null
 
@@ -1656,12 +1640,8 @@ function in_array(needle, haystack){
 	}     
 	return false; 
 }
-
-	
 	
 function updatePlantListHtml() {
-	
-	
 //alert("in updatePlantListHtml")
 	//Green Connections
 	thegreenConnectionsHtml=""
@@ -1697,7 +1677,6 @@ function updatePlantListHtml() {
 				//console.log(theSearchString)
 				
 				if (theSearchString.substring(0,8)=="Latitude" && result.feature.attributes["ADDRESSSIMPLE"] != null) {
-					console.log(theSearchString)
 					//theSearchString += " ("+result.feature.attributes["ADDRESSSIMPLE"]+")"
 					theSearchString = result.feature.attributes["ADDRESSSIMPLE"]
 					break;
@@ -1801,7 +1780,7 @@ function updatePlantListHtml() {
 			//theLastSummarytmp=""
 			//alert(theLastSummary)
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery." 
 			} else {
 				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ".<br> Give this list to your landscaper or take it down to your local nursery."
 			}
@@ -1863,7 +1842,6 @@ function updatePlantListHtml() {
 
 			s+="</table><br>"
 
-
 			theLastSearchHTML =s
 			dom.byId("plantlist").innerHTML=s;
 
@@ -1920,11 +1898,7 @@ function queryPlant(theQueryType) {
 			if (theSQL=="") {
 				theSQL = "1=1"
 			}
-			//alert(theSearchString)
-			if(theSearchString.substring(0,10)!="plants for") {
-				theSearchString = "plants for " + theSearchString +" (check for nursery availability by clicking on a plant)"
-                //alert(theSearchString)
-			}
+
 			//theSearchString2 = "plants found for <i>'" + theLinkAddress + "'</i>"
 			//theSearchString= "plants found for '" + theSearchString + "'"
 		} else {
@@ -1952,8 +1926,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Super60_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SUPER 60"
-						theSearchString2 = "SUPER 60 (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SUPER 60"
 						clearMap();
 						
 						break;
@@ -1962,8 +1935,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Stormwater_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SF PUC STORMWATER"
-						theSearchString2 = "SF PUC STORMWATER (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SF PUC STORMWATER"
 						clearMap();
 						
 						break;
@@ -1972,8 +1944,16 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Sandy_Soil_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SANDY SOIL"
-						theSearchString2 = "SANDY SOIL (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SANDY SOIL"
+						clearMap();
+						
+						break;
+
+					case 'SANDYSOILHABITAT':
+						// theSQL2 = "( (Habitat_int = 1) and (  (\"Soil_Type\" like \'%Sand%\' )  or  (\"Soil_Type\" like \'%;%\' )  ) "
+						theSQL2 = "( (Habitat_int = 1) and (\"Soil_Type\" like \'%Sand%\' )  )"
+						theSQL = "1=1"
+						theSearchString2 = "SANDY SOIL HABITAT APPROPRIATE"
 						clearMap();
 						
 						break;
@@ -1982,8 +1962,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Shady_Clay_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SHADY CLAY"
-						theSearchString2 = "SHADY CLAY (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SHADY CLAY"
 						clearMap();
 						
 						break;
@@ -1992,8 +1971,7 @@ function queryPlant(theQueryType) {
 						// theSQL2=" (Super60 = 'Y') "
 						theSQL2=" (Sidewalk_Landscaping_Plants_int = 1) "
 						theSQL = "1=1"
-						theSearchString2= "SF DPW SIDEWALK LANDSCAPING"
-						theSearchString2 = "SF DPW SIDEWALK LANDSCAPING (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "SF DPW SIDEWALK LANDSCAPING"
 						clearMap();
 						
 						break;
@@ -2002,8 +1980,7 @@ function queryPlant(theQueryType) {
 						//theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  ) "
 						theSQL2="(1=1) and (  (\"Habitat_Value\" like \'%Pollinator%\' )  or  (\"Habitat_Value\" like \'%;%\' )  ) "
 						theSQL = "1=1"
-						theSearchString2= "POLLINATOR"
-						theSearchString2 = "POLLINATOR (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "POLLINATOR"
 						clearMap();
 						
 						break;
@@ -2012,7 +1989,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (1=1) and (  \"Plant_Type\" in (\'Tree (evergreen)\'  , \'Tree (deciduous)\' )  and (  (\"Appropriate_Location\" like \'%Sidewalk%\' ) )  ) "
 						theSQL = "1=1"
 						theSearchString2= "SF URBAN FOREST COUNCIL STREET TREE LIST"
-						theSearchString2 = "SF URBAN FOREST COUNCIL STREET TREE LIST (check for nursery availability by clicking on a plant)"
 						clearMap();
 						
 						break;
@@ -2021,7 +1997,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Habitat_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "HABITAT PLANTS"
-						theSearchString2 = "HABITAT PLANTS (check for nursery availability by clicking on a plant)"
 						clearMap();
 						
 						break;
@@ -2030,7 +2005,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Thrifty150_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "THRIFTY 150"
-						theSearchString2 = "THRIFTY 150 (check for nursery availability by clicking on a plant)"
 						clearMap();
 						
 						break;
@@ -2039,7 +2013,6 @@ function queryPlant(theQueryType) {
 						theSQL2=" (Top20_int = 1) "
 						theSQL = "1=1"
 						theSearchString2= "TOP 20"
-						theSearchString2 = "TOP 20 (check for nursery availability by clicking on a plant)"
 						clearMap();
 						
 						break;
@@ -2047,7 +2020,7 @@ function queryPlant(theQueryType) {
 						
 					case 'grasslandPrairie':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%GRASSLAND/PRAIRIE%' "
-						theSearchString2= "plants for Grassland/Prairie (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Grassland/Prairie"
 						if (grasslandPrairie) {
 							grasslandPrairie=false;
 						}  else {
@@ -2058,7 +2031,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'coastalScrub':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%COASTAL SCRUB%' "
-						theSearchString2= "plants for Coastal Scrub (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Coastal Scrub"
 						if (coastalScrub) {
 							coastalScrub=false;
 						}  else {
@@ -2069,7 +2042,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'chaparral':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%CHAPARRAL%' "
-						theSearchString2= "plants for Chaparral (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Chaparral"
 						if (chaparral) {
 							chaparral=false;
 						}  else {
@@ -2080,7 +2053,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'dunes':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%DUNES%' "
-						theSearchString2= "plants for Dunes (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Dunes"
 						if (dunes) {
 							dunes=false;
 						}  else {
@@ -2091,7 +2064,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'wetland':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WETLAND%' "
-						theSearchString2= "plants for Wetland (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Wetland"
 						if (wetland) {
 							wetland=false;
 						}  else {
@@ -2102,7 +2075,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'riparian':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%RIPARIAN%' "
-						theSearchString2= "plants for Riparian (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Riparian"
 						if (riparian) {
 							riparian=false;
 						}  else {
@@ -2113,7 +2086,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'woodland':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%WOODLAND%' "
-						theSearchString2= "plants for Woodland (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Woodland"
 						if (woodland) {
 							woodland=false;
 						}  else {
@@ -2124,7 +2097,7 @@ function queryPlant(theQueryType) {
 						break;
 					case 'saltMarsh':
 						theSQL2 = ' UPPER("Plant_Communities") like ' + "'%SALT MARSH%' "
-						theSearchString2= "plants for Salt Marsh (check for nursery availability by clicking on a plant)"
+						theSearchString2= "plants for Salt Marsh"
 						if (saltMarsh) {
 							saltMarsh=false;
 						}  else {
@@ -2149,7 +2122,7 @@ function queryPlant(theQueryType) {
 						//alert("theLinkAddress: " + theLinkAddress)
 						//alert(theSQL2)
 					default:
-						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i> (check for nursery availability by clicking on a plant)"
+						theSearchString2 = "plants matching <i>'" + theLinkAddress + "'</i> (check for nursery availability )" //by clicking on a plant
 						theSearchString=theSearchString2
 						break;
 				}
@@ -2305,17 +2278,22 @@ function queryPlant(theQueryType) {
 			//alert("2")
 			//theLastSummarytmp=""
 			
-			//alert(theEnglishFilter)
-			//alert(theSearchString)
+			// alert(theEnglishFilter)
+			// alert("theSearchString2", theSearchString2)
 			if (theSearchString.toUpperCase()=="ALL") {
 				theSearchString = " plants found (entire database)"
 			}
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> results with the following filters: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> results with the following filters: " + theSearchString + " and " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
-				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + "."
 			}
 			
+			// The "Check for nursery availability..." statement should only for lists that include plants from the SUPER 60
+			if (theSearchString.includes("SUPER 60")) {
+				theLastSummary += "<br> Check for nursery availability by clicking on a plant.";
+			}
+
 			//theLastSummary = "We found <strong> " + results.features.length + "</strong> " + theSearchString + ":"
 			document.getElementById('searchResultsSummary').innerHTML = theLastSummary
 			//alert("3")
@@ -2324,13 +2302,11 @@ function queryPlant(theQueryType) {
 			results.features.sort(idresultsort)
 			var counter=0
 			for (var i=0, il=results.features.length; i<il; i++) {
-				
 				var featureAttributes = results.features[i].attributes;
 				var theLatinName = featureAttributes["Latin_Name"]
 				//theLatinName=theLatinName.replace(/^\s+|\s+$/g, '');
 				//theLatinName = theLatinName.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 				
-
 				if (theLatinName==null) {theLatinName=""};
 				theLatinName=trim11(theLatinName);
 				var theCommonName = featureAttributes["Common_Name"] 
@@ -2457,14 +2433,12 @@ function plantDetail(thePlantID) {
 			if (nurseryListFormatted.slice(-2)==", ") {
 				nurseryListFormatted=nurseryListFormatted.substring(0,nurseryListFormatted.length-2)
 			}
-			
 			nurseryList=nurseryListFormatted
 			//nurseryList="<a target='_blank' href='http://sfplantfinder.org/resources.html#plant-nurseries'>" + nurseryList +"</a>"
 		}
 	}
 	//var nurseryList= thePlantResults.features[thePlantID].attributes["Nurseries"].trim(); 
 
-	
 	var FLN=thePlantResults.features[thePlantID].attributes["Former_Latin_Name"] 
 	if (FLN==null) {FLN=""};
 	if (FLN=="") {
@@ -2511,8 +2485,6 @@ function plantDetail(thePlantID) {
 		additionalSpecies=""		
 	}
 	
-	
-	
 	//alert(photoCredit1)
 	//alert(streetTreeList)
 	
@@ -2542,8 +2514,6 @@ function plantDetail(thePlantID) {
 	if (photoCredit4==null) {photoCredit4="unknown"};
 	
 	if (nurseryList==null) {nurseryList=""};
-	
-	
 	
 	//alert(isthere)
 	
@@ -2578,14 +2548,15 @@ function plantDetail(thePlantID) {
 	theDetailHtml+='<p><em>' + FLN + '</em></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
 	
-	
 	theDetailHtml+='<h2>Family:</h2>'
 	theDetailHtml+='<p><em>' + familyName + '</em></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
+
+	// theDetailHtml+='<h2>Additional Species</h2>'
+	// theDetailHtml+='<p><em>' + additionalSpecies + '</em></p>'
+	// theDetailHtml+='<p>&nbsp;</p>'
 	
-	
-	
-	theDetailHtml+='<p>' + additionalCharacteristics +'</p>'
+	theDetailHtml+='<p>&nbsp;</p>'
 	theDetailHtml+='<p>&nbsp;</p>'
 	theDetailHtml+='<p><a href="' + theWikiLink+'" target="_blank">Link to Wikipedia Entry</a></p>'
 	theDetailHtml+='<p>&nbsp;</p>'
@@ -2595,99 +2566,89 @@ function plantDetail(thePlantID) {
 	//theDetailHtml+='<p>&nbsp;</p>'
 	
 	theDetailHtml+='<table class="plantDetails" border="0" cellspacing="0" cellpadding="0" width="100%">'
-	
 	theDetailHtml+='  <tr>'
 	theDetailHtml+='    <td width="150"><h2>Additional Species, Cultivars and varieties:</h2></td>'
-        theDetailHtml+='    <td><p>' + additionalSpecies + '</p></td>'
-        theDetailHtml+='   </tr>'
-	
+    theDetailHtml+='    <td><p>' + additionalSpecies + '</p></td>'
+    theDetailHtml+='   </tr>'
 	theDetailHtml+='  <tr>'
 	theDetailHtml+='    <td width="150"><h2>Plant Type:</h2></td>'
-        theDetailHtml+='    <td><p>' + plantType + '</p></td>'
-        theDetailHtml+='   </tr>'
-	
+    theDetailHtml+='    <td><p>' + plantType + '</p></td>'
+    theDetailHtml+='   </tr>'
 	//theDetailHtml+='<table class="plantDetails" border="0" cellspacing="0" cellpadding="0" width="100%">'
 	theDetailHtml+='  <tr>'
 	theDetailHtml+='    <td width="150"><h2>Bloom Time:</h2></td>'
-        theDetailHtml+='    <td><p>' + bloomTime + '</p></td>'
-        theDetailHtml+='   </tr>'
-        theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td width="150"><h2>Flower Color:</h2></td>'
-        theDetailHtml+='     <td><p>' + attractiveFeatures + '</p></td>'
-        theDetailHtml+='   </tr>'
+    theDetailHtml+='    <td><p>' + bloomTime + '</p></td>'
+    theDetailHtml+='   </tr>'
+    theDetailHtml+='   <tr>'
+    theDetailHtml+='     <td width="150"><h2>Flower Color:</h2></td>'
+    theDetailHtml+='     <td><p>' + attractiveFeatures + '</p></td>'
+    theDetailHtml+='   </tr>'
 	theDetailHtml+='  <tr>'
-        theDetailHtml+='    <td width="150"><h2>Size at Maturity:</h2></td>'
-        theDetailHtml+='    <td><p>' + plantSize + '</p></td>'
-        theDetailHtml+='   </tr>'
+    theDetailHtml+='    <td width="150"><h2>Size at Maturity:</h2></td>'
+    theDetailHtml+='    <td><p>' + plantSize + '</p></td>'
+    theDetailHtml+='   </tr>'
 	theDetailHtml+='  <tr>'
-        theDetailHtml+='    <td width="150"><h2>Appropriate Location:</h2></td>'
-        theDetailHtml+='    <td><p>' + appropriateLocation + '</p></td>'
-        theDetailHtml+='  </tr>'
-        theDetailHtml+='  <tr>'
-	 theDetailHtml+='    <td width="150"><h2>Watering Needs:</h2></td>'
-        theDetailHtml+='    <td><p>' + wateringNeeds + '</p></td>'
-        theDetailHtml+='  </tr>'
-        theDetailHtml+='  <tr>'
-	 
-        theDetailHtml+='    <td width="150"><h2>Site Conditions:</h2></td>'
-        theDetailHtml+='    <td><p>' + siteConditions + '</p></td>'
-        theDetailHtml+='  </tr>'
-        theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td width="150"><h2>Soil:</h2></td>'
-        theDetailHtml+='    <td><p>' + soil + '</p></td>'
-        theDetailHtml+='   </tr>'
+    theDetailHtml+='    <td width="150"><h2>Appropriate Location:</h2></td>'
+    theDetailHtml+='    <td><p>' + appropriateLocation + '</p></td>'
+    theDetailHtml+='  </tr>'
+    theDetailHtml+='  <tr>'
+	theDetailHtml+='    <td width="150"><h2>Watering Needs:</h2></td>'
+    theDetailHtml+='    <td><p>' + wateringNeeds + '</p></td>'
+    theDetailHtml+='  </tr>'
+    theDetailHtml+='  <tr>'
+    theDetailHtml+='    <td width="150"><h2>Site Conditions:</h2></td>'
+    theDetailHtml+='    <td><p>' + siteConditions + '</p></td>'
+    theDetailHtml+='  </tr>'
+    theDetailHtml+='   <tr>'
+    theDetailHtml+='     <td width="150"><h2>Soil:</h2></td>'
+    theDetailHtml+='    <td><p>' + soil + '</p></td>'
+    theDetailHtml+='   </tr>'
 	//theDetailHtml+='  <tr>'
-        //theDetailHtml+='    <td width="150"><h2>Pruning Needs:</h2></td>'
-        //theDetailHtml+='    <td><p>' + pruningNeeds + '</p></td>'
-        //theDetailHtml+='  </tr>'
+    //theDetailHtml+='    <td width="150"><h2>Pruning Needs:</h2></td>'
+    //theDetailHtml+='    <td><p>' + pruningNeeds + '</p></td>'
+    //theDetailHtml+='  </tr>'
 	
-	
-	
-        theDetailHtml+='    <tr>'
-        theDetailHtml+='     <td width="150"><h2>Climate Appropriate:</h2></td>'
-        theDetailHtml+='     <td><p>' + climateAppropriate + '</p></td>'
-        theDetailHtml+='   </tr>'
-        theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td width="150"><h2>Plant Communities:</h2></td>'
-        theDetailHtml+='    <td><p>' + plantCommunities+ '</p></td>'
-        theDetailHtml+='  </tr>'
+    theDetailHtml+='    <tr>'
+    theDetailHtml+='     <td width="150"><h2>Climate Appropriate:</h2></td>'
+    theDetailHtml+='     <td><p>' + climateAppropriate + '</p></td>'
+    theDetailHtml+='   </tr>'
+    theDetailHtml+='   <tr>'
+    theDetailHtml+='     <td width="150"><h2>Plant Communities:</h2></td>'
+    theDetailHtml+='    <td><p>' + plantCommunities+ '</p></td>'
+    theDetailHtml+='  </tr>'
 	theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td><h2>Habitat Value:</h2></td>'
-        theDetailHtml+='     <td><p>' + habitatValue + '</p></td>'
-        theDetailHtml+='   </tr>'
-        theDetailHtml+='  <tr>'
-	 theDetailHtml+='  <tr>'
-        theDetailHtml+='    <td><h2>Associated Wildlife:</h2></td>'
-        theDetailHtml+='    <td><p>' + associatedWildlife+ '</p></td>'
-        theDetailHtml+=' </tr>'
-        
-        
-       
+    theDetailHtml+='     <td><h2>Habitat Value:</h2></td>'
+    theDetailHtml+='     <td><p>' + habitatValue + '</p></td>'
+    theDetailHtml+='   </tr>'
+    theDetailHtml+='  <tr>'
+	theDetailHtml+='  <tr>'
+    theDetailHtml+='    <td><h2>Associated Wildlife:</h2></td>'
+    theDetailHtml+='    <td><p>' + associatedWildlife+ '</p></td>'
+    theDetailHtml+=' </tr>'
        
 	//theDetailHtml+='   <tr>'
-        //theDetailHtml+='     <td width="150"><h2>Good for Stormwater Planter:</h2></td>'
-        //theDetailHtml+='    <td><p>' + stormwaterInfrastructure + '</p></td>'
-        //theDetailHtml+='   </tr>'
-        //theDetailHtml+='   <tr>'
+    //theDetailHtml+='     <td width="150"><h2>Good for Stormwater Planter:</h2></td>'
+    //theDetailHtml+='    <td><p>' + stormwaterInfrastructure + '</p></td>'
+    //theDetailHtml+='   </tr>'
+    //theDetailHtml+='   <tr>'
 	
 	
 	theDetailHtml+='   <tr>'
-        theDetailHtml+='     <td width="150"><h2>Nurseries:</h2></td>'
-        theDetailHtml+='    <td><p>' + nurseryList + '</p></td>'
-        theDetailHtml+='   </tr>'
-        theDetailHtml+='   <tr>'
+    theDetailHtml+='     <td width="150"><h2>Nurseries:</h2></td>'
+    theDetailHtml+='    <td><p>' + nurseryList + '</p></td>'
+    theDetailHtml+='   </tr>'
+    theDetailHtml+='   <tr>'
 	//alert(streetTreeList)
 	//if (streetTreeList!="" && streetTreeList!="N/A") {
 	
-	
 	//theDetailHtml+='   <tr>'
-        //theDetailHtml+='     <td><h2>Additional Characteristics:</h2></td>'
-        //theDetailHtml+='     <td><p>' + additionalCharacteristics + '</p></td>'
-        //theDetailHtml+='   </tr>'
-       
-        theDetailHtml+='  <tr>'
-        theDetailHtml+='    <td><h2>Suggested for Green Connections Routes:</h2></td>'
-        theDetailHtml+='    <td><p>'	
+    //theDetailHtml+='     <td><h2>Additional Characteristics:</h2></td>'
+    //theDetailHtml+='     <td><p>' + additionalCharacteristics + '</p></td>'
+    //theDetailHtml+='   </tr>'
+   
+    theDetailHtml+='  <tr>'
+    theDetailHtml+='    <td><h2>Suggested for Green Connections Routes:</h2></td>'
+    theDetailHtml+='    <td><p>'	
 
 	var AnyRoutes="No"
 	var GCArray = new Array();
@@ -2702,7 +2663,6 @@ function plantDetail(thePlantID) {
 			theDetailHtml+='      </a>'
 			AnyRoutes="Y"
 		}
-		
 		if (GCArray[i]=="2") { 
 			theDetailHtml+='      <a target="_blank" href="docs/EcologyGuides_Route_2.pdf">'
 			theDetailHtml+='      <img src="images/gc-route2-marker.png" width="32" height="32" />'
@@ -2733,7 +2693,6 @@ function plantDetail(thePlantID) {
 			theDetailHtml+='      </a>'
 			AnyRoutes="Y"
 		}
-		
 		if (GCArray[i]=="7") {  
 			theDetailHtml+='      <a target="_blank" href="docs/EcologyGuides_Route_7.pdf">'
 			theDetailHtml+='      <img src="images/gc-route7-marker.png" width="32" height="32" />'
@@ -2806,7 +2765,6 @@ function plantDetail(thePlantID) {
 			theDetailHtml+='      </a>'
 			AnyRoutes="Y"
 		}
-		
 		if (GCArray[i]=="19") { 
 			theDetailHtml+='      <a target="_blank" href="docs/EcologyGuides_Route_19.pdf">'
 			theDetailHtml+='      <img src="images/gc-route19-marker.png" width="32" height="32" />'
@@ -2856,12 +2814,12 @@ function plantDetail(thePlantID) {
 	if (streetTreeList=='2 (B)') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>B - Species that perform well in certain locations, with special considerations</a>" };
 	if (streetTreeList=='C') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>C - Species that need further evaluation </a>" };
 	theDetailHtml+='    <td><p>' + streetTreeList + '</p></td>'
+	theDetailHtml+='   <tr>'
+    theDetailHtml+='     <td width="150"><h2>Additional Characteristics:</h2></td>'
+    theDetailHtml+='    <td><p>' + additionalCharacteristics + '</p></td>'
+    theDetailHtml+='   </tr>'
+    theDetailHtml+='   <tr>'
 	theDetailHtml+='   </tr>'
-	
-	
-	
-	
-	
     theDetailHtml+='</table>'
 	theDetailHtml+='</div>'
 	theDetailHtml+='</div>'
@@ -2883,8 +2841,6 @@ function plantDetail(thePlantID) {
 	//document.getElementById('toggleFilter').onclick= function () {reloadSearchResults();};
 	//document.getElementById('plantlist').style.visibility='visible';
 
-
-
 	theURLtmp = 'http://' + theServerName +'/php/fileExists.php?filename=C:/inetpub/wwwroot/PlantSF/images/Plants/Medium/' + latinName + "03.jpg"
 	getJPGDoc(theURLtmp,3)
 	theURLtmp = 'http://' + theServerName +'/php/fileExists.php?filename=C:/inetpub/wwwroot/PlantSF/images/Plants/Medium/' + latinName + "04.jpg"
@@ -2894,7 +2850,6 @@ function plantDetail(thePlantID) {
 		document.getElementById('greenConnectionsList').innerHTML = thegreenConnectionsHtml
 		
 	}
-	
 	
 	thePlantDetailHtmlToPrint = theDetailHtml
 	//myDiv.scrollTop = 0;
@@ -2916,7 +2871,6 @@ function reloadSearchResults() {
 	
 	var myDiv = document.getElementById('searchResults');
 	myDiv.scrollTop = theDIVLoc;
-	
 }
 
 function setFilterLink () {
@@ -3045,12 +2999,11 @@ function filterResults() {
 		}
 			
 		//Bloom Times
-		if (document.getElementById('bloom1').checked || document.getElementById('bloom2').checked || document.getElementById('bloom3').checked || document.getElementById('bloom4').checked || document.getElementById('bloom5').checked) {
+		if (document.getElementById('bloom1').checked || document.getElementById('bloom2').checked || document.getElementById('bloom3').checked || document.getElementById('bloom4').checked) {
 			// alert("bloom")
 			if (theEnglishFilter!="") {
 				theEnglishFilter+="; "
 			}
-		
 			theEnglishFilter+= " Bloom Time - "
 			if (document.getElementById('bloom1').checked) {
 				theBloomtmp+=' (Bloom_Time like ' + "'%Winter%')"
@@ -3081,22 +3034,12 @@ function filterResults() {
 				//theSQLtmp+=' ("Bloom_Time" like ' + "'%September%' or " + ' "Bloom_Time" like ' + "'%October%' or " + ' "Bloom_Time" like ' + "'%November%' or "+ ' "Bloom_Time" like ' + "%Fall%' )"
 				theEnglishFilter +="Fall, "
 			}
-			if (document.getElementById('bloom5').checked) {
-				if (theBloomtmp!="") {
-					theBloomtmp+=" or "
-				}
-				theBloomtmp+=' (Bloom_Time like ' + "'%Year Round%')"
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
-				theEnglishFilter +="Year Round, "
-			}
-			
 			if (theSQLtmp=="") {
 				theSQLtmp=theBloomtmp
 			} else {
 				theSQLtmp+=" and ( " + theBloomtmp + ") "
 			}
 			//prompt('',theSQLtmp)
-			
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
 			}
@@ -3121,7 +3064,6 @@ function filterResults() {
 				}
 				theSizetmp+=' (Size_At_Maturity like ' + "'%1-3 ft%')"
 				theEnglishFilter +="1-3ft, "
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
 			}
 			if (document.getElementById('size3').checked) {
 				if (theSizetmp!="") {
@@ -3129,14 +3071,12 @@ function filterResults() {
 				}
 				theSizetmp+=' (Size_At_Maturity like ' + "'%4-6 ft%')"
 				theEnglishFilter +="4-6ft, "
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
 			}
 			if (document.getElementById('size4').checked) {
 				if (theSizetmp!="") {
 					theSizetmp+=" or "
 				}
 				theSizetmp+=' (Size_At_Maturity like ' + "'%7-12 ft%')"
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
 				theEnglishFilter +="7-12ft, "
 			}
 			if (document.getElementById('size5').checked) {
@@ -3144,7 +3084,6 @@ function filterResults() {
 					theSizetmp+=" or "
 				}
 				theSizetmp+=' (Size_At_Maturity like ' + "'%13-24 ft%')"
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
 				theEnglishFilter +="13-24ft, "
 			}
 			if (document.getElementById('size6').checked) {
@@ -3153,14 +3092,12 @@ function filterResults() {
 				}
 				theSizetmp+=' (Size_At_Maturity like ' + "'%> 24 ft%')"
 				theEnglishFilter +="Above 24ft, "
-				//theSQLtmp+=' "Bloom_Time" = ' + "'Year Round'" 
 			}
 			if (theSQLtmp=="") {
 				theSQLtmp=theSizetmp
 			} else {
 				theSQLtmp+=" and ( " + theSizetmp + ") "
 			}
-			//prompt('',theSQLtmp)
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
 			}
@@ -3198,7 +3135,6 @@ function filterResults() {
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
 			//prompt('',theSQLtmp)
 		}
@@ -3258,7 +3194,6 @@ function filterResults() {
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
 			//prompt('',theSQLtmp)
 		}
@@ -3315,8 +3250,7 @@ function filterResults() {
 				theSQLtmp+=" and ( " + theHabitattmp + ") "
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
-				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
+				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)	
 			}
 			//prompt('',theSQLtmp)
 		}
@@ -3343,7 +3277,6 @@ function filterResults() {
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
 			//prompt('',theSQLtmp)
 		}
@@ -3386,8 +3319,7 @@ function filterResults() {
 				theSQLtmp+=" and ( " + theSoiltmp + ") "
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
-				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
+				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)	
 			}
 			//prompt('',theSQLtmp)
 		}
@@ -3416,8 +3348,6 @@ function filterResults() {
 				theSiteCondtmp+=' ("Suitable_Site_Conditions" like ' + "'%Shade%'  )"
 				theEnglishFilter +="Shade, "
 			}
-					
-			
 			if (theSQLtmp=="") {
 				theSQLtmp=theSiteCondtmp
 			} else {
@@ -3425,11 +3355,9 @@ function filterResults() {
 			}
 			if (theEnglishFilter.substring(theEnglishFilter.length -2,theEnglishFilter.length) ==", ") {
 				theEnglishFilter=theEnglishFilter.substring(0,theEnglishFilter.length-2)
-				
 			}
 			//alert(theSQLtmp) 
 		}	
-		
 	}
 	theEnglishFilter=theEnglishFilter.trim();
 	if (theSQLtmp!="") {
@@ -3452,7 +3380,6 @@ function clearFilters(thename) {
 	
 	$("input:checkbox").attr('checked', false);
 	
-
     //clearRadios('plantType');
     //clearRadios('bloomTime');
     //clearRadios('sizeAtMaturity');
@@ -3539,9 +3466,9 @@ function loadOnePlant() {
 			theSearchString = " plants found for " + plantToLoad 
 			
 			if (theEnglishFilter.length>2) {
-				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery."
+				theLastSummary="We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ". The following filters were applied: " + theEnglishFilter + ". <br> Give this list to your landscaper or take it down to your local nursery.";
 			} else {
-				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + ":"
+				theLastSummary = "We found <strong>" + results.features.length + "</strong> plants for " + theSearchString + "."
 			}
 
 			document.getElementById('searchResultsSummary').innerHTML = theLastSummary
@@ -3567,10 +3494,11 @@ function loadOnePlant() {
 				imgURL = "images/plants/medium/" + theLatinName + "01.jpg"
 				var theicon=""
 				var theNative=featureAttributes["Climate_Appropriate_Plants"]
+
 				if(theNative) {
 					theNative=theNative.trim()
 				}
-				
+
 				switch(theNative) {
 				    case 'CA Native':
 					theicon="<img style='PADDING-TOP: 5px; PADDING-RIGHT:3px' src='images/native-ca.png' title='California Native' alt='California Native'>"
@@ -3582,10 +3510,9 @@ function loadOnePlant() {
 					theicon="<img style='PADDING-TOP: 5px; PADDING-RIGHT:3px' src='images/native-ex.png' title='Non-native; exotic' alt='Non-native; exotic'>"
 					break;
 				    default:
-					
 				}
 				s+='<td width="95px" align="middle" valign="top" ><img height="90px" width="90px" onClick="plantDetail(' + "'" + i + "'" +');" src="' + imgURL + '" alt="' + theLatinName+ '"></td><td valign="top" width="162"><a href="javascript:void(0);" onClick="plantDetail(' + "'" + i + "'" +');">'  +  theCommonName +'</a><br><h2>' + theLatinName +'</h2>'+ theicon +'</td>';
-				
+
 				if (counter==3) {
 					s+="</tr>"
 					counter=0;
@@ -3614,12 +3541,9 @@ function loadOnePlant() {
 				theLastSearchHTML=s
 				document.getElementById('greenConnectionsList').innerHTML =""
 				plantDetail(0);
-			}
-			
-	});
-	
+			}	
+	});	
 }
-
 
 function printResults() {
 	//alert(theEnglishFilter)
@@ -3675,12 +3599,9 @@ function printResults() {
 	OpenWindow.document.write(printHTML)
 	OpenWindow.document.close()
 	OpenWindow.focus(); 
-
-	
-	
 }
+
 function printInfo() {
-	
 	var printHTML = "<!DOCTYPE html>"
 	printHTML +="\n<html lang='en-US'>"
 	printHTML +="\n<head>"
@@ -3710,7 +3631,6 @@ function printInfo() {
 
 	printHTML +="<div id='info'>"
 	printHTML += "<div id=plantInfo' style='display: block;'>"
-	
 
 	printHTML +=thePlantDetailHtmlToPrint;
 	printHTML +="</div>"
@@ -3724,7 +3644,6 @@ function printInfo() {
 	OpenWindow.document.write(printHTML)
 	OpenWindow.document.close()
 	OpenWindow.focus(); 
-	
 }
 
 function getJPGDoc(url,thePhotoNum) {
@@ -3737,7 +3656,7 @@ function getJPGDoc(url,thePhotoNum) {
 		// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
-	 if ((navigator.userAgent.indexOf('Firefox/3.')>0 )) {  
+	if ((navigator.userAgent.indexOf('Firefox/3.')>0 )) {  
 		 //alert("this place2")
 		 //deal with Firefox 3 which has a bug affecting non asynchronous ajax calls
 		  xmlhttp.onload=xmlhttp.onerror = xmlhttp.onabort = function() {
@@ -3751,12 +3670,12 @@ function getJPGDoc(url,thePhotoNum) {
 				$(theid).hide();
 				$(theid).closest('tr').remove();
 			}
-		  }
-	  } else {
+		}
+	} else {
 		  //deal with all other browsers
 		  //alert("this place")
 		xmlhttp.onreadystatechange= function()
-		  {
+		    {
 			//alert(xmlhttp.readyState)
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 				//alert(xmlhttp.responseText)
@@ -3771,8 +3690,6 @@ function getJPGDoc(url,thePhotoNum) {
 					$(theid).hide();
 					$(theid).closest('tr').remove();
 				}
-				
-				
 			}
 		  }
 	  }
@@ -3780,3 +3697,4 @@ function getJPGDoc(url,thePhotoNum) {
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xmlhttp.send(params);
 }
+
