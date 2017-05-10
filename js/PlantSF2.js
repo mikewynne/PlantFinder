@@ -2290,7 +2290,7 @@ function queryPlant(theQueryType) {
 			}
 			
 			// The "Check for nursery availability..." statement should only for lists that include plants from the SUPER 60
-			if (theSearchString.includes("SUPER 60")) {
+			if (theSearchString.indexOf("SUPER 60") >= 0) {
 				theLastSummary += "<br> Check for nursery availability by clicking on a plant.";
 			}
 
