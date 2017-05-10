@@ -310,7 +310,7 @@ vertical-align: inherit;
 
 #mainContent-Search-LeftCol {
 	width: 420px;
-	float: left;
+	/*float: left;*/
 	color: #AAA;
 	padding: 10px 20px 0px 20px;
 }
