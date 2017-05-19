@@ -151,6 +151,7 @@ var plantListArray = new Array()
 //} 
 
 function initialize() {
+	
 	//Runs when page initially loads (from the html <body> onLoad event)
 	plantToLoad = gup("plant").toUpperCase();
 	plantToLoad = plantToLoad.replace(/\+/g, " ");
@@ -213,7 +214,6 @@ function initialize() {
 			whenMapReadyRunPlaceSearch();
 		});
 	}
-	
 	if (communityToLoad != "")  {
 		dojo.connect(dynamicMap, "onLoad", function(){ 
 			whenMapReadyRunCommunitySearch();
@@ -231,6 +231,7 @@ function initialize() {
 		map.resize();
 		map.reposition();
 	};
+	map.onLoad(whenMapReadyRunCommunitySearch);
 }
 
 function whenMapReadyRunSearch(){
@@ -266,8 +267,11 @@ function whenMapReadyRunNurserySearch(){
 }
 
 function whenMapReadyRunCommunitySearch(){
-	
+	//alert(dynamicMap.onLoad)
 	if (map.loaded && dynamicMap.loaded) {
+	
+	//if (map.onLoad && dynamicMap.onLoad) {
+		//alert("run")
 		switch (communityToLoad.toUpperCase()) {
 			case "HABITAT":
 				showAddress('HABITAT')
@@ -333,6 +337,7 @@ function whenMapReadyRunCommunitySearch(){
 				queryPlant(communityToLoad)
 		}
 	} else {
+		
 		setTimeout('whenMapReadyRunCommunitySearch();',100)
 	}
 }

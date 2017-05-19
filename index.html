@@ -1,12 +1,16 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en-US">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta charset="UTF-8" />
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 <LINK REL="SHORTCUT ICON" HREF="images/favicon.ico">
 <title>SF Plant Finder</title>
 <meta name="description" content="Search for any address in San Francisco and display a list of plants recommended by the City & County of San Francisco for planting at that location.  Takes into account microclimates and plant communities (phtocenosis).">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+	<meta name="viewport" content=" maximum-scale=2,user-scalable=yes">
+	
 <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
 <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
 <link rel="stylesheet" href="css/style.css">
@@ -16,10 +20,11 @@
 <script type="text/javascript">var switchTo5x=true;</script>
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-<script type="text/javascript" src="jQuery/jquery-latest.js"></script>
+<!--<script type="text/javascript" src="jQuery/jquery-latest.js"></script>-->
 <script src="jQuery/Messi-master/messi.min.js"></script>
 <!-- <script src="js/jquery-1.11.0.min.js"></script> -->
 <script src="js/jquery-2.1.1.min.js"></script>
+
 <script src="js/bootstrap-tour-standalone.min.js"></script>
 <script src="js/tour.js"></script>
 
@@ -166,6 +171,7 @@ dojo.require("dijit.layout.BorderContainer");
 		//add class for popup
 		dojo.addClass(map.infoWindow.domNode, "myTheme");
 		initialize();
+		
       }
       function setupMeasure() {
       var pms = new esri.symbol.PictureMarkerSymbol("images/blue.png",24,24);
@@ -182,7 +188,8 @@ dojo.require("dijit.layout.BorderContainer");
       function unGraySearchStart() {
 		document.getElementById('addressInput').value=""
 	}
-	 dojo.ready(init);
+	 //dojo.ready(init);
+	 setTimeout('init();',1000)
      </script>
      
 <!-- Toggles Plant Info Window -->
