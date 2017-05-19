@@ -2815,9 +2815,9 @@ function plantDetail(thePlantID) {
 	if (streetTreeList=='NA'||streetTreeList=='') {streetTreeList="N/A"} 
 	theDetailHtml+='   <tr>'
 	theDetailHtml+='     <td width="150"><h2>Approved Street Tree List:</h2></td>'
-	if (streetTreeList=='1 (A)') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>A - Species that perform well in many locations in San Francisco</a>" };
-	if (streetTreeList=='2 (B)') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>B - Species that perform well in certain locations, with special considerations</a>" };
-	if (streetTreeList=='C') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>C - Species that need further evaluation </a>" };
+	if (streetTreeList=='1 (A)') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>1 - Species that perform well in many locations in San Francisco</a>" };
+	if (streetTreeList=='2 (B)') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>2 - Species that perform well in certain locations, with special considerations</a>" };
+	if (streetTreeList=='C') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>3 - Species that need further evaluation </a>" };
 	theDetailHtml+='    <td><p>' + streetTreeList + '</p></td>'
 	theDetailHtml+='   <tr>'
     theDetailHtml+='     <td width="150"><h2>Additional Characteristics:</h2></td>'
