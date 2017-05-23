@@ -151,6 +151,7 @@ var plantListArray = new Array()
 //} 
 
 function initialize() {
+	
 	//Runs when page initially loads (from the html <body> onLoad event)
 	plantToLoad = gup("plant").toUpperCase();
 	plantToLoad = plantToLoad.replace(/\+/g, " ");
@@ -213,7 +214,6 @@ function initialize() {
 			whenMapReadyRunPlaceSearch();
 		});
 	}
-	
 	if (communityToLoad != "")  {
 		dojo.connect(dynamicMap, "onLoad", function(){ 
 			whenMapReadyRunCommunitySearch();
@@ -231,6 +231,7 @@ function initialize() {
 		map.resize();
 		map.reposition();
 	};
+	map.onLoad(whenMapReadyRunCommunitySearch);
 }
 
 function whenMapReadyRunSearch(){
@@ -266,8 +267,11 @@ function whenMapReadyRunNurserySearch(){
 }
 
 function whenMapReadyRunCommunitySearch(){
-	
+	//alert(dynamicMap.onLoad)
 	if (map.loaded && dynamicMap.loaded) {
+	
+	//if (map.onLoad && dynamicMap.onLoad) {
+		//alert("run")
 		switch (communityToLoad.toUpperCase()) {
 			case "HABITAT":
 				showAddress('HABITAT')
@@ -333,6 +337,7 @@ function whenMapReadyRunCommunitySearch(){
 				queryPlant(communityToLoad)
 		}
 	} else {
+		
 		setTimeout('whenMapReadyRunCommunitySearch();',100)
 	}
 }
@@ -2290,7 +2295,7 @@ function queryPlant(theQueryType) {
 			}
 			
 			// The "Check for nursery availability..." statement should only for lists that include plants from the SUPER 60
-			if (theSearchString.includes("SUPER 60")) {
+			if (theSearchString.indexOf("SUPER 60") >= 0) {
 				theLastSummary += "<br> Check for nursery availability by clicking on a plant.";
 			}
 
@@ -2810,9 +2815,9 @@ function plantDetail(thePlantID) {
 	if (streetTreeList=='NA'||streetTreeList=='') {streetTreeList="N/A"} 
 	theDetailHtml+='   <tr>'
 	theDetailHtml+='     <td width="150"><h2>Approved Street Tree List:</h2></td>'
-	if (streetTreeList=='1 (A)') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>A - Species that perform well in many locations in San Francisco</a>" };
-	if (streetTreeList=='2 (B)') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>B - Species that perform well in certain locations, with special considerations</a>" };
-	if (streetTreeList=='C') {streetTreeList="<a target='_blank' href='http://www.sfdpw.org/index.aspx?page=1302'>C - Species that need further evaluation </a>" };
+	if (streetTreeList=='1 (A)') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>1 - Species that perform well in many locations in San Francisco</a>" };
+	if (streetTreeList=='2 (B)') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>2 - Species that perform well in certain locations, with special considerations</a>" };
+	if (streetTreeList=='C') {streetTreeList="<a target='_blank' href='http://www.sfpublicworks.org/services/approved-street-tree-list'>3 - Species that need further evaluation </a>" };
 	theDetailHtml+='    <td><p>' + streetTreeList + '</p></td>'
 	theDetailHtml+='   <tr>'
     theDetailHtml+='     <td width="150"><h2>Additional Characteristics:</h2></td>'
